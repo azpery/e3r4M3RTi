@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>842FC4B5-2E3C-4BD7-8979-1F49B7B2F6E7</string>
+	<key>IDESourceControlProjectName</key>
+	<string>OremiaMobile2</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>934AF4231EF7C4B108F241FEEDB5E29FA260C28A</key>
+		<string>https://github.com/azpery/OremiaMobile2</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>OremiaMobile2.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>934AF4231EF7C4B108F241FEEDB5E29FA260C28A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/azpery/OremiaMobile2</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>934AF4231EF7C4B108F241FEEDB5E29FA260C28A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>934AF4231EF7C4B108F241FEEDB5E29FA260C28A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Oremia%20Mobile%202</string>
+		</dict>
+	</array>
+</dict>
+</plist>

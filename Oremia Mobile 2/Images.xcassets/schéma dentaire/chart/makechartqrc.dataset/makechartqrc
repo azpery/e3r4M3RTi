@@ -1,0 +1,84 @@
+#!/bin/bash
+#
+#
+#
+#i=0;while test $i -ne 10 ;do i=$(($i+1));echo $i ;done
+
+
+secteur=1;
+while test $secteur -ne 5; do
+  file=../qtzumachart$secteur.qrc
+  echo '<RCC>' > $file
+  echo '   <qresource prefix="/chart">'>> $file
+  ls ./$secteur* | perl -e 'while (<>) {
+  if (m/\.\/(.*)\.png/) {
+    my $filename = $1;
+    $_ = $filename;
+    if(!m/^..-doc-.*/) {
+      print "        <file>chart/$filename.png</file>\n";
+    }
+  }
+  }' >> $file
+  echo '   </qresource>'>> $file
+  echo '</RCC>'>> $file
+  secteur=$(($secteur+1))
+done
+
+# les ocs
+#
+secteur=1;
+while test $secteur -ne 5; do
+  file=../qtzumachartoc$secteur.qrc
+  echo '<RCC>' > $file
+  echo '   <qresource prefix="/chart">'>> $file
+  ls ./$secteur* | perl -e 'while (<>) {
+  if (m/\.\/(.*)\.png/) {
+    my $filename = $1;
+    $_ = $filename;
+    if(m/^..-doc-.*/) {
+      print "        <file>chart/$filename.png</file>\n";
+    }
+   }
+  }' >> $file
+echo '   </qresource>'>> $file
+echo '</RCC>'>> $file
+secteur=$(($secteur+1))
+done
+
+
+# les dents temporaires....
+#
+secteur=5;
+while test $secteur -ne 9; do
+  file=../qtzumachart$secteur.qrc
+  echo '<RCC>' > $file
+  echo '   <qresource prefix="/chart">'>> $file
+  ls ./$secteur* | perl -e 'while (<>) {
+    if (m/\.\/(.*)\.png/) {
+        my $filename = $1;
+        $_ = $filename;
+        print "        <file>chart/$filename.png</file>\n";
+    }
+  }' >> $file
+echo '   </qresource>'>> $file
+echo '</RCC>'>> $file
+secteur=$(($secteur+1))
+done
+
+
+
+# les implants....
+#
+
+
+
+
+
+#<RCC>
+#    <qresource prefix="/chart">
+#        <file>chart/11-cour-ccc.png</file>
+#
+#***
+#        <file>chart/28.png</file>
+#    </qresource>
+#</RCC>
