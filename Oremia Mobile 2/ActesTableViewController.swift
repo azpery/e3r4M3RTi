@@ -24,9 +24,13 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
         api = APIController(delegate: self)
         let tb : TabBarViewController = self.tabBarController as! TabBarViewController
         patient = tb.patient!
-        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id)")
+        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id) ORDER BY date")
         menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
         quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
+        
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        
+        
 
     }
 
@@ -156,8 +160,19 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
             self.sortedActes = Actes.sortInDict(self.lesActes)
             self.actesTableView.reloadData()
             UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            if let a = self.refreshControl {
+                if a.refreshing {
+                    a.endRefreshing()
+                }
+            }
         })
     }
+    
+    func handleRefresh(refreshControl:UIRefreshControl){
+        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id)")
+        
+    }
+    
     func handleError(results: Int) {
         if results == 1{
             

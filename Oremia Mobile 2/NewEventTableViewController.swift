@@ -191,9 +191,9 @@ class NewEventTableViewController: UITableViewController  {
             self.dismissViewControllerAnimated(true, completion: ({
                 self.eventManager.agenda = self.caller
                 let mabite = self.eventManager.editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
-//                self.eventManager.CalDavRessource[mabite[1]] = "X-ORE-IPP=%"
+//                self.eventManager.CalDavRessource[mabite[1]] = "X-ORE-IPP=%\(eventManager.internalEvent.patient?.id)"
                 self.eventManager.loadCalendars()
-//                self.caller?.reloadItMotherFucker()
+                self.caller?.reloadItMotherFucker()
             }))
         } else {
             ToolBox.shakeIt(self.view)

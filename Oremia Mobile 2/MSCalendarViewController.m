@@ -44,8 +44,9 @@ UIPopoverPresentationController *popover;
 @property (nonatomic, strong) EventManager *fetchedResultsController;
 @property (nonatomic, readonly) CGFloat layoutSectionWidth;
 @property (nonatomic, strong) NSArray *uniqueEventsArray;
-@property (nonatomic, retain) NSDate * curDate;
-@property (nonatomic, retain) NSDateFormatter * formatter;
+@property (nonatomic, retain) NSDate *curDate;
+@property (nonatomic, retain) NSDateFormatter *formatter;
+@property (nonatomic, retain) APIController *api;
 
 @end
 
@@ -66,11 +67,11 @@ UIPopoverPresentationController *popover;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-        if (granted) {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventStoreChangedNotification:) name:EKEventStoreChangedNotification object:nil];
-        }
-    }];
+//    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+//        if (granted) {
+//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventStoreChangedNotification:) name:EKEventStoreChangedNotification object:nil];
+//        }
+//    }];
    
     
     self.collectionView.backgroundColor = [UIColor whiteColor];
@@ -142,16 +143,16 @@ UIPopoverPresentationController *popover;
     [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting]];
     [self.navigationItem setLeftBarButtonItems:@[tamere, buttonAuj]];
     //update Early and lastest hours
-    APIController *api = [[APIController alloc] initWithDelegate:self];
+    self.api = [[APIController alloc] initWithDelegate:self];
 
-    NSArray *pref = [api getPref:@"time"];
+    NSArray *pref = [_api getPref:@"time"];
     if ([pref count] != 0) {
         NSString *begin = pref[0];
         NSString *end = pref[1];
         [self.collectionViewCalendarLayout setBeginHour: begin.intValue];
         [self.collectionViewCalendarLayout setEndHour: end.intValue];
     } else{
-        [api addPref:@"time" prefs:@[@"8",@"18"]];
+        [_api addPref:@"time" prefs:@[@"8",@"18"]];
         [self.collectionViewCalendarLayout setBeginHour:8];
         [self.collectionViewCalendarLayout setEndHour:18];
     }
@@ -320,24 +321,24 @@ UIPopoverPresentationController *popover;
     [self.collectionViewCalendarLayout registerClass:MSTimeRowHeaderBackground.class forDecorationViewOfKind:MSCollectionElementKindTimeRowHeaderBackground];
     [self.collectionViewCalendarLayout registerClass:MSDayColumnHeaderBackground.class forDecorationViewOfKind:MSCollectionElementKindDayColumnHeaderBackground];
 }
-- (void)eventStoreChangedNotification:(NSNotification *)notification {
-    [self.handlerTimer invalidate];
-    self.handlerTimer = [NSTimer timerWithTimeInterval:8.0
-                                                target:self
-                                              selector:@selector(respond)
-                                              userInfo:nil
-                                               repeats:NO];
-    [[NSRunLoop mainRunLoop] addTimer:self.handlerTimer
-                              forMode:NSDefaultRunLoopMode];
-    
-}
-- (void)respond {
-    [self.handlerTimer invalidate];
-    [self.eventStore refreshSourcesIfNecessary];
-    [self.fetchedResultsController loadCalendars];
-    NSLog(@"Event store changed");
-//    [self reloadItMotherFucker];
-}
+//- (void)eventStoreChangedNotification:(NSNotification *)notification {
+//    [self.handlerTimer invalidate];
+//    self.handlerTimer = [NSTimer timerWithTimeInterval:8.0
+//                                                target:self
+//                                              selector:@selector(respond)
+//                                              userInfo:nil
+//                                               repeats:NO];
+//    [[NSRunLoop mainRunLoop] addTimer:self.handlerTimer
+//                              forMode:NSDefaultRunLoopMode];
+//    
+//}
+//- (void)respond {
+//    [self.handlerTimer invalidate];
+//    [self.eventStore refreshSourcesIfNecessary];
+//    [self.fetchedResultsController loadCalendars];
+//    NSLog(@"Event store changed");
+////    [self reloadItMotherFucker];
+//}
 
 -(void) reloadItMotherFucker
 {
@@ -357,6 +358,8 @@ UIPopoverPresentationController *popover;
 -(void)showToday{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionViewCalendarLayout scrollCollectionViewToClosetSectionToCurrentTimeAnimated:NO];
+        NSDate *date = [[NSDate alloc] init];
+        [self.fetchedResultsController.api getCalDavRessources:date];
     });
 }
 -(void)addNewCell:(UILongPressGestureRecognizer *)sender {
@@ -401,6 +404,7 @@ UIPopoverPresentationController *popover;
 
 - (void)datePickerDonePressed:(THDatePickerViewController *)picker {
     if ([self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:picker.date andAnimated:NO]) {
+        [self.fetchedResultsController.api getCalDavRessources:picker.date];
         [self dismissSemiModalView];
     } else {
         [ToolBox shakeIt:self.datePicker.view];
@@ -438,6 +442,7 @@ UIPopoverPresentationController *popover;
     popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
     destinationView.eventManager.editEvent = cell.event;
     destinationView.eventManager.internalEvent = cell.evenement;
+    destinationView.cell = cell;
     popover.sourceRect = cell.frame;
     // display the controller in the usual way
     [self presentViewController:controller animated:YES completion:^{

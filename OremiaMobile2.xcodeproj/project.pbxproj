@@ -116,6 +116,8 @@
 		128CA4D51C165D4900738FB9 /* MSCalendarNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128CA4D41C165D4900738FB9 /* MSCalendarNavigationViewController.swift */; };
 		128FCFCB1C6AC0FD00FABB77 /* imageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128FCFCA1C6AC0FC00FABB77 /* imageColor.swift */; };
 		129D28C51B1613EE00EF28FA /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129D28C41B1613EE00EF28FA /* CalendarViewController.swift */; };
+		12A6BC971CC3FB1E00A1FB33 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6BC961CC3FB1D00A1FB33 /* Window.swift */; };
+		12A6BC991CC8268800A1FB33 /* ActesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A6BC981CC8268800A1FB33 /* ActesViewController.swift */; };
 		12AE86611C05D3CB0031C5A3 /* ModeleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AE86601C05D3CB0031C5A3 /* ModeleDocument.swift */; };
 		12B347421B109E3000A8AC3D /* Oremia_Mobile_2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B347411B109E3000A8AC3D /* Oremia_Mobile_2Tests.swift */; };
 		12B347C11B10B0AD00A8AC3D /* Actes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3479A1B10B0AD00A8AC3D /* Actes.swift */; };
@@ -335,6 +337,8 @@
 		12A0270F1BBB3539006B6998 /* ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ionicons.ttf; sourceTree = "<group>"; };
 		12A027101BBB3539006B6998 /* octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = octicons.ttf; sourceTree = "<group>"; };
 		12A027111BBB3539006B6998 /* open-iconic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open-iconic.ttf"; sourceTree = "<group>"; };
+		12A6BC961CC3FB1D00A1FB33 /* Window.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		12A6BC981CC8268800A1FB33 /* ActesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActesViewController.swift; sourceTree = "<group>"; };
 		12AE86601C05D3CB0031C5A3 /* ModeleDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeleDocument.swift; sourceTree = "<group>"; };
 		12B347261B109E3000A8AC3D /* OremiaMobile2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OremiaMobile2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12B3472A1B109E3000A8AC3D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -596,6 +600,7 @@
 				124A21151C1A422200991A55 /* TypeRDV.swift */,
 				128FCFCA1C6AC0FC00FABB77 /* imageColor.swift */,
 				1229E0E61C9B664B00173F83 /* Chart.swift */,
+				12A6BC961CC3FB1D00A1FB33 /* Window.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -772,6 +777,7 @@
 				124A21131C1A3E1100991A55 /* TypeRDVTableViewController.swift */,
 				122E54D81BBE93F000861367 /* valio */,
 				12D5D2551C5ACCCB00EBDCE8 /* DevBlogViewController.swift */,
+				12A6BC981CC8268800A1FB33 /* ActesViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1028,6 +1034,7 @@
 				127B72C31BF38BC30055FB3A /* DTIAnimWave.swift in Sources */,
 				12B347DD1B10B0AD00A8AC3D /* RadioCollectionViewController.swift in Sources */,
 				12B347E01B10B0AD00A8AC3D /* selectedUser.swift in Sources */,
+				12A6BC991CC8268800A1FB33 /* ActesViewController.swift in Sources */,
 				127B72BE1BF38BC30055FB3A /* DTIAnimProtocol.swift in Sources */,
 				12553E9B1C1737360051F30E /* NewEventNavigationController.swift in Sources */,
 				123DA9771BBC3C80005E0402 /* JLToast.swift in Sources */,
@@ -1038,6 +1045,7 @@
 				127B72C41BF38BC30055FB3A /* DTIAnimWp8.swift in Sources */,
 				12172F061C14C77F00A99F49 /* LauchScreen.swift in Sources */,
 				12B347CC1B10B0AD00A8AC3D /* DocumentTableViewCell.swift in Sources */,
+				12A6BC971CC3FB1E00A1FB33 /* Window.swift in Sources */,
 				12B347CA1B10B0AD00A8AC3D /* DocumentPatientTableViewController.swift in Sources */,
 				12B347C51B10B0AD00A8AC3D /* AppDelegate.swift in Sources */,
 				1223CBBB1B1884BC00A42C80 /* PickerViewController.swift in Sources */,

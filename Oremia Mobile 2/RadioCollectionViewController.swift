@@ -18,8 +18,9 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
     var dateCrea:NSArray?
     var patient:patients?
     let scl = SCLAlertView()
+    var refreshControl:UIRefreshControl?
     var selectedPhoto:UIImage?
-    var imageCache = [UIImage]()
+    var imageCache = [Int:UIImage]()
     var activityIndicator = DTIActivityIndicatorView()
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -49,7 +50,12 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
         self.collectionView?.reloadData()
         menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
         quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
-
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.collectionView?.addSubview(self.refreshControl!)
+        self.collectionView?.alwaysBounceVertical = true
+        
     }
     func quit(sender: UIBarButtonItem){
         self.performSegueWithIdentifier("unWind", sender: self)
@@ -98,7 +104,7 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
                 } else {
                     progressIndicatorView.removeFromSuperview()
                 }
-                self!.imageCache.append(image)
+                self!.imageCache[indexPath.row] = image
         }
         })
         return cell
@@ -123,6 +129,11 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
             } else {
                 self.activityIndicator.stopActivity()
                 self.activityIndicator.removeFromSuperview()
+                if let a = self.refreshControl {
+                    if a.refreshing {
+                        a.endRefreshing()
+                    }
+                }
                 self.collectionView?.reloadData()
             }
         })
@@ -134,10 +145,17 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
     }
+    
+    func handleRefresh(refreshControl:UIRefreshControl){
+        api!.sendRequest("select id from radios where idpatient=\(patient!.id)")
+        
+    }
+    
     override func collectionView(collectionView: UICollectionView,
     didSelectItemAtIndexPath indexPath: NSIndexPath){
         let idr:Int = idRadio?.objectAtIndex(indexPath.row).valueForKey("id") as! Int
-        selectedPhoto = api!.getRadioFromUrl(idr)
+        selectedPhoto = self.imageCache[indexPath.row]
+        self.performSegueWithIdentifier("showRadio", sender: self)
         
     }
     @IBAction func dismiss(sender: AnyObject) {
@@ -145,12 +163,12 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.destinationViewController.isKindOfClass(ImageScrollViewController){
-        let fullScreenView: ImageScrollViewController = segue.destinationViewController as! ImageScrollViewController
-        fullScreenView.imageScrollLargeImageName = self.imageCache[(self.cv.indexPathsForSelectedItems()?.first!.row)!]
+            let fullScreenView: ImageScrollViewController = segue.destinationViewController as! ImageScrollViewController
+            fullScreenView.imageScrollLargeImageName = self.imageCache[(self.cv.indexPathsForSelectedItems()?.first!.row)!]
         }
         if segue.destinationViewController.isKindOfClass(CarousselViewController){
             let fullScreenView: CarousselViewController = segue.destinationViewController as! CarousselViewController
-            fullScreenView.imageCache = self.imageCache
+            fullScreenView.imageCache = [self.selectedPhoto!]
         }
     }
 

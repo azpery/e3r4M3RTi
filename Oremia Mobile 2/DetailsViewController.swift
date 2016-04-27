@@ -177,7 +177,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != ""  {
-            api.sendRequest("select * from patients where nom LIKE '%\( searchText.uppercaseString)%' OR prenom LIKE '%\(searchText.uppercaseString)%' OR nom LIKE '%\( searchText.lowercaseString)%' OR prenom LIKE '%\(searchText.lowercaseString)%' LIMIT 10")
+            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercaseString)percent' OR prenom LIKE 'percent\(searchText.uppercaseString)percent' OR nom LIKE 'percent\( searchText.lowercaseString)percent' OR prenom LIKE 'percent\(searchText.lowercaseString)percent' ORDER BY nom LIMIT 10")
             
         }
         //        self.filtredpatients = self.tracks.filter({( patient: patients) -> Bool in

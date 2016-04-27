@@ -25,8 +25,11 @@ import Foundation
             get(urlPath, searchString: "query=\(searchString)")
         }
     }
-    func getCalDavRessources(){
-        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/getEvents.php?idP=\(preference.idUser)"
+    func getCalDavRessources(var date:NSDate? = nil){
+        if date == nil {
+            date = NSDate()
+        }
+        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/getEvents.php?idP=\(preference.idUser)&date=\(ToolBox.getFormatedDate(date!))"
         get(urlPath, searchString: "query=\("")")
     }
     func setCalDavRessources(uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int){
@@ -60,28 +63,45 @@ import Foundation
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
             let postString = searchString
-            request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+            let postLength:NSString = String( postString.characters.count )
+            request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
+            request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)!
+            let body = request.HTTPBody!.description
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
             let session = NSURLSession.sharedSession()
             
             let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                print("Task completed")
-                if(error != nil) {
-                    print(error!.localizedDescription)
-                    self.delegate!.handleError(1)
-                }else {
-                    print(response)
-                    let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                    print("responseString = \(responseString)")
-                    var jsonResult: NSDictionary?
-                    do {
-                        jsonResult = (try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as? NSDictionary
-                            if jsonResult != nil {
-                                self.delegate!.didReceiveAPIResults(jsonResult!)
-                            } else {
+                if let httpResponse = response as? NSHTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        if(error != nil) {
+                            print(error!.localizedDescription)
+                            self.delegate!.handleError(1)
+                        }else {
+                            print(response)
+                            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                            print("responseString = \(responseString)")
+                            var jsonResult: NSDictionary?
+                            do {
+                                jsonResult = (try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as? NSDictionary
+                                if jsonResult != nil {
+                                    self.delegate!.didReceiveAPIResults(jsonResult!)
+                                } else {
+                                    self.delegate!.handleError(1)
+                                }
+                            } catch {
                                 self.delegate!.handleError(1)
                             }
-                    } catch {
-                        self.delegate!.handleError(1)
+                        }
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if let vc = UIApplication.topViewController(){
+                                let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Requête :\(searchString).\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste. \n Erreur \(httpResponse.statusCode)", preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                                vc.presentViewController(alert, animated: true, completion: nil)
+                                self.delegate!.handleError(2)
+                            }
+                        })
                     }
                 }
             })
@@ -133,20 +153,33 @@ import Foundation
             print("returnString \(returnString)")
             var err: NSError?
             var jsonResult:NSDictionary
-            do {
-                jsonResult = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                if(err != nil) {
-                    throw err!
+            if let httpResponse = response as? NSHTTPURLResponse {
+                if httpResponse.statusCode == 200 {
+                    do {
+                        jsonResult = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
+                        if(err != nil) {
+                            throw err!
+                        } else {
+                            
+                            //                            let results: NSArray = jsonResult["results"] as! NSArray
+                            //                            println(results)
+                            //                            let value: AnyObject = results.objectAtIndex(0)
+                            self.delegate!.handleError(Int(jsonResult["results"]!["currval"] as! String)!)
+                        }
+                    } catch {
+                        self.delegate!.handleError(0)
+                        
+                    }
                 } else {
                     
-                    //                            let results: NSArray = jsonResult["results"] as! NSArray
-                    //                            println(results)
-                    //                            let value: AnyObject = results.objectAtIndex(0)
-                    self.delegate!.handleError(Int(jsonResult["results"]!["currval"] as! String)!)
+                    if let vc = UIApplication.topViewController(){
+                        let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste.", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+                        vc.presentViewController(alert, animated: true, completion: nil)
+                        self.delegate!.handleError(2)
+                    }
+
                 }
-            } catch {
-                self.delegate!.handleError(0)
-                
             }
             
             
@@ -275,6 +308,25 @@ import Foundation
         }
         self.updatepreference(nomPref+":"+lesCal+cachePref)
         self.readPreference()
+    }
+    
+    class func loadFileSync(url: NSURL,fileType:String,nom:String, id:Int, completion:(path:String, error:NSError!) -> Void)->NSURL {
+        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        let destinationUrl = documentsUrl.URLByAppendingPathComponent("\(nom)[\(id)].\(fileType)")
+         if let dataFromURL = NSData(contentsOfURL: url){
+            if dataFromURL.writeToURL(destinationUrl, atomically: true) {
+                print("file saved [\(destinationUrl.path!)]")
+                completion(path: destinationUrl.path!, error:nil)
+            } else {
+                print("error saving file")
+                let error = NSError(domain:"Error saving file", code:1001, userInfo:nil)
+                completion(path: destinationUrl.path!, error:error)
+            }
+        } else {
+            let error = NSError(domain:"Error downloading file", code:1002, userInfo:nil)
+            completion(path: destinationUrl.path!, error:error)
+        }
+        return destinationUrl
     }
 }
 

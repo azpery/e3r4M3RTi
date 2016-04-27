@@ -2476,7 +2476,6 @@
                                 <connections>
                                     <outlet property="imageView" destination="LJh-10-LIE" id="DHV-cm-Tdg"/>
                                     <outlet property="label" destination="zbC-NX-JNi" id="hJX-T2-RUm"/>
-                                    <segue destination="jdQ-KL-q4t" kind="show" id="byl-F1-bni"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -2506,6 +2505,7 @@
                         <outlet property="cv" destination="2RX-s9-Gl6" id="VSQ-FI-pmC"/>
                         <outlet property="menuButton" destination="tRf-wy-0tn" id="WUD-tD-JQd"/>
                         <outlet property="quitButton" destination="7DT-Lk-DeJ" id="fxF-Zf-z8w"/>
+                        <segue destination="jdQ-KL-q4t" kind="show" identifier="showRadio" id="xOR-fE-vFQ"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJN-53-k0S" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3449,6 +3449,9 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="oWk-te-XwI">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                     <connections>
                         <outlet property="actesTableView" destination="Px1-r5-44R" id="gmB-oq-nTL"/>
                         <outlet property="menuButton" destination="BET-k4-m02" id="cqF-yy-IRr"/>
@@ -3508,7 +3511,6 @@
                                     <outlet property="dateLabel" destination="acl-4r-p5K" id="3VI-Y6-3QZ"/>
                                     <outlet property="mimeIcon" destination="kHY-nC-EZD" id="O4W-7r-5oP"/>
                                     <outlet property="nomLabel" destination="fgB-eT-t0y" id="a4m-j3-B0M"/>
-                                    <segue destination="y9P-jH-2B6" kind="show" identifier="showDocument" id="8ZK-nF-eIt"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -3541,11 +3543,15 @@
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="VI1-kl-Sxi">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                     <connections>
                         <outlet property="documentTableView" destination="28w-LU-iIZ" id="0q7-ec-9F4"/>
                         <outlet property="menuButton" destination="Oca-Qa-huu" id="Khv-rW-V6b"/>
                         <outlet property="newDocument" destination="onY-GK-zI5" id="2br-K0-7Z6"/>
                         <outlet property="quitButton" destination="26g-y9-jM1" id="BXB-PZ-PIS"/>
+                        <segue destination="y9P-jH-2B6" kind="show" identifier="showDocumentSegue" id="YVp-aa-e6I"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ivr-lg-mZB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3763,7 +3769,6 @@
                                     <outlet property="imageView" destination="HTF-dd-SXv" id="Qyp-Gf-jpb"/>
                                     <outlet property="label" destination="Ejl-EZ-9Jp" id="Ij0-lG-SvH"/>
                                     <outletCollection property="gestureRecognizers" destination="NZc-Sk-NYL" appends="YES" id="hLX-zp-sdZ"/>
-                                    <segue destination="jdQ-KL-q4t" kind="show" id="z0g-eP-qdz"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -3788,6 +3793,7 @@
                         <outlet property="cv" destination="p18-ua-pJw" id="kur-Sc-2SZ"/>
                         <outlet property="menuButton" destination="oRK-mL-fxo" id="Nf9-Jv-P3y"/>
                         <outlet property="quitButton" destination="LG7-7X-S58" id="1ze-x0-Wmo"/>
+                        <segue destination="jdQ-KL-q4t" kind="show" identifier="showPhoto" id="4Kc-MI-nSg"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5f4-ta-nE5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3800,6 +3806,49 @@
             </objects>
             <point key="canvasLocation" x="8058" y="-1570"/>
         </scene>
+        <!--Actes View Controller-->
+        <scene sceneID="nHv-sd-Iq6">
+            <objects>
+                <viewController id="25K-iS-9Ym" customClass="ActesViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tK7-NZ-YX4"/>
+                        <viewControllerLayoutGuide type="bottom" id="U1k-tJ-QEy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PvH-5n-14P">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9A7-ZC-Pg0">
+                                <rect key="frame" x="0.0" y="64" width="768" height="450"/>
+                                <connections>
+                                    <segue destination="7TV-JF-b3R" kind="embed" id="G8X-BQ-14K"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gLJ-kZ-fSa">
+                                <rect key="frame" x="0.0" y="522" width="768" height="453"/>
+                                <connections>
+                                    <segue destination="0as-tz-I6U" kind="embed" id="KlB-s5-dEi"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="U1k-tJ-QEy" firstAttribute="top" secondItem="gLJ-kZ-fSa" secondAttribute="bottom" id="27u-Gt-qbt"/>
+                            <constraint firstItem="9A7-ZC-Pg0" firstAttribute="top" secondItem="tK7-NZ-YX4" secondAttribute="bottom" id="7c8-f2-N5d"/>
+                            <constraint firstItem="9A7-ZC-Pg0" firstAttribute="height" secondItem="gLJ-kZ-fSa" secondAttribute="height" id="BIW-Ww-JMl"/>
+                            <constraint firstItem="gLJ-kZ-fSa" firstAttribute="top" secondItem="9A7-ZC-Pg0" secondAttribute="bottom" constant="8" id="E3S-3Y-Pgo"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="gLJ-kZ-fSa" secondAttribute="trailing" constant="-20" id="N3G-ZE-BIp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9A7-ZC-Pg0" secondAttribute="trailing" constant="-20" id="Ro3-Be-W9D"/>
+                            <constraint firstItem="gLJ-kZ-fSa" firstAttribute="leading" secondItem="PvH-5n-14P" secondAttribute="leadingMargin" constant="-20" id="kxe-5i-Flo"/>
+                            <constraint firstItem="9A7-ZC-Pg0" firstAttribute="leading" secondItem="PvH-5n-14P" secondAttribute="leadingMargin" constant="-20" id="sSm-QC-uSX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="mG5-NG-Fu6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LRE-Of-Jpi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5315" y="1824"/>
+        </scene>
         <!--Saisie des actes-->
         <scene sceneID="qOA-TY-GXf">
             <objects>
@@ -3810,7 +3859,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="7TV-JF-b3R" kind="relationship" relationship="rootViewController" id="yew-LE-Fs7"/>
+                        <segue destination="25K-iS-9Ym" kind="relationship" relationship="rootViewController" id="cGL-Ae-68u"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ssq-E3-eOz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3822,7 +3871,7 @@
             <objects>
                 <collectionViewController id="7TV-JF-b3R" customClass="SchemaDentaireCollectionViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Wud-QD-66K">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="450"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KZ5-7s-Tgi">
@@ -3833,7 +3882,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="dent" id="vOg-Dx-Chl" customClass="DentCollectionViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="138" height="160"/>
+                                <rect key="frame" x="0.0" y="0.0" width="138" height="160"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="138" height="160"/>
@@ -3865,7 +3914,97 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8e9-Iz-PDM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5272" y="1836"/>
+            <point key="canvasLocation" x="6235" y="1617"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="hrl-aG-fY5">
+            <objects>
+                <tableViewController id="6Rb-oF-yCz" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Zen-so-Chd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="x6x-d3-5MC">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x6x-d3-5MC" id="4q6-6l-bBy">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="6Rb-oF-yCz" id="Khq-aa-FHf"/>
+                            <outlet property="delegate" destination="6Rb-oF-yCz" id="HOh-Gp-07m"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ivY-43-WKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7377" y="1612"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="UH1-wu-130">
+            <objects>
+                <tableViewController id="0as-tz-I6U" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Xt1-QZ-y4N">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="453"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4Fb-hl-YUz">
+                                <rect key="frame" x="0.0" y="28" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Fb-hl-YUz" id="7EM-9o-CCd">
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="0as-tz-I6U" id="GTM-tx-CC1"/>
+                            <outlet property="delegate" destination="0as-tz-I6U" id="J8m-tC-Hao"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XNB-of-g2I" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6253" y="2376"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Syv-S4-OFl">
+            <objects>
+                <viewController id="COd-gB-LM1" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UPw-wh-1FZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="JCC-NE-O9m"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oSL-8K-DL7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZqO-Ys-gmc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="qGp-I1-o6e">
+            <objects>
+                <viewController id="2r1-A4-ohn" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LJL-GQ-LnM"/>
+                        <viewControllerLayoutGuide type="bottom" id="kEC-oW-2Av"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aPo-bG-Ef5">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A19-ep-dHh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>
@@ -3886,17 +4025,17 @@
         <image name="sprite" width="358" height="97"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MzT-nn-WfD"/>
-        <segue reference="TU0-6x-Nhk"/>
-        <segue reference="oMe-Bn-8zd"/>
-        <segue reference="Sn1-RJ-eCl"/>
-        <segue reference="S9w-Xb-Wct"/>
-        <segue reference="FXl-zY-lY1"/>
-        <segue reference="byl-F1-bni"/>
         <segue reference="ag7-0m-i7w"/>
         <segue reference="Z3m-s3-r4a"/>
         <segue reference="OwY-50-vF7"/>
         <segue reference="UJT-p9-mw4"/>
         <segue reference="Zdl-Va-N9p"/>
+        <segue reference="S9w-Xb-Wct"/>
+        <segue reference="TU0-6x-Nhk"/>
+        <segue reference="oMe-Bn-8zd"/>
+        <segue reference="Sn1-RJ-eCl"/>
+        <segue reference="MzT-nn-WfD"/>
+        <segue reference="4Kc-MI-nSg"/>
+        <segue reference="YVp-aa-e6I"/>
     </inferredMetricsTieBreakers>
 </document>

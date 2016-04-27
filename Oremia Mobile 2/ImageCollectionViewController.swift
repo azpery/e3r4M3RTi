@@ -16,10 +16,11 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     var nb = 0
     var idRadio:NSArray?
     var dateCrea:NSArray?
+    var refreshControl:UIRefreshControl?
     var patient:patients?
     let scl = SCLAlertView()
     var selectedPhoto:UIImage?
-    var imageCache = [UIImage]()
+    var imageCache = [Int:UIImage]()
     var activityIndicator = DTIActivityIndicatorView()
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -27,6 +28,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet var cv: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         api=APIController(delegate: self)
@@ -53,6 +55,13 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
         quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
         api!.sendRequest("select id from images where idpatient=\(patient!.id)")
+        
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.collectionView?.addSubview(self.refreshControl!)
+        self.collectionView?.alwaysBounceVertical = true
+        
         
     }
     func quit(sender: UIBarButtonItem){
@@ -95,7 +104,6 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        imageCache = []
         return nb
     }
     
@@ -129,9 +137,9 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
                     progressIndicatorView.removeFromSuperview()
                 }
                 if image == nil {
-                    self!.imageCache.append(UIImage(named: "glyphicons_003_user")!)
+                    self!.imageCache[indexPath.row] = UIImage(named: "glyphicons_003_user")!
                 } else {
-                    self!.imageCache.append(image)
+                    self!.imageCache[indexPath.row] = image
                 }
                 
         }
@@ -172,6 +180,11 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
                 self.activityIndicator.stopActivity()
                 self.activityIndicator.removeFromSuperview()
                 self.collectionView?.reloadData()
+                if let a = self.refreshControl {
+                    if a.refreshing {
+                        a.endRefreshing()
+                    }
+                }
                 
             }
             if(type == 3){
@@ -186,11 +199,17 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
     }
+    
+    func handleRefresh(refreshControl:UIRefreshControl){
+        api!.sendRequest("select id from images where idpatient=\(patient!.id)")
+        
+    }
+    
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
         let cell:RadioCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! RadioCollectionViewCell
             self.selectedPhoto = cell.imageView.image
             
-//            self.performSegueWithIdentifier("unWind", sender: self)
+            self.performSegueWithIdentifier("showPhoto", sender: self)
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.destinationViewController.isKindOfClass(EtatCivilNavigationViewController) && self.cv.indexPathsForSelectedItems()!.count != 0 ){
@@ -202,8 +221,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         }
         if segue.destinationViewController.isKindOfClass(CarousselViewController){
             let fullScreenView: CarousselViewController = segue.destinationViewController as! CarousselViewController
-            fullScreenView.imageCache = []
-            fullScreenView.imageCache = self.imageCache
+            fullScreenView.imageCache = [self.selectedPhoto!]
         }
     }
     

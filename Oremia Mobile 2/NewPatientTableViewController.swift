@@ -107,22 +107,21 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
     func didReceiveAPIResults(results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
         dispatch_async(dispatch_get_main_queue(), {
-            if resultsArr.count != 0 && resultsArr[0].count  == 0  {
+            if resultsArr.count != 0   {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
                 alert.showSuccess("Patient ajouté", subTitle: "Le nouveau patient a été ajouté avec succès.")
-                    self.parent!.tracks = []
-                    self.parent!.api.sendRequest("select * from patients where idpraticien=\(preference.idUser) ORDER BY id DESC LIMIT 10 OFFSET 0 ")
-                    self.dismissViewControllerAnimated(true, completion: {})
-
+                self.parent!.tracks = []
+                self.parent!.api.sendRequest("select * from patients where idpraticien=\(preference.idUser) ORDER BY id DESC LIMIT 10 OFFSET 0 ")
+                self.dismissViewControllerAnimated(true, completion: {})
                 
             } else {
                 if !self.fromCal{
-                let alert = SCLAlertView()
-                alert.showCloseButton = false
-                alert.addButton("Ok", action:{})
-                alert.showError("Erreur", subTitle: "Une erreur a survenu lors de l'ajout de . \n Veuillez vérifié les champs rentrés")
+                    let alert = SCLAlertView()
+                    alert.showCloseButton = false
+                    alert.addButton("Ok", action:{})
+                    alert.showError("Erreur", subTitle: "Une erreur a survenu lors de l'ajout de . \n Veuillez vérifié les champs rentrés")
                 }else {
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateFormat = "dd/M/yyyy"
@@ -148,5 +147,5 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
     }
-
+    
 }

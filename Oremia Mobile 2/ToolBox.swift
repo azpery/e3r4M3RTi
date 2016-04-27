@@ -28,4 +28,18 @@ import Foundation
         
         view.layer.addAnimation( anim, forKey:nil )
     }
+    static func getFormatedDate(date:NSDate)->String{
+    
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+        
+        let year =  components.year
+        let month = components.month
+        let day = components.day
+        
+        print(year)
+        print(month)
+        print(day)
+        return "\(year)-\(month)-\(day)"
+    }
 }

@@ -457,7 +457,7 @@ import EventKit
         NSLog("")
     }
     func handleError(results: Int) {
-        api.getCalDavRessources()
+//        api.getCalDavRessources()
         
     }
 }

@@ -76,20 +76,33 @@ class Chart :  NSObject, APIControllerProtocol{
             layer = "-\(layer)"
         }
         if indexPath <= 7 {
+            
             indexPath = 18 - indexPath
-            imageView.image = UIImage(named: "\(indexPath)\(layer)")!
+            if let image = UIImage(named: "\(indexPath)\(layer)"){
+                imageView.image = image
+            } else {
+                imageView.image = UIImage(named: "\(indexPath)")
+            }
         }else if indexPath > 7 && indexPath <= 15 {
             indexPath = 3 + indexPath
-            imageView.image = UIImage(named: "\(indexPath)\(layer)")!
+            if let image = UIImage(named: "\(indexPath)\(layer)"){
+                imageView.image = image
+            } else {
+                imageView.image = UIImage(named: "\(indexPath)")
+            }
             imageView.transform = CGAffineTransformMakeScale(-1, 1)
         }else if indexPath > 15 && indexPath <= 23 {
             indexPath = 64 - indexPath
-            imageView.image = UIImage(named: "\(indexPath)\(layer)")!
         }else if indexPath > 23  {
             indexPath = 17 + indexPath
-            imageView.image = UIImage(named: "\(indexPath)\(layer)")!
+            if let image = UIImage(named: "\(indexPath)\(layer)"){
+                imageView.image = image
+            } else {
+                imageView.image = UIImage(named: "\(indexPath)")
+            }
             imageView.transform = CGAffineTransformMakeScale(-1, 1)
         }
+        
     }
     
     func layerFromIndexPath(indexPath:Int)->String{

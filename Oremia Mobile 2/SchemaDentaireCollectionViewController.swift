@@ -15,10 +15,11 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     var cellHeight:CGFloat = 0
     var patient:patients?
     var chart:Chart?
+    var sourceViewTabBar:UITabBarController?
+    var sourceViewNavigationBar:UINavigationController?
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tb : TabBarViewController = self.tabBarController as! TabBarViewController
-        patient = tb.patient!
+        
         self.chart = Chart(idpatient: patient!.id, callback: self.collectionView!.reloadData)
         
         // Register cell classes
@@ -26,7 +27,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         
         //set cell width and height
         cellWidth = self.view.frame.width/16
-        cellHeight = (self.view.frame.height - (self.tabBarController?.tabBar.frame.height)! - (self.navigationController?.navigationBar.frame.height)!)/2
+        cellHeight = (self.view.frame.height - (sourceViewTabBar?.tabBar.frame.height)! - (sourceViewNavigationBar?.navigationBar.frame.height)!)/2
         
     }
 
@@ -57,40 +58,22 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
-        var i = indexPath.row
-        var image = UIImage()
-        cell.contentMode = .ScaleAspectFit
-        var layer = (chart?.layerFromIndexPath(i))!
+        let i = indexPath.row
+        cell.dentLayout.contentMode = .ScaleAspectFit
+        let layer = (chart?.layerFromIndexPath(i))!
         chart?.imageFromIndexPath(i, layer: layer, imageView: cell.dentLayout)
-//        if i <= 7 {
-//            i = 18 - i
-//            image = UIImage(named: "\(i)")!
-//            cell.dentLayout.image = image
-//        }else if i > 7 && i <= 15 {
-//            i = 3 + i
-//            image = UIImage(named: "\(i)")!
-//            cell.dentLayout.image = image
-//            cell.dentLayout.transform = CGAffineTransformMakeScale(-1, 1)
-//        }else if i > 15 && i <= 23 {
-//            i = 64 - i
-//            image = UIImage(named: "\(i)")!
-//            cell.dentLayout.image = image
-//        }else if i > 23  {
-//            i = 17 + i
-//            image = UIImage(named: "\(i)")!
-//            cell.dentLayout.image = image
-//            cell.dentLayout.transform = CGAffineTransformMakeScale(-1, 1)
-//
-//        }
-//        cell.frame.size  = CGSize(width: cellWidth, height: cellHeight)
-//        cell.dentLayout.frame.size = CGSize(width: cellWidth, height: cellHeight)
-//        cell.backgroundColor = UIColor.blackColor()
+
 
         return cell
     }
     func collectionView(collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-            
-            return CGSize(width: cellWidth, height: cellHeight)
+        let row  = chart?.localisationFromIndexPath(indexPath.row)
+        if( row >= 16 && row <= 18 || row >= 26 && row <= 28 || row >= 46 && row <= 48 || row >= 36 && row <= 38 ){
+            return CGSize(width: cellWidth*(6.7/6), height: cellHeight)
+        } else {
+            return CGSize(width: cellWidth*(5.3/6), height: cellHeight)
+
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -115,6 +98,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+
         return true
     }
 

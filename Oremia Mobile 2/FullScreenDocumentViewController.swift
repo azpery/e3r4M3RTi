@@ -26,9 +26,9 @@ class FullScreenDocumentViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSURLCache.sharedURLCache().removeAllCachedResponses()
-        NSURLCache.sharedURLCache().diskCapacity = 0
-        NSURLCache.sharedURLCache().memoryCapacity = 0
+//        NSURLCache.sharedURLCache().removeAllCachedResponses()
+//        NSURLCache.sharedURLCache().diskCapacity = 0
+//        NSURLCache.sharedURLCache().memoryCapacity = 0
         if isNew {
             leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/?idPrat=\(preference.idUser)&&idPatient=\(patient!.id)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
             print(leDocument)
