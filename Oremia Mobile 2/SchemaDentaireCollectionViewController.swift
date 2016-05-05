@@ -17,25 +17,40 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     var chart:Chart?
     var sourceViewTabBar:UITabBarController?
     var sourceViewNavigationBar:UINavigationController?
+    var actesController:ActesViewController?
+    var selectedCell:Int?
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.chart = Chart(idpatient: patient!.id, callback: self.collectionView!.reloadData)
-        
+        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         // Register cell classes
 //        self.collectionView!.registerClass(DentCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         //set cell width and height
-        cellWidth = self.view.frame.width/16
-        cellHeight = (self.view.frame.height - (sourceViewTabBar?.tabBar.frame.height)! - (sourceViewNavigationBar?.navigationBar.frame.height)!)/2
+        self.view.layoutIfNeeded()
+        cellWidth = self.view.bounds.size.width/16
+        cellHeight = (self.view.bounds.size.height )/2
         
+    }
+    override func viewDidAppear(animated: Bool) {
+        self.view.layoutIfNeeded()
+        cellWidth = self.view.bounds.size.width/16
+        cellHeight = (self.view.bounds.size.height )/2
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    override func viewDidLayoutSubviews() {
+        let bottomOffset = CGPointMake(0, self.collectionView!.contentSize.height - self.collectionView!.bounds.size.height);
+        self.collectionView!.contentOffset = bottomOffset
+        self.view.layoutIfNeeded()
+        cellWidth = self.view.bounds.size.width/16
+        cellHeight = (self.view.bounds.size.height )/2
+    }
     /*
     // MARK: - Navigation
 
@@ -59,11 +74,16 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
         let i = indexPath.row
+//        let recipe = UIImageView(frame: cell.dentLayout.frame)
+//        recipe.contentMode = .ScaleAspectFit
+//        cell.clipsToBounds = true
+//        cell.addSubview(recipe)
         cell.dentLayout.contentMode = .ScaleAspectFit
+        cell.dentLayout.clipsToBounds = true
         let layer = (chart?.layerFromIndexPath(i))!
-        chart?.imageFromIndexPath(i, layer: layer, imageView: cell.dentLayout)
-
-
+        chart?.imagesFromIndexPath(i, layer: layer, cell: cell)
+        cell.setNeedsLayout() //invalidate current layout
+        cell.layoutIfNeeded()
         return cell
     }
     func collectionView(collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -98,7 +118,10 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-
+        let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
+        cell.dentLayout.backgroundColor = UIColor.blueColor()
+        print("Dent n°\(chart?.localisationFromIndexPath(indexPath.row)) sélectionné ")
+        self.selectedCell = chart?.localisationFromIndexPath(indexPath.row)
         return true
     }
 

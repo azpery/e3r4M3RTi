@@ -9,13 +9,22 @@
 import UIKit
 
 class ActesViewController: UIViewController {
-
+    var schemaDentController:SchemaDentaireCollectionViewController?
+    var saisieActesController:SaisieActesTableViewController?
+    var listeActesController:ListeActesTableViewController?
+    let scl = SCLAlertView()
+    var activityIndicator = DTIActivityIndicatorView()
+    var finished = 0
+    @IBOutlet var leftPanel: UIView!
+    @IBOutlet var bottomPanel: UIView!
+    @IBOutlet var rightPanel: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
+        activityIndicator.startActivity()
+        
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -29,6 +38,21 @@ class ActesViewController: UIViewController {
             destinationView.patient = tb.patient!
             destinationView.sourceViewNavigationBar = self.navigationController
             destinationView.sourceViewTabBar = self.tabBarController
+            destinationView.actesController = self
+            self.schemaDentController = destinationView
+        }else
+        if segue.destinationViewController.isKindOfClass(SaisieActesTableViewController){
+            let destinationView: SaisieActesTableViewController = segue.destinationViewController as! SaisieActesTableViewController
+            let tb : TabBarViewController = self.tabBarController as! TabBarViewController
+            destinationView.patient = tb.patient!
+            destinationView.actesController = self
+            self.saisieActesController = destinationView
+        }else if segue.destinationViewController.isKindOfClass(ListeActesTableViewController){
+            let destinationView: ListeActesTableViewController = segue.destinationViewController as! ListeActesTableViewController
+            let tb : TabBarViewController = self.tabBarController as! TabBarViewController
+            destinationView.patient = tb.patient!
+            destinationView.actesController = self
+            self.listeActesController = destinationView
         }
     }
             

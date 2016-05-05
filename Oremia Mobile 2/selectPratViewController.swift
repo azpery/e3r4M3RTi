@@ -20,6 +20,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     var praticiens = [Praticien]()
     var mdp:String?
     var selectedPrat:Praticien?
+    var timer = NSTimer()
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -34,13 +35,21 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         
         UINavigationBar.appearance().barTintColor = UIColor.whiteColor()
         UINavigationBar.appearance().tintColor = UIColor.blackColor()
+        
+        api!.pingServer()
+        timer.invalidate() // just in case this button is tapped multiple times
+        
+        // start the timer
+        
+        
+        
     }
     override func viewDidAppear(animated: Bool) {
-            api!.selectpraticien()
-            //api!.sendRequest("select id,nom,prenom from praticiens")
-            btnConnexion.addTarget(self, action: "clicked", forControlEvents: UIControlEvents.TouchUpInside)
         
-
+        //api!.sendRequest("select id,nom,prenom from praticiens")
+        btnConnexion.addTarget(self, action: "clicked", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        
         
     }
     override func viewWillDisappear(animated: Bool) {
@@ -57,7 +66,8 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     }
     @IBAction func unwindToMainMenu(segue: UIStoryboardSegue) {
         displayLoad()
-//        api!.selectpraticien()
+        //        api!.selectpraticien()
+        api?.pingServer()
         
         //api!.sendRequest("select id,nom,prenom from praticiens")
     }
@@ -164,96 +174,153 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         scrollView.contentSize = CGSize(width: pagesScrollViewSize.width * CGFloat(self.praticiens.count),
             height: pagesScrollViewSize.height)
     }
-    func didReceiveAPIResults(results: NSDictionary) {
-        let resultsArr: NSArray = results["results"] as! NSArray
-        var type = 1
-        var nb:Int?
-        for value in resultsArr{
-            if value.objectForKey("correct") !=  nil{
-                type = 0
-                nb = value["correct"] as? Int
-            }
-            if value.objectForKey("connexionBegin") !=  nil{
-                preference.idUser = self.selectedPrat!.id
-                preference.nomUser = self.selectedPrat!.nom
-                preference.prenomUser = self.selectedPrat!.prenom
-                preference.password = self.mdp!
-                connexionString.login = "zm\(self.selectedPrat!.id)"
-                connexionString.pw=self.mdp!
-                self.performSegueWithIdentifier("connectionGranted", sender:self)
-            }
-            if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
-                type = 2
-            }
+    
+    func showActivityLoader(){
+        self.timer.invalidate()
+        SwiftSpinner.show("Mise à jour des fichiers...")
+        SwiftSpinner.showWithDelay(15.0, title: "Nous mettons à jour les fichiers sur le poste serveur.")
+    }
+    func pingResult(success:NSNumber){
+        if(success.boolValue){
+            api!.checkFileUpdate()
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "showActivityLoader", userInfo: nil, repeats: true)
+        }else {
+            self.handleError(1)
         }
-        if type == 0{
-            if nb > 0{
-                dispatch_async(dispatch_get_main_queue(), {
+    }
+    
+    func didReceiveAPIResults(results: NSDictionary) {
+        self.timer.invalidate()
+        if let resultsArr: NSArray = results["results"] as? NSArray {
+            var type = 1
+            var nb:Int?
+            for value in resultsArr{
+                if value.objectForKey("correct") !=  nil{
+                    type = 0
+                    nb = value["correct"] as? Int
+                }
+                if value.objectForKey("connexionBegin") !=  nil{
                     preference.idUser = self.selectedPrat!.id
                     preference.nomUser = self.selectedPrat!.nom
                     preference.prenomUser = self.selectedPrat!.prenom
                     preference.password = self.mdp!
                     connexionString.login = "zm\(self.selectedPrat!.id)"
                     connexionString.pw=self.mdp!
-                    self.api!.setConnexion()
+                    self.performSegueWithIdentifier("connectionGranted", sender:self)
+                }
+                if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
+                    type = 2
+                }
+            }
+            if type == 0{
+                if nb > 0{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        preference.idUser = self.selectedPrat!.id
+                        preference.nomUser = self.selectedPrat!.nom
+                        preference.prenomUser = self.selectedPrat!.prenom
+                        preference.password = self.mdp!
+                        connexionString.login = "zm\(self.selectedPrat!.id)"
+                        connexionString.pw=self.mdp!
+                        self.api!.setConnexion()
+                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    })
+                }
+            }else if type == 2{
+                dispatch_async(dispatch_get_main_queue(), {
+                    let alert = SCLAlertView()
                     UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    
+                    alert.showError("Mot de passe incorrect", subTitle: "Mot de passe incorrect ou inexistant, veuillez resaisir vos identifiants", closeButtonTitle:"Fermer")
+                })
+                
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.praticiens = Praticien.praticienWithJSON(resultsArr)
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    self.initScroll()
+                    self.loadVisiblePages()
+                    self.btnConnexion.hidden = false
+                    self.password.hidden = false
                 })
             }
-        }else if type == 2{
+        } else if let resultsArr: String = results["results"] as? String {
             dispatch_async(dispatch_get_main_queue(), {
-                let alert = SCLAlertView()
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                
-                alert.showError("Mot de passe incorrect", subTitle: "Mot de passe incorrect ou inexistant, veuillez resaisir vos identifiants", closeButtonTitle:"Fermer")
-            })
-            
-        } else {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.praticiens = Praticien.praticienWithJSON(resultsArr)
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                self.initScroll()
-                self.loadVisiblePages()
-                self.btnConnexion.hidden = false
-                self.password.hidden = false
+                self.timer.invalidate()
+                if resultsArr == "AJ" {
+                    SwiftSpinner.hide()
+                    self.api!.selectpraticien()
+                }else if resultsArr == "3"{
+                    SwiftSpinner.hide()
+                    let alert = SCLAlertView()
+                    alert.showCloseButton = false
+                    alert.addButton("Lancer la démonstration"){
+                        preference.ipServer = "77.153.245.34"
+                        self.api!.selectpraticien()
+                    }
+                    alert.addButton("Besoin d'aide?") {
+                        let help = HelpButton()
+                        help.caller = self
+                        help.triggerPopOver()
+                    }
+                    alert.showError("Erreur serveur", subTitle: "Veuillez contacter le service technique. \nLe serveur n'a pas les droits suffisant pour mettre à jour les fichiers.\nVeuillez nous excuser mais il est nécessaire d'effectuer une opération sur votre poste serveur.")
+                    
+                }else{
+                    self.timer.invalidate()
+                    SwiftSpinner.show("Mise à jour effectuée", animated: false).addTapHandler({
+                        self.api?.selectpraticien()
+                        SwiftSpinner.hide()
+                        }, subtitle: "Taper n'importe où pour continuer")
+                }
             })
         }
     }
     func handleError(results: Int) {
         dispatch_async(dispatch_get_main_queue(), {
+            SwiftSpinner.hide()
+            self.timer.invalidate()
             switch results {
             case 1 :
-                    //            SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer", duration: 800)
-                    self.praticiens.removeAll(keepCapacity: false)
-                    self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: ""))
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                    let alert = SCLAlertView()
-                    let txt = alert.addTextField(preference.ipServer)
-                    alert.showCloseButton = false
-                    alert.addButton("Valider") {
-                        self.displayLoad()
-                        print("Text value: \(txt.text)")
-                        preference.ipServer=txt.text!
-                        self.api!.updateServerAdress(txt.text!)
-                        self.api!.selectpraticien()
-                    }
-                    alert.addButton("Lancer la démonstration"){
-                        preference.ipServer = "77.153.245.34"
-                        self.api!.selectpraticien()
-                    }
-                    alert.showError("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
-                    self.initScroll()
-                    self.loadVisiblePages()
+                
+                //            SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer", duration: 800)
+                self.praticiens.removeAll(keepCapacity: false)
+                self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: ""))
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                let alert = SCLAlertView()
+                let txt = alert.addTextField(preference.ipServer)
+                alert.showCloseButton = false
+                alert.addButton("Valider") {
+                    self.displayLoad()
+                    print("Text value: \(txt.text)")
+                    preference.ipServer=txt.text!
+                    self.api!.updateServerAdress(txt.text!)
+                    self.api!.pingServer()
+//                    self.api!.selectpraticien()
+                }
+                alert.addButton("Lancer la démonstration"){
+                    preference.ipServer = "77.153.245.34"
+                    self.api!.selectpraticien()
+                }
+                alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
+                self.initScroll()
+                self.loadVisiblePages()
             case 2 :
-                    self.praticiens.removeAll(keepCapacity: false)
-                    self.praticiens.append(Praticien(id: 0, nom:"Fichier(s) manquant", prenom: ""))
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                    self.initScroll()
-                    self.loadVisiblePages()
-                    self.scrollView.reloadInputViews()
+                self.praticiens.removeAll(keepCapacity: false)
+                self.praticiens.append(Praticien(id: 0, nom:"Fichier(s) manquant(s)", prenom: ""))
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                self.initScroll()
+                self.loadVisiblePages()
+                self.scrollView.reloadInputViews()
             default :
-                    print("exception non gérée")
+                print("exception non gérée")
                 
             }
         })
+    }
+    func delay(seconds seconds: Double, completion:()->()) {
+        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))
+        
+        dispatch_after(popTime, dispatch_get_main_queue()) {
+            completion()
+        }
     }
 }

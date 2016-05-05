@@ -12,11 +12,21 @@ import Foundation
     var delegate: APIControllerProtocol?
     var context: AnyObject?
     var itunesSearchTerm: String?
+    var canStartPinging = false
+
     init(delegate: APIControllerProtocol) {
         self.delegate = delegate
     }
     override init() {
         
+    }
+    func getIniFile(type: String) {
+            let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=14"
+            get(urlPath, searchString: "query=\(type)")
+    }
+    func checkFileUpdate() {
+        let urlPath = "http://\(preference.ipServer)/scripts/updater.php"
+        get(urlPath, searchString: "query='')")
     }
     func sendRequest(searchString: String) {
         self.itunesSearchTerm = searchString.stringByReplacingOccurrencesOfString(" ", withString: "+", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
@@ -45,7 +55,7 @@ import Foundation
     }
     func selectpraticien() {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=2"
-        get(urlPath, searchString: "query=select id,nom,prenom from praticiens&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
+        get(urlPath, searchString: "query=select id,nom,prenom from praticiens&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw) order by id")
     }
     func sendInsert(searchString: String) {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"
@@ -58,9 +68,15 @@ import Foundation
     func lookupAlbum(collectionId: Int) {
         sendRequest("select * from patients")
     }
+    func pingServer(){
+        let url = "\(preference.ipServer)"
+        SimplePingHelper.ping(url, target: self.delegate, sel: "pingResult:")
+    }
+
     func get(path: String, searchString:String) {
         if let url = NSURL(string: path) {
-            let request = NSMutableURLRequest(URL: url)
+            
+            let request = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData, timeoutInterval: 3600)
             request.HTTPMethod = "POST"
             let postString = searchString
             let postLength:NSString = String( postString.characters.count )
@@ -93,16 +109,25 @@ import Foundation
                                 self.delegate!.handleError(1)
                             }
                         }
-                    } else {
+                    } else if httpResponse.statusCode == 404{
+                        self.delegate!.handleError(1)
+                    }else if httpResponse.statusCode == 406{
+                        self.delegate!.handleError(2)
+                    }else if httpResponse.statusCode == 502{
+                        self.delegate!.didReceiveAPIResults(["results":"Success"])
+                    }else {
+                        
                         dispatch_async(dispatch_get_main_queue(), {
                             if let vc = UIApplication.topViewController(){
                                 let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Requête :\(searchString).\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste. \n Erreur \(httpResponse.statusCode)", preferredStyle: UIAlertControllerStyle.Alert)
                                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
                                 vc.presentViewController(alert, animated: true, completion: nil)
-                                self.delegate!.handleError(2)
+                                
                             }
                         })
                     }
+                }else  {
+                    self.delegate!.handleError(1)
                 }
             })
             task.resume()
@@ -110,6 +135,7 @@ import Foundation
             delegate!.handleError(1)
         }
     }
+
     func insert(path:String, searchString:String){
         if let url = NSURL(string: path) {
             let request = NSMutableURLRequest(URL: url)
@@ -315,7 +341,6 @@ import Foundation
         let destinationUrl = documentsUrl.URLByAppendingPathComponent("\(nom)[\(id)].\(fileType)")
          if let dataFromURL = NSData(contentsOfURL: url){
             if dataFromURL.writeToURL(destinationUrl, atomically: true) {
-                print("file saved [\(destinationUrl.path!)]")
                 completion(path: destinationUrl.path!, error:nil)
             } else {
                 print("error saving file")
@@ -328,6 +353,9 @@ import Foundation
         }
         return destinationUrl
     }
+    
+
+
 }
 
 

@@ -260,7 +260,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
             fileType = "doc"
         }
         let doc = api!.getUrlFromDocument(idr)
-        let path = APIController.loadFileSync(doc,fileType: fileType, nom: nom, id: idr, completion:{(path:String, error:NSError!) in print("pdf downloaded to: \(path)")})
+        let path = APIController.loadFileSync(doc,fileType: fileType, nom: nom, id: idr, completion:{(path:String, error:NSError!) in })
         return path
     }
 
