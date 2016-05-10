@@ -148,7 +148,7 @@ import EventKit
                     
                     var calendarsArray: [EKCalendar]
                     calendarsArray = [k]
-                    let yearSeconds: Double = 365 * (60 * 60 * 24)
+                    let yearSeconds: Double = 7 * (60 * 60 * 24)
                     let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSinceNow: -yearSeconds), endDate: NSDate(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
                     var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
                     
@@ -187,7 +187,7 @@ import EventKit
             for k in calendars! {
                 var calendarsArray: [EKCalendar]
                 calendarsArray = [k]
-                let yearSeconds: Double = 365 * (60 * 60 * 24)
+                let yearSeconds: Double = 30 * (60 * 60 * 24)
                 let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSinceNow: -yearSeconds), endDate: NSDate(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
                 var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
                 for var i = 0; i < eventsArray.count; i++ {
@@ -212,7 +212,7 @@ import EventKit
         let component = NSDateComponents()
         var aujDefault:EKEvent
         var laDate:NSDate
-        for var i:Int = -180; i<180; i++ {
+        for var i:Int = -20; i<20; i++ {
             aujDefault = EKEvent(eventStore: eventStore)
             aujDefault.title = "Ceci est une erreur"
             component.day = i
@@ -233,8 +233,8 @@ import EventKit
             for k in calendars! {
                 var calendarsArray: [EKCalendar]
                 calendarsArray = [k]
-                let yearSeconds: Double = 365 * (60 * 60 * 24)
-                let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSinceNow: -yearSeconds), endDate: NSDate(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
+                let yearSeconds: Double = 15 * (60 * 60 * 24)
+                let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(date.dateByAddingTimeInterval( -yearSeconds), endDate: date.dateByAddingTimeInterval(yearSeconds), calendars: calendarsArray)
                 var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
                 for var i = 0; i < eventsArray.count; i++ {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
@@ -258,7 +258,7 @@ import EventKit
         let component = NSDateComponents()
         var aujDefault:EKEvent
         var laDate:NSDate
-        for var i:Int = -180; i<180; i++ {
+        for var i:Int = -20; i<20; i++ {
             aujDefault = EKEvent(eventStore: eventStore)
             aujDefault.title = "Ceci est une erreur"
             component.day = i
@@ -268,6 +268,7 @@ import EventKit
             uniqueEventsArray.append(aujDefault)
         }
         uniqueEventsArray = uniqueEventsArray.sort{ $0.compareStartDateWithEvent($1) == .OrderedAscending }
+        EventManager.allEvents = uniqueEventsArray
         return uniqueEventsArray
     }
     func sortEventsByDay(uniqueEventsArray: [EKEvent]) -> NSArray {
@@ -324,7 +325,7 @@ import EventKit
         self.internalEvent.insertEvent()
         return vretour
     }
-    func editEvent(title:String, startDate:NSDate, endDate:NSDate, notes:String, reminder:Bool ) -> Bool {
+    func editEvent(title:String, startDate:NSDate, endDate:NSDate, notes:String, reminder:Bool, initialDate:NSDate?) -> Bool {
         var vretour = false
         if editEvent != nil {
             let mabite = editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
@@ -350,7 +351,7 @@ import EventKit
                         let ressources = CalDavRessource?[mabite[1]] as? String
                         if ressources != nil || editEvent?.calendar.source.title != "iCloud"{
                             try eventStore.saveEvent(editEvent!, span: EKSpan.ThisEvent, commit: true)
-                            internalEvent.updateCalDavEvent(mabite[1])
+                            internalEvent.updateCalDavEvent(mabite[1], initialDate: initialDate)
                             self.loadCalendars()
                         } else {
                             try eventStore.saveEvent(editEvent!, span: EKSpan.ThisEvent, commit: true)

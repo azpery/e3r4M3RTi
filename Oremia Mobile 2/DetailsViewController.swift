@@ -66,7 +66,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         self.searchDisplayController?.searchBar.showsSearchResultsButton = false
         let test = HelpButton()
         test.showButton(self)
-            }
+    }
     
     override func viewDidAppear(animated: Bool) {
         if (self.searchDisplayController!.active){
@@ -121,14 +121,14 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images_preview+where+id=\(track.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
         dispatch_async(dispatch_get_main_queue(), {
             cell.avatar.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
-            (receivedSize, expectedSize) -> Void in
-            }) {
-                (image, error, _, _) -> Void in
-                cell.avatar.image = image
-                track.photo = image
-                        }
-            })
-
+                (receivedSize, expectedSize) -> Void in
+                }) {
+                    (image, error, _, _) -> Void in
+                    cell.avatar.image = image
+                    track.photo = image
+            }
+        })
+        
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -160,17 +160,17 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true;
         self.tracksTableView.reloadData()
-
+        
     }
     func searchBarTextDidEndEditing(searchBar: UISearchBar) {
         searchActive = false;
         self.tracksTableView.reloadData()
     }
     
-//    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-//        searchActive = false;
-//        self.tracksTableView.reloadData()
-//    }
+    //    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    //        searchActive = false;
+    //        self.tracksTableView.reloadData()
+    //    }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchActive = true;

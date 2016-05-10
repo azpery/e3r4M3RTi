@@ -26,7 +26,7 @@ class PrestationActe:Prestation{
                     let lettreCle = value["LettreCle"] as? String ?? ""
                     let coefficientEnft = Int(value["CoefficientEnft"] as? String ?? "0") ?? 0
                     let image = value["Image"] as? String ?? ""
-                    let montant = value["Montant"] as? String ?? ""
+                    let montant = value["Montant"] as? String ?? "0,00"
                     let numDent = Int(value["NumDent"] as? String ?? "0") ?? 0
                     let dateActe = value["dateActe"] as? String ?? "0/0/0"
                     let newPrest = PrestationActe(nom: nom, coefficient: coefficient, description: description, lettreCle: lettreCle, coefficientEnft: coefficientEnft, image: image, montant: montant, numDent: numDent, dateActe: dateActe)

@@ -122,14 +122,14 @@ import EventKit
 //            print("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
         }
     }
-    func updateCalDavEvent(uid:String) {
+    func updateCalDavEvent(uid:String, initialDate:NSDate?) {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd'T'HHmmss"
         let dtstart = dateFormatter.stringFromDate((event?.startDate)!)
         let dtend = dateFormatter.stringFromDate((event?.endDate)!)
         let summary = event?.title
         self.updateStatut()
-        api.setCalDavRessources(uid, ipp: idPatient, statut: statut, dtstart: dtstart, dtend: dtend, summary: summary!, title: event!.calendar.title, type: self.modele)
+        api.setCalDavRessources(uid, ipp: idPatient, statut: statut, dtstart: dtstart, dtend: dtend, summary: summary!, title: event!.calendar.title, type: self.modele, date: initialDate)
     }
     func deleteEvent() {
         let mabite = event!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
@@ -180,7 +180,7 @@ import EventKit
                     if ressources != nil {
                         self.findRessources(ressources!)
                     } else {
-                        self.api.sendRequest("select e.statut as statutrdv,m.description, e.idPatient,e.modele, p.id, p.nir, p.genre, p.nom, p.prenom, p.adresse, p.codepostal, p.ville, p.telephone1,p.telephone2, p.email,p.statut, p.naissance, p.creation, p.idpraticien, p.idphoto,p.info, p.autorise_sms, p.correspondant, p.ipp2, p.adresse2, p.patient_par,amc, p.amc_prefs, p.profession, p.correspondants,p.famille,p.tel1_info, p.tel2_info FROM calendar_events e FULL OUTER JOIN calendar_events_modeles m ON e.modele = m.id INNER JOIN patients p ON p.id = e.idPatient WHERE e.idevent = '\(mabite[1])'")
+//                        self.api.sendRequest("select e.statut as statutrdv,m.description, e.idPatient,e.modele, p.id, p.nir, p.genre, p.nom, p.prenom, p.adresse, p.codepostal, p.ville, p.telephone1,p.telephone2, p.email,p.statut, p.naissance, p.creation, p.idpraticien, p.idphoto,p.info, p.autorise_sms, p.correspondant, p.ipp2, p.adresse2, p.patient_par,amc, p.amc_prefs, p.profession, p.correspondants,p.famille,p.tel1_info, p.tel2_info FROM calendar_events e FULL OUTER JOIN calendar_events_modeles m ON e.modele = m.id INNER JOIN patients p ON p.id = e.idPatient WHERE e.idevent = '\(mabite[1])'")
                     }
                 })
             }

@@ -15,6 +15,7 @@ class NewEventTableViewController: UITableViewController  {
     var eventManager = EventManager()
     var caller:MSCalendarViewController?
     var cell:MSEventCell?
+    var initialDate:NSDate?
     @IBOutlet var rightArrow: UILabel!
     @IBOutlet var alerte: UISwitch!
     @IBOutlet var notes: UITextView!
@@ -58,6 +59,7 @@ class NewEventTableViewController: UITableViewController  {
             patientText.text = eventManager.editEvent?.title
             calendrier.text = eventManager.editEvent?.calendar.title
             dateDebut.date = (eventManager.editEvent?.startDate)!
+            self.initialDate = eventManager.editEvent?.startDate
             dateFin.date = (eventManager.editEvent?.endDate)!
             notes.text = eventManager.editEvent?.notes
             self.navigationItem.title = "Modifier l'évennement"
@@ -172,7 +174,7 @@ class NewEventTableViewController: UITableViewController  {
         let endDate = dateFin.date
         eventManager.selectedCalendarIdentifier = calendrier.text
         if (startDate.compare(endDate) == .OrderedAscending && patientText.text! != "Cliquez pour séléctionner le patient" && eventManager.editEvent?.calendar != nil) {
-            if eventManager.editEvent(patientText.text!, startDate: startDate, endDate: endDate, notes: notes.text, reminder: alerte.on) {
+            if eventManager.editEvent(patientText.text!, startDate: startDate, endDate: endDate, notes: notes.text, reminder: alerte.on, initialDate:self.initialDate) {
                 let dateFormat = NSDateFormatter()
                 dateFormat.dateStyle = .FullStyle
                 dateFormat.timeStyle = .MediumStyle

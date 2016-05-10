@@ -256,11 +256,23 @@ class Chart :  NSObject, APIControllerProtocol{
         return layer
     }
     
+    func setLayerFromIndexPath(indexPath:Int, layers:[String]){
+        for chart in self.chart{
+            if chart.localisation == self.localisationFromIndexPath(indexPath){
+                chart.layer = layers
+            }
+        }
+    }
+    
     func didReceiveAPIResults(results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
         dispatch_async(dispatch_get_main_queue(), {
             if resultsArr.count > 0 {
                 self.chartWithJSON(resultsArr)
+                if let cb = self.callback{
+                    self.callback!()
+                }
+            } else {
                 if let cb = self.callback{
                     self.callback!()
                 }

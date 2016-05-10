@@ -42,10 +42,10 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/getEvents.php?idP=\(preference.idUser)&date=\(ToolBox.getFormatedDate(date!))"
         get(urlPath, searchString: "query=\("")")
     }
-    func setCalDavRessources(uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int){
+    func setCalDavRessources(uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int, var date:NSDate? = NSDate()){
         if let newsummary = summary.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
             let newTitle = title.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
-            let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/setEvent.php?UID=\(uid)&IPP=\(ipp)&STATUT=\(statut)&DTSTART=\(dtstart)&DTEND=\(dtend)&SUMMARY=\(newsummary)&TITLE=\(newTitle!)&idP=\(preference.idUser)&TYPE=\(type)"
+            let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/setEvent.php?UID=\(uid)&IPP=\(ipp)&STATUT=\(statut)&DTSTART=\(dtstart)&DTEND=\(dtend)&SUMMARY=\(newsummary)&TITLE=\(newTitle!)&idP=\(preference.idUser)&TYPE=\(type)&date=\(ToolBox.getFormatedDate(date!))"
             get(urlPath, searchString: "query=\("")")
         }
     }
@@ -55,7 +55,7 @@ import Foundation
     }
     func selectpraticien() {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=2"
-        get(urlPath, searchString: "query=select id,nom,prenom from praticiens&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw) order by id")
+        get(urlPath, searchString: "query=select id,nom,prenom  from praticiens order by id&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
     }
     func sendInsert(searchString: String) {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"

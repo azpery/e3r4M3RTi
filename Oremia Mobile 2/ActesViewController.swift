@@ -23,7 +23,8 @@ class ActesViewController: UIViewController {
         activityIndicator.indicatorColor = UIColor.blackColor()
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
-        
+                let gestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
+                self.view.addGestureRecognizer(gestureRecognizer)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -55,7 +56,18 @@ class ActesViewController: UIViewController {
             self.listeActesController = destinationView
         }
     }
-            
+    
+        @IBAction func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+            if gestureRecognizer.state == UIGestureRecognizerState.Began || gestureRecognizer.state == UIGestureRecognizerState.Changed {
+                if gestureRecognizer.locationInView(self.view).x >= 0 && gestureRecognizer.locationInView(self.view).x < 50{
+                    let translation = gestureRecognizer.translationInView(self.view)
+                    // note: 'view' is optional and need to be unwrapped
+                    self.rightPanel.frame =  CGRect(x: self.rightPanel.frame.origin.x, y: self.rightPanel.frame.origin.y, width: ((self.rightPanel.frame.width) + translation.x), height: (self.rightPanel.frame.height))
+                }
+            }
+        }
+    
+    
     
     /*
     // MARK: - Navigation

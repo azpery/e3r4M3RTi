@@ -15,21 +15,22 @@ class FullScreenDocumentViewController: UIViewController {
     var modeleDocument = ModeleDocument?()
     var leDocument:NSURL?
     var isNew:Bool = false
+    var isCreate:Bool = false
     var patient:patients?
     var webView: WKWebView?
     @IBOutlet var containerView: UIView!
     override func loadView() {
         super.loadView()
-        
+        NSURLCache.sharedURLCache().removeAllCachedResponses()
+        NSURLCache.sharedURLCache().diskCapacity = 0
+        NSURLCache.sharedURLCache().memoryCapacity = 0
         self.webView = WKWebView()
+        
         self.view = self.webView!
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-//        NSURLCache.sharedURLCache().removeAllCachedResponses()
-//        NSURLCache.sharedURLCache().diskCapacity = 0
-//        NSURLCache.sharedURLCache().memoryCapacity = 0
-        if isNew {
+            if isNew {
             leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/?idPrat=\(preference.idUser)&&idPatient=\(patient!.id)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
             print(leDocument)
         }
@@ -38,8 +39,17 @@ class FullScreenDocumentViewController: UIViewController {
             scandale += "&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw
             scandale += "&&idDocument=\(self.modeleDocument!.idDocument)"
             leDocument = NSURL(string : scandale)
-            print(leDocument)
         }
+        if isCreate{
+            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/Tool.html?v=1.0")
+        }
+//        NSURLCache.sharedURLCache().removeAllCachedResponses()
+//        NSURLCache.sharedURLCache().diskCapacity = 0
+//        NSURLCache.sharedURLCache().memoryCapacity = 0
+//        let day_url_request = NSURLRequest(URL: leDocument!,
+//            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,
+//            timeoutInterval: 10.0)
+
         webView!.loadRequest(NSURLRequest(URL: leDocument!))
         // Do any additional setup after loading the view.
     }

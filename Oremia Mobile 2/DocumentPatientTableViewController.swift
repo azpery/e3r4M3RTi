@@ -9,7 +9,7 @@
 import UIKit
 import QuickLook
 
-class DocumentPatientTableViewController: UITableViewController, APIControllerProtocol, QLPreviewControllerDataSource {
+class DocumentPatientTableViewController: UITableViewController, APIControllerProtocol, QLPreviewControllerDataSource,UIPopoverPresentationControllerDelegate {
     var api=APIController?()
     var patient:patients?
     var lesDocuments = [Document]()
@@ -64,7 +64,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         var i = 0
         if (section == 0 && lesDocuments.count > 0){
             i = lesDocuments.count
-        } else if (section == 1 && lesModeleDocuments.count > 0){
+        } else if (section == 1 && lesModeleDocuments.count > 0 || section == 0 && lesModeleDocuments.count > 0){
             i = lesModeleDocuments.count
         }else{
             i = lesDocumentsWord.count
@@ -86,7 +86,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
             cell.nomLabel.text = lesDocuments[row].nom
             cell.mimeIcon.setFAIcon(FAType.FAFilePdfO, iconSize: 17)
 //            cell.backgroundColor = UIColor(red: 215, green: 20, blue: 18, alpha: 50)
-        } else if (indexPath.section == 1 && lesModeleDocuments.count > 0){
+        } else if (indexPath.section == 1 && lesModeleDocuments.count > 0 || indexPath.section == 0 && lesModeleDocuments.count > 0){
             let ddate = dateFormat.dateFromString(lesModeleDocuments[row].date)
             dateFormat.timeStyle = NSDateFormatterStyle.NoStyle
             dateFormat.dateStyle = NSDateFormatterStyle.MediumStyle
@@ -145,6 +145,14 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.destinationViewController.isKindOfClass(SelectionDocumentTableViewController){
+            let fullScreenView: SelectionDocumentTableViewController = segue.destinationViewController as! SelectionDocumentTableViewController
+            fullScreenView.callback = self.callback
+            if let controller = segue.destinationViewController as? UIViewController {
+                controller.popoverPresentationController!.delegate = self
+                controller.preferredContentSize = CGSize(width: 320, height: 90)
+            }
+        }else
         if segue.destinationViewController.isKindOfClass(FullScreenDocumentViewController){
             let fullScreenView: FullScreenDocumentViewController = segue.destinationViewController as! FullScreenDocumentViewController
             switch segue.identifier! {
@@ -154,7 +162,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
                     //var selectedDocument = api!.getRadioFromUrl(idr)
                     fullScreenView.document = lesDocuments[documentTableView.indexPathForSelectedRow!.row]
                     fullScreenView.leDocument = api!.getUrlFromDocument(idr)
-                } else if (documentTableView.indexPathForSelectedRow!.section == 1 && lesDocuments.count > 0 && lesModeleDocuments.count > 0){
+                } else if (documentTableView.indexPathForSelectedRow!.section == 1 && lesDocuments.count > 0 && lesModeleDocuments.count > 0 || documentTableView.indexPathForSelectedRow!.section == 0  && lesModeleDocuments.count > 0){
                     let idr:Int = lesModeleDocuments[documentTableView.indexPathForSelectedRow!.row].idDocument
                     //var selectedDocument = api!.getRadioFromUrl(idr)
                     fullScreenView.modeleDocument = lesModeleDocuments[documentTableView.indexPathForSelectedRow!.row]
@@ -166,14 +174,25 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
                 fullScreenView.isNew = true
                 fullScreenView.patient = self.patient
                 break
+            case "createNewDocument" :
+                fullScreenView.isCreate = true
+                fullScreenView.patient = self.patient
+                break
             default: break
             }
             
         }
     }
+    func callback(index:Int){
+        if(index == 0){
+            self.performSegueWithIdentifier("addNewDocument", sender: self)
+        }else {
+            self.performSegueWithIdentifier("createNewDocument", sender: self)
+        }
+    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (documentTableView.indexPathForSelectedRow!.section == 1 && lesDocuments.count > 0 && lesModeleDocuments.count > 0){
+        if (indexPath.section == 1 && lesDocuments.count > 0 && lesModeleDocuments.count > 0 || indexPath.section == 0 &&  lesModeleDocuments.count > 0){
             self.performSegueWithIdentifier("showDocumentSegue", sender: self)
         } else {
             let previewQL = QLPreviewController()

@@ -45,6 +45,7 @@ UIPopoverPresentationController *popover;
 @property (nonatomic, readonly) CGFloat layoutSectionWidth;
 @property (nonatomic, strong) NSArray *uniqueEventsArray;
 @property (nonatomic, retain) NSDate *curDate;
+@property (nonatomic, retain) NSDate *selectedDate;
 @property (nonatomic, retain) NSDateFormatter *formatter;
 @property (nonatomic, retain) APIController *api;
 
@@ -343,7 +344,12 @@ UIPopoverPresentationController *popover;
 -(void) reloadItMotherFucker
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
+        if (self.selectedDate == nil) {
+            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
+        } else {
+            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:self.selectedDate]];
+        }
+        
         // DATA PROCESSING 1
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView.collectionViewLayout invalidateLayout];
@@ -403,12 +409,33 @@ UIPopoverPresentationController *popover;
 }
 
 - (void)datePickerDonePressed:(THDatePickerViewController *)picker {
-    if ([self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:picker.date andAnimated:NO]) {
-        [self.fetchedResultsController.api getCalDavRessources:picker.date];
-        [self dismissSemiModalView];
-    } else {
-        [ToolBox shakeIt:self.datePicker.view];
-    }
+    self.selectedDate = picker.date;
+    [self dismissSemiModalView];
+    [LoadingOverlay.shared showOverlay:self.collectionView];
+    [self.fetchedResultsController.api getCalDavRessources:picker.date];
+    
+    self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:picker.date]];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
+        // DATA PROCESSING 1
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView.collectionViewLayout invalidateLayout];
+            [self.collectionViewCalendarLayout invalidateLayoutCache];
+            self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
+            [self.collectionView reloadData];
+            [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:picker.date andAnimated:NO];
+            [LoadingOverlay.shared hideOverlayView];
+        });
+        
+    });
+//    if () {
+//        
+//       
+//        
+////        [self iSaidReloadit];
+//    } else {
+//        [ToolBox shakeIt:self.datePicker.view];
+//    }
 }
 - (void)datePickerCancelPressed:(THDatePickerViewController *)picker {
     [self dismissSemiModalView];

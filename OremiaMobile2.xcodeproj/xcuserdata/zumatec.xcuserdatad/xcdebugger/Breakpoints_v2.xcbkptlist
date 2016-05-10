@@ -2274,11 +2274,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
+            startingLineNumber = "220"
+            endingLineNumber = "220"
             landmarkName = "addNewEvent(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2386,11 +2386,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/FullScreenDocumentViewController.swift"
-            timestampString = "478045754.179602"
+            timestampString = "484521430.516002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2546,11 +2546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -2562,11 +2562,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "672"
-            endingLineNumber = "672"
+            startingLineNumber = "699"
+            endingLineNumber = "699"
             landmarkName = "-collectionView:viewForSupplementaryElementOfKind:atIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2688,11 +2688,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
             landmarkName = "addNewEvent(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2720,11 +2720,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
+            startingLineNumber = "199"
+            endingLineNumber = "199"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2736,11 +2736,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2752,11 +2752,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "626"
-            endingLineNumber = "626"
+            startingLineNumber = "653"
+            endingLineNumber = "653"
             landmarkName = "-unwindToContactTVC:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2768,11 +2768,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
             landmarkName = "addNewEvent(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2800,11 +2800,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "561"
-            endingLineNumber = "561"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
             landmarkName = "-showEditEventFromEvent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2864,11 +2864,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "deleteEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2880,11 +2880,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
             landmarkName = "deleteEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2896,11 +2896,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "deleteEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2912,11 +2912,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2928,12 +2928,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2944,60 +2944,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "364"
             endingLineNumber = "364"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/EventController.swift"
+            timestampString = "484609848.359357"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/EventController.swift"
+            timestampString = "484609848.359357"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/EventController.swift"
+            timestampString = "484609848.359357"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "365"
+            endingLineNumber = "365"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3167,11 +3167,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "644"
-            endingLineNumber = "644"
+            startingLineNumber = "671"
+            endingLineNumber = "671"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3183,11 +3183,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "645"
-            endingLineNumber = "645"
+            startingLineNumber = "672"
+            endingLineNumber = "672"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3407,11 +3407,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
+            startingLineNumber = "326"
+            endingLineNumber = "326"
             landmarkName = "insertEvent(_:startDate:endDate:notes:reminder:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -3567,7 +3567,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "177"
@@ -3583,11 +3583,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -3599,27 +3599,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
-            landmarkName = "-viewDidLoad"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "182"
             endingLineNumber = "182"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610095.922702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
             <Locations>
@@ -3663,11 +3663,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -3679,11 +3679,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
             landmarkName = "-reloadItMotherFucker"
             landmarkType = "5">
             <Locations>
@@ -3727,11 +3727,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "648"
-            endingLineNumber = "648"
+            startingLineNumber = "675"
+            endingLineNumber = "675"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3759,11 +3759,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "554"
-            endingLineNumber = "554"
+            startingLineNumber = "581"
+            endingLineNumber = "581"
             landmarkName = "-scrollViewWillEndDecelerating:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3775,11 +3775,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "558"
-            endingLineNumber = "558"
+            startingLineNumber = "585"
+            endingLineNumber = "585"
             landmarkName = "-scrollViewDidEndDragging:willDecelerate:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3791,28 +3791,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "492"
-            endingLineNumber = "492"
+            startingLineNumber = "519"
+            endingLineNumber = "519"
             landmarkName = "-showMiniCalendar"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
-            landmarkName = "-datePickerDonePressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3999,11 +3983,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "413"
-            endingLineNumber = "413"
+            startingLineNumber = "440"
+            endingLineNumber = "440"
             landmarkName = "-datePickerCancelPressed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4015,11 +3999,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
             landmarkName = "-datePickerDonePressed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4223,11 +4207,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -4239,11 +4223,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -4351,11 +4335,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "271"
-            endingLineNumber = "271"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "-iSaidReloadit"
             landmarkType = "5">
          </BreakpointContent>
@@ -4367,23 +4351,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
-            landmarkName = "-iSaidReloadit"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "278"
@@ -4399,11 +4367,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "-iSaidReloadit"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610095.922702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "153"
+            endingLineNumber = "153"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -4415,11 +4399,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -4463,11 +4447,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "299"
-            endingLineNumber = "299"
+            startingLineNumber = "300"
+            endingLineNumber = "300"
             landmarkName = "-iSaidReloadit"
             landmarkType = "5">
          </BreakpointContent>
@@ -4479,11 +4463,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "300"
-            endingLineNumber = "300"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
             landmarkName = "-iSaidReloadit"
             landmarkType = "5">
             <Locations>
@@ -4591,11 +4575,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "292"
-            endingLineNumber = "292"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
             landmarkName = "sortEventsByDay(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -4607,11 +4591,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
+            startingLineNumber = "280"
+            endingLineNumber = "280"
             landmarkName = "sortEventsByDay(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -4623,11 +4607,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "422"
-            endingLineNumber = "422"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
             landmarkName = "addNewEventToArray(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -4639,11 +4623,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "436"
-            endingLineNumber = "436"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
             landmarkName = "addNewEventToArray(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -4911,11 +4895,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -4943,11 +4927,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
+            startingLineNumber = "204"
+            endingLineNumber = "204"
             landmarkName = "addNewpatient(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5007,12 +4991,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "371"
-            endingLineNumber = "371"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "372"
+            endingLineNumber = "372"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5071,11 +5055,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
             landmarkName = "insertEvent(_:startDate:endDate:notes:reminder:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5103,11 +5087,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "288"
-            endingLineNumber = "288"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "sortEventsByDay(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5135,11 +5119,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482866774.430543"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "342"
+            endingLineNumber = "342"
             landmarkName = "@implementation MSCalendarViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -5151,11 +5135,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "649"
-            endingLineNumber = "649"
+            startingLineNumber = "676"
+            endingLineNumber = "676"
             landmarkName = "-collectionView:cellForItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5215,11 +5199,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "460"
-            endingLineNumber = "460"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
             landmarkName = "handleError(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5391,12 +5375,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "362"
-            endingLineNumber = "362"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5407,11 +5391,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -5423,11 +5407,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -5439,11 +5423,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -5455,11 +5439,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "379"
-            endingLineNumber = "379"
+            startingLineNumber = "380"
+            endingLineNumber = "380"
             landmarkName = "deleteEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -5519,12 +5503,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "370"
+            endingLineNumber = "370"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5535,11 +5519,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "323"
-            endingLineNumber = "323"
+            startingLineNumber = "324"
+            endingLineNumber = "324"
             landmarkName = "insertEvent(_:startDate:endDate:notes:reminder:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5551,11 +5535,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "324"
-            endingLineNumber = "324"
+            startingLineNumber = "325"
+            endingLineNumber = "325"
             landmarkName = "insertEvent(_:startDate:endDate:notes:reminder:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5647,11 +5631,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "447"
-            endingLineNumber = "447"
+            startingLineNumber = "448"
+            endingLineNumber = "448"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5679,12 +5663,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "354"
+            endingLineNumber = "354"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5695,12 +5679,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "352"
-            endingLineNumber = "352"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "353"
+            endingLineNumber = "353"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5748,7 +5732,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "133"
             endingLineNumber = "133"
-            landmarkName = "updateCalDavEvent(_:)"
+            landmarkName = "updateCalDavEvent(_:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5791,11 +5775,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "457"
-            endingLineNumber = "457"
+            startingLineNumber = "458"
+            endingLineNumber = "458"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5823,12 +5807,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "354"
-            endingLineNumber = "354"
-            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:)"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "editEvent(_:startDate:endDate:notes:reminder:initialDate:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -5839,11 +5823,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "454"
-            endingLineNumber = "454"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5855,11 +5839,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "455"
-            endingLineNumber = "455"
+            startingLineNumber = "456"
+            endingLineNumber = "456"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5935,11 +5919,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "450"
-            endingLineNumber = "450"
+            startingLineNumber = "451"
+            endingLineNumber = "451"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5951,11 +5935,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484611192.431602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "444"
-            endingLineNumber = "444"
+            startingLineNumber = "471"
+            endingLineNumber = "471"
             landmarkName = "-showEditEvent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5967,11 +5951,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "479673084.455187"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -5983,11 +5967,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/EventController.swift"
-            timestampString = "482867352.85703"
+            timestampString = "484609848.359357"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "433"
-            endingLineNumber = "433"
+            startingLineNumber = "434"
+            endingLineNumber = "434"
             landmarkName = "addNewEventToArray(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6015,11 +5999,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
+            startingLineNumber = "387"
+            endingLineNumber = "387"
             landmarkName = "-addNewCell:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6031,11 +6015,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/MSCalendarViewController.m"
-            timestampString = "482868303.775329"
+            timestampString = "484610095.922702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "380"
-            endingLineNumber = "380"
+            startingLineNumber = "386"
+            endingLineNumber = "386"
             landmarkName = "-addNewCell:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6047,11 +6031,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6063,11 +6047,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "collectionView(_:layout:minimumLineSpacingForSectionAtIndex:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6079,11 +6063,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "collectionView(_:layout:sizeForItemAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6095,11 +6079,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
             landmarkName = "collectionView(_:layout:insetForSectionAtIndex:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6127,11 +6111,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6255,11 +6239,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/Chart.swift"
-            timestampString = "484164310.525398"
+            timestampString = "484176049.302098"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6271,11 +6255,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/Chart.swift"
-            timestampString = "484164310.525398"
+            timestampString = "484176049.302098"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -6303,11 +6287,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/NewEventTableViewController.swift"
-            timestampString = "482608176.88596"
+            timestampString = "484612532.65736"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "editEvent()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6415,11 +6399,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "483563185.814639"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6431,11 +6415,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "483563185.814639"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
             landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
@@ -6878,38 +6862,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
-            timestampString = "483395964.841722"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
-            timestampString = "483449910.336869"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
-            landmarkName = "previewController(_:previewItemAtIndex:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/APIController.swift"
             timestampString = "483830676.045065"
             startingColumnNumber = "9223372036854775807"
@@ -7007,76 +6959,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "viewDidAppear(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
             endingLineNumber = "38"
-            landmarkName = "viewDidAppear(_:)"
+            landmarkName = "viewDidLoad()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -7087,11 +6975,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
+            timestampString = "484245007.001643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
+            timestampString = "484245007.001643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
             landmarkName = "viewDidAppear(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -7103,7 +7023,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
@@ -7119,11 +7039,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484245007.001643"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "viewDidAppear(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
+            timestampString = "484245007.001643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "viewDidAppear(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/SchemaDentaireCollectionViewController.swift"
+            timestampString = "484245007.001643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "viewDidLayoutSubviews()"
             landmarkType = "5">
          </BreakpointContent>
@@ -7167,11 +7119,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484429960.926839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
             <Locations>
@@ -7215,11 +7167,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484429960.926839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -7231,11 +7183,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484429960.926839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "208"
+            endingLineNumber = "208"
             landmarkName = "handleError(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -7295,11 +7247,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484429960.926839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -7311,11 +7263,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484429960.926839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "didReceiveAPIResults(_:)"
             landmarkType = "5">
             <Locations>
@@ -7359,27 +7311,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
+            timestampString = "484429960.926839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
-            timestampString = "484167120.876815"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -7979,7 +7915,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/PrestationActe.swift"
@@ -7995,7 +7931,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Oremia Mobile 2/Prestation.swift"
@@ -8005,6 +7941,598 @@
             startingLineNumber = "44"
             endingLineNumber = "44"
             landmarkName = "prestationWithJSON(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "135"
+            endingLineNumber = "135"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OremiaMobile2.ListeActesTableViewController.tableView (OremiaMobile2.ListeActesTableViewController)(__ObjC.UITableView, didSelectRowAtIndexPath : __ObjC.NSIndexPath) -&gt; ()"
+                  moduleName = "OremiaMobile2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zumatec/Documents/Oremia%20Mobile%202/Oremia%20Mobile%202/ListeActesTableViewController.swift"
+                  timestampString = "484179113.690241"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "3708">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "OremiaMobile2.ListeActesTableViewController.tableView (OremiaMobile2.ListeActesTableViewController)(__ObjC.UITableView, didSelectRowAtIndexPath : __ObjC.NSIndexPath) -&gt; ()"
+                  moduleName = "OremiaMobile2"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zumatec/Documents/Oremia%20Mobile%202/Oremia%20Mobile%202/ListeActesTableViewController.swift"
+                  timestampString = "484179113.690366"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "3816">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/Chart.swift"
+            timestampString = "484246408.70191"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
+            landmarkName = "setLayerFromIndexPath(_:layers:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/Chart.swift"
+            timestampString = "484246409.261982"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
+            landmarkName = "setLayerFromIndexPath(_:layers:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/Chart.swift"
+            timestampString = "484246513.865518"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "263"
+            endingLineNumber = "263"
+            landmarkName = "setLayerFromIndexPath(_:layers:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/Chart.swift"
+            timestampString = "484246564.731664"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "imageFromIndexPath(_:layer:imageView:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/Chart.swift"
+            timestampString = "484246590.116943"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "236"
+            endingLineNumber = "236"
+            landmarkName = "imageFromIndexPath(_:layer:imageView:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/ListeActesTableViewController.swift"
+            timestampString = "484429960.926839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/SelectionDocumentTableViewController.swift"
+            timestampString = "484522243.748024"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
+            timestampString = "484522609.764834"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "numberOfSectionsInTableView(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
+            timestampString = "484522612.804927"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "numberOfSectionsInTableView(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
+            timestampString = "484522616.04525"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
+            timestampString = "484522620.957236"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
+            timestampString = "484522627.429705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/DocumentPatientTableViewController.swift"
+            timestampString = "484522877.798782"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/EventController.swift"
+            timestampString = "484609848.359357"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
+            landmarkName = "getEventsOfSelectedCalendarForCertainDate(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484611192.431602"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "707"
+            endingLineNumber = "707"
+            landmarkName = "-collectionView:layout:dayForSection:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610095.922702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
+            landmarkName = "-iSaidReloadit"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610095.922702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "352"
+            endingLineNumber = "352"
+            landmarkName = "-reloadItMotherFucker"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610095.922702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "380"
+            endingLineNumber = "380"
+            landmarkName = "-addNewCell:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/EventController.swift"
+            timestampString = "484607889.316408"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "getEventsOfSelectedCalendar()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610217.642162"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
+            landmarkName = "-reloadItMotherFucker"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Oremia Mobile 2/MSCalendarViewController.m"
+            timestampString = "484610219.738202"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "350"
+            endingLineNumber = "350"
+            landmarkName = "-reloadItMotherFucker"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

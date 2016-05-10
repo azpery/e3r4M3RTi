@@ -35,7 +35,7 @@ class Prestation{
                 let lettreCle = value["LettreCle"] as? String ?? ""
                 let coefficientEnft = Int(value["CoefficientEnft"] as? String ?? "0") ?? 0
                 let image = value["Image"] as? String ?? ""
-                let montant = value["Montant"] as? String ?? ""
+                let montant = value["Montant"] as? String ?? "0,00"
                 
                 let newPrest = Prestation(nom: nom, coefficient: coefficient, description: description, lettreCle: lettreCle, coefficientEnft: coefficientEnft, image: image, montant: montant)
                 prestations.append(newPrest)

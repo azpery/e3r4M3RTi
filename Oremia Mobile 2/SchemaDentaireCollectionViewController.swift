@@ -19,10 +19,13 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     var sourceViewNavigationBar:UINavigationController?
     var actesController:ActesViewController?
     var selectedCell:Int?
+    var cell:DentCollectionViewCell?
+    var indexPath:NSIndexPath?
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.chart = Chart(idpatient: patient!.id, callback: self.collectionView!.reloadData)
+        self.collectionView!.reloadData()
         let value = UIInterfaceOrientation.LandscapeLeft.rawValue
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         // Register cell classes
@@ -73,6 +76,14 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
+        cell.dent8Layout.image =  nil
+        cell.dent6Layout.image = nil
+        cell.dent5Layout.image = nil
+        cell.dent4Layout.image = nil
+        cell.dent3Layout.image = nil
+        cell.dent2Layout.image = nil
+        cell.dent1Layout.image = nil
+        cell.dentLayout.image = nil
         let i = indexPath.row
 //        let recipe = UIImageView(frame: cell.dentLayout.frame)
 //        recipe.contentMode = .ScaleAspectFit
@@ -80,7 +91,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
 //        cell.addSubview(recipe)
         cell.dentLayout.contentMode = .ScaleAspectFit
         cell.dentLayout.clipsToBounds = true
-        let layer = (chart?.layerFromIndexPath(i))!
+        let layer = chart?.layerFromIndexPath(i) ?? [""]
         chart?.imagesFromIndexPath(i, layer: layer, cell: cell)
         cell.setNeedsLayout() //invalidate current layout
         cell.layoutIfNeeded()
@@ -122,6 +133,8 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cell.dentLayout.backgroundColor = UIColor.blueColor()
         print("Dent n°\(chart?.localisationFromIndexPath(indexPath.row)) sélectionné ")
         self.selectedCell = chart?.localisationFromIndexPath(indexPath.row)
+        self.cell = cell
+        self.indexPath = indexPath
         return true
     }
 

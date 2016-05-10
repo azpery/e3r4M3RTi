@@ -17,8 +17,7 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     override func viewDidLoad() {
         super.viewDidLoad()
         api.getIniFile("SELECT inifile FROM config WHERE titre ='ccam_favoris' AND idpraticien = \(preference.idUser) ")
-//        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
-//        self.view.addGestureRecognizer(gestureRecognizer)
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -26,15 +25,15 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-//    @IBAction func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
-//        if gestureRecognizer.state == UIGestureRecognizerState.Began || gestureRecognizer.state == UIGestureRecognizerState.Changed {
-//            if gestureRecognizer.locationInView(self.view).x >= 0 && gestureRecognizer.locationInView(self.view).x < 50{
-//                let translation = gestureRecognizer.translationInView(self.view)
-//                // note: 'view' is optional and need to be unwrapped
-//                self.actesController?.rightPanel.frame =  CGRect(x: self.actesController!.rightPanel.frame.origin.x, y: self.actesController!.rightPanel.frame.origin.y, width: ((self.actesController?.rightPanel.frame.width)! + translation.x), height: (self.actesController?.rightPanel.frame.height)!)
-//            }
-//        }  
-//    }
+    //    @IBAction func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
+    //        if gestureRecognizer.state == UIGestureRecognizerState.Began || gestureRecognizer.state == UIGestureRecognizerState.Changed {
+    //            if gestureRecognizer.locationInView(self.view).x >= 0 && gestureRecognizer.locationInView(self.view).x < 50{
+    //                let translation = gestureRecognizer.translationInView(self.view)
+    //                // note: 'view' is optional and need to be unwrapped
+    //                self.actesController?.rightPanel.frame =  CGRect(x: self.actesController!.rightPanel.frame.origin.x, y: self.actesController!.rightPanel.frame.origin.y, width: ((self.actesController?.rightPanel.frame.width)! + translation.x), height: (self.actesController?.rightPanel.frame.height)!)
+    //            }
+    //        }
+    //    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -56,8 +55,18 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("prestationCell", forIndexPath: indexPath) as! ListeActesTableViewCell
         let pres = self.prestation![indexPath.row] as? Prestation
-        cell.descriptifLabel.text = pres?.description ?? "Aucune description disponible"
+        var description = pres?.description ?? "Aucune description disponible"
+        var index = 1
+        if description.rangeOfString("+") != nil{
+            
+            index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+        }
         
+        if index == 0{
+            description = "      \(description)"
+            //                cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
+        }
+        cell.descriptifLabel.text = description
         return cell
     }
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -70,22 +79,61 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         return 45
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        //        let cell = tableView.dequeueReusableCellWithIdentifier("prestationCell", forIndexPath: indexPath) as! ListeActesTableViewCell
+        //        if cell.descriptifLabel.text?.rangeOfString("+")?.startIndex != nil && cell.descriptifLabel.text?.startIndex.distanceTo((cell.descriptifLabel.text?.rangeOfString("+")?.startIndex)!) != 0{
         if let schema = actesController?.schemaDentController{
             if let selectedCell = schema.selectedCell{
-                    let index = indexPath.row
-                    let presta = prestation![index] as! Prestation
-                    let date = ToolBox.getFormatedDateWithSlash(NSDate())
-                    let cotation = presta.coefficient
-                    let descriptif = presta.description
-                    let montant = presta.montant
-                    let lettreCle = presta.lettreCle
-                    let image = presta.image
-                    if let acte = self.actesController?.saisieActesController{
-                        let numPresta = acte.prestation.count ?? 1
-                        let newPresta = PrestationActe(nom: "Prestation\(numPresta)", coefficient: cotation, description: descriptif, lettreCle: lettreCle, coefficientEnft: 0, image: image, montant: montant, numDent: selectedCell, dateActe: date)
-                        acte.prestation.append(newPresta)
-                        acte.tableView.reloadData()
+                let index = indexPath.row
+                let presta = prestation![index] as! Prestation
+                let date = ToolBox.getFormatedDateWithSlash(NSDate())
+                let cotation = presta.coefficient
+                let descriptif = presta.description
+                let montant = presta.montant
+                let lettreCle = presta.lettreCle
+                let image = presta.image
+                if let acte = self.actesController?.saisieActesController{
+                    let numPresta = acte.prestation.count ?? 1
+                    let newPresta = PrestationActe(nom: "Prestation\(numPresta)", coefficient: cotation, description: descriptif, lettreCle: lettreCle, coefficientEnft: 0, image: image, montant: montant, numDent: selectedCell, dateActe: date)
+                    acte.prestation.append(newPresta)
+                    if image != ""{
+                        var layers = [String]()
+                        layers = (schema.chart?.layerFromIndexPath((schema.indexPath?.row)!))!
+                        if layers.count > 0 {
+                            layers.append(image)
+                            schema.chart?.setLayerFromIndexPath((schema.indexPath?.row)!, layers: layers)
+                            //                        schema.collectionView?.reloadData()
+                            //                        let indexPath = NSIndexPath(forRow: (schema.chart?.indexPathFromLocalisation(selectedCell))!, inSection: 1)
+                        }else {
+                            schema.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(NSDate()), localisation: selectedCell, layer: image))
+                        }
+                        let cell = schema.cell
+                        if let c = cell{
+                            print("\((schema.indexPath?.row)!)")
+                            
+//                            schema.chart?.imagesFromIndexPath((schema.indexPath?.row)!, layer: layers, cell: c)
+                            cell?.dent8Layout.image = nil
+                            cell?.dent7Layout.image = nil
+                            cell?.dent6Layout.image = nil
+                            cell?.dent5Layout.image = nil
+                            cell?.dent4Layout.image = nil
+                            cell?.dent3Layout.image = nil
+                            cell?.dent2Layout.image = nil
+                            cell?.dent1Layout.image = nil
+                            cell?.dentLayout.image = nil
+                            schema.collectionView?.reloadItemsAtIndexPaths([schema.indexPath!])
+                            cell?.dent8Layout.image = nil
+                            cell?.dent7Layout.image = nil
+                            cell?.dent6Layout.image = nil
+                            cell?.dent5Layout.image = nil
+                            cell?.dent4Layout.image = nil
+                            cell?.dent3Layout.image = nil
+                            cell?.dent2Layout.image = nil
+                            cell?.dent1Layout.image = nil
+                            cell?.dentLayout.image = nil
+                        }
                     }
+                    acte.tableView.reloadData()
+                }
             }else {
                 if let acte = actesController{
                     acte.scl.showInfo("Aucune dent séléctionnée", subTitle: "Veuillez sélectionner une dent avant d'appliquer un acte")
@@ -98,6 +146,7 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
                 }
             }
         }
+        //        }
     }
     /*
     // Override to support conditional editing of the table view.
