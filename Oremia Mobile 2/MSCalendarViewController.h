@@ -17,6 +17,7 @@
 - (void)showEditEvent:(MSEventCell*) cell;
 - (IBAction)unwindToContactTVC:(UIStoryboardSegue *)unwindSegue;
 -(void) reloadItMotherFucker;
+-(void) reloadCalendars;
 -(void) iSaidReloadit;
 -(void)showEditEventFromEvent:(UITapGestureRecognizer*) sender;
 @property (nonatomic, strong) THDatePickerViewController * datePicker;

@@ -57,14 +57,21 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         let pres = self.prestation![indexPath.row] as? Prestation
         var description = pres?.description ?? "Aucune description disponible"
         var index = 1
-        if description.rangeOfString("+") != nil{
+        if description.rangeOfString("+") != nil {
             
             index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
         }
+        if description.rangeOfString("-") != nil && index != 0 {
+            
+            index = description.startIndex.distanceTo((description.rangeOfString("-")?.startIndex)!)
+        }
         
         if index == 0{
+            
             description = "      \(description)"
-            //                cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
+            cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
+        }else {
+            cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x000000)
         }
         cell.descriptifLabel.text = description
         return cell
@@ -79,64 +86,16 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         return 45
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        //        let cell = tableView.dequeueReusableCellWithIdentifier("prestationCell", forIndexPath: indexPath) as! ListeActesTableViewCell
-        //        if cell.descriptifLabel.text?.rangeOfString("+")?.startIndex != nil && cell.descriptifLabel.text?.startIndex.distanceTo((cell.descriptifLabel.text?.rangeOfString("+")?.startIndex)!) != 0{
         if let schema = actesController?.schemaDentController{
             if let selectedCell = schema.selectedCell{
-                let index = indexPath.row
-                let presta = prestation![index] as! Prestation
-                let date = ToolBox.getFormatedDateWithSlash(NSDate())
-                let cotation = presta.coefficient
-                let descriptif = presta.description
-                let montant = presta.montant
-                let lettreCle = presta.lettreCle
-                let image = presta.image
-                if let acte = self.actesController?.saisieActesController{
-                    let numPresta = acte.prestation.count ?? 1
-                    let newPresta = PrestationActe(nom: "Prestation\(numPresta)", coefficient: cotation, description: descriptif, lettreCle: lettreCle, coefficientEnft: 0, image: image, montant: montant, numDent: selectedCell, dateActe: date)
-                    acte.prestation.append(newPresta)
-                    if image != ""{
-                        var layers = [String]()
-                        layers = (schema.chart?.layerFromIndexPath((schema.indexPath?.row)!))!
-                        if layers.count > 0 {
-                            layers.append(image)
-                            schema.chart?.setLayerFromIndexPath((schema.indexPath?.row)!, layers: layers)
-                            //                        schema.collectionView?.reloadData()
-                            //                        let indexPath = NSIndexPath(forRow: (schema.chart?.indexPathFromLocalisation(selectedCell))!, inSection: 1)
-                        }else {
-                            schema.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(NSDate()), localisation: selectedCell, layer: image))
-                        }
-                        let cell = schema.cell
-                        if let c = cell{
-                            print("\((schema.indexPath?.row)!)")
-                            
-//                            schema.chart?.imagesFromIndexPath((schema.indexPath?.row)!, layer: layers, cell: c)
-                            cell?.dent8Layout.image = nil
-                            cell?.dent7Layout.image = nil
-                            cell?.dent6Layout.image = nil
-                            cell?.dent5Layout.image = nil
-                            cell?.dent4Layout.image = nil
-                            cell?.dent3Layout.image = nil
-                            cell?.dent2Layout.image = nil
-                            cell?.dent1Layout.image = nil
-                            cell?.dentLayout.image = nil
-                            schema.collectionView?.reloadItemsAtIndexPaths([schema.indexPath!])
-                            cell?.dent8Layout.image = nil
-                            cell?.dent7Layout.image = nil
-                            cell?.dent6Layout.image = nil
-                            cell?.dent5Layout.image = nil
-                            cell?.dent4Layout.image = nil
-                            cell?.dent3Layout.image = nil
-                            cell?.dent2Layout.image = nil
-                            cell?.dent1Layout.image = nil
-                            cell?.dentLayout.image = nil
-                        }
-                    }
-                    acte.tableView.reloadData()
-                }
+                
+                self.addActeForCell(indexPath.row, selectedCell: selectedCell, schema: schema)
+                addAllActesForCell(indexPath.row, selectedCell: selectedCell, schema: schema)
+                
             }else {
                 if let acte = actesController{
-                    acte.scl.showInfo("Aucune dent séléctionnée", subTitle: "Veuillez sélectionner une dent avant d'appliquer un acte")
+                    self.addActeForCell(indexPath.row)
+                    addAllActesForCell(indexPath.row)
                 }else {
                     if let vc = UIApplication.topViewController(){
                         let alert = UIAlertController(title: "Alerte", message: "La vue a mal été chargée, veuillez redémarrer l'application. \nSi le problème persiste, veuillez contacter le service technique.", preferredStyle: UIAlertControllerStyle.Alert)
@@ -146,8 +105,57 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
                 }
             }
         }
-        //        }
     }
+    
+    func addAllActesForCell(indexPath:Int, selectedCell:Int? = nil, schema:SchemaDentaireCollectionViewController? = nil){
+        var i = indexPath + 1
+        var index = 0
+        
+        while index == 0 {
+            index = 1
+            let pres = self.prestation![i] as? Prestation
+            let description = pres?.description ?? "Aucune description disponible"
+            if description.rangeOfString("+") != nil {
+                index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+            }
+            if index == 0{
+                addActeForCell(i, selectedCell: selectedCell, schema: schema)
+                
+                i++
+            }
+        }
+        api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
+        
+    }
+    
+    
+    func addActeForCell(indexPath:Int, var selectedCell:Int? = nil, schema:SchemaDentaireCollectionViewController? = nil){
+        let index = indexPath
+        let presta = prestation![index] as! Prestation
+        let date = ToolBox.getFormatedDateWithSlash(NSDate())
+        let cotation = presta.coefficient
+        let descriptif = presta.description
+        let montant = presta.montant
+        let lettreCle = presta.lettreCle
+        let image = presta.image
+        if let acte = self.actesController?.saisieActesController{
+            let numPresta = acte.prestation.count ?? 1
+            if selectedCell == nil{
+                selectedCell = 0
+            }
+            let newPresta = PrestationActe(nom: "Prestation_\(numPresta + 1)", coefficient: cotation, description: descriptif, lettreCle: lettreCle, coefficientEnft: 0, image: image, montant: montant, numDent: selectedCell!, dateActe: date)
+            acte.prestation.append(newPresta)
+            if image != "" && schema != nil && selectedCell != nil{
+                schema!.addImageToSelectedCell(image)
+                api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(selectedCell!)', '\(image)') ")
+                
+            }
+            acte.tableView.reloadData()
+            
+        }
+    }
+
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -193,19 +201,21 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     }
     */
     func didReceiveAPIResults(results: NSDictionary) {
-        let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
-            self.prestation = Prestation.prestationWithJSON(resultsArr as! NSArray)
-            self.tableView.reloadData()
-            if self.actesController?.finished > 0 {
-                self.actesController?.activityIndicator.stopActivity(true)
-            } else {
-                self.actesController?.finished++
-            }
-        })
+        if let resultsArr: NSArray = results["results"] as? NSArray {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.prestation = Prestation.prestationWithJSON(resultsArr)
+                self.tableView.reloadData()
+                if self.actesController?.finished > 0 {
+                    self.actesController?.activityIndicator.stopActivity(true)
+                } else {
+                    self.actesController?.finished++
+                }
+            })
+        }
+        
     }
     func handleError(results: Int) {
-        api.getIniFile("SELECT inifile FROM config WHERE titre ='ccam_favoris' AND idpraticien = \(preference.idUser) ")
+        //api.getIniFile("SELECT inifile FROM config WHERE titre ='ccam_favoris' AND idpraticien = \(preference.idUser) ")
     }
     
 }

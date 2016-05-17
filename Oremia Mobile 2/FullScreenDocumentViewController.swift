@@ -41,16 +41,16 @@ class FullScreenDocumentViewController: UIViewController {
             leDocument = NSURL(string : scandale)
         }
         if isCreate{
-            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/Tool.html?v=1.0")
+            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/Tool.html?v=1.1")
         }
-//        NSURLCache.sharedURLCache().removeAllCachedResponses()
-//        NSURLCache.sharedURLCache().diskCapacity = 0
-//        NSURLCache.sharedURLCache().memoryCapacity = 0
-//        let day_url_request = NSURLRequest(URL: leDocument!,
-//            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,
-//            timeoutInterval: 10.0)
+        NSURLCache.sharedURLCache().removeAllCachedResponses()
+        NSURLCache.sharedURLCache().diskCapacity = 0
+        NSURLCache.sharedURLCache().memoryCapacity = 0
+        let day_url_request = NSURLRequest(URL: leDocument!,
+            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,
+            timeoutInterval: 10.0)
 
-        webView!.loadRequest(NSURLRequest(URL: leDocument!))
+        webView!.loadRequest(day_url_request)
         // Do any additional setup after loading the view.
     }
 

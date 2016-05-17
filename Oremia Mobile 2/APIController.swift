@@ -13,7 +13,7 @@ import Foundation
     var context: AnyObject?
     var itunesSearchTerm: String?
     var canStartPinging = false
-
+    
     init(delegate: APIControllerProtocol) {
         self.delegate = delegate
     }
@@ -21,8 +21,8 @@ import Foundation
         
     }
     func getIniFile(type: String) {
-            let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=14"
-            get(urlPath, searchString: "query=\(type)")
+        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=14"
+        get(urlPath, searchString: "query=\(type)")
     }
     func checkFileUpdate() {
         let urlPath = "http://\(preference.ipServer)/scripts/updater.php"
@@ -33,6 +33,23 @@ import Foundation
         if let _ = itunesSearchTerm!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
             let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"
             get(urlPath, searchString: "query=\(searchString)")
+        }
+    }
+    func insertActes(patient:patients, actes: [PrestationActe]) -> Bool {
+        do{
+            
+            let uuid = NSUUID().UUIDString
+            if let string = PrestationActe.prestationToFormattedOutput(patient, prestations: actes){
+                let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=17"
+                get(urlPath, searchString: "idPatient=\(patient.id)&idPraticien=\(preference.idUser)&UID=\(uuid)&arr=\(string)")
+                return true
+            }else{
+                return false
+            }
+            
+        }
+        catch{
+            return false
         }
     }
     func getCalDavRessources(var date:NSDate? = nil){
@@ -72,7 +89,7 @@ import Foundation
         let url = "\(preference.ipServer)"
         SimplePingHelper.ping(url, target: self.delegate, sel: "pingResult:")
     }
-
+    
     func get(path: String, searchString:String) {
         if let url = NSURL(string: path) {
             
@@ -135,7 +152,7 @@ import Foundation
             delegate!.handleError(1)
         }
     }
-
+    
     func insert(path:String, searchString:String){
         if let url = NSURL(string: path) {
             let request = NSMutableURLRequest(URL: url)
@@ -204,7 +221,7 @@ import Foundation
                         vc.presentViewController(alert, animated: true, completion: nil)
                         self.delegate!.handleError(2)
                     }
-
+                    
                 }
             }
             
@@ -339,7 +356,7 @@ import Foundation
     class func loadFileSync(url: NSURL,fileType:String,nom:String, id:Int, completion:(path:String, error:NSError!) -> Void)->NSURL {
         let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
         let destinationUrl = documentsUrl.URLByAppendingPathComponent("\(nom)[\(id)].\(fileType)")
-         if let dataFromURL = NSData(contentsOfURL: url){
+        if let dataFromURL = NSData(contentsOfURL: url){
             if dataFromURL.writeToURL(destinationUrl, atomically: true) {
                 completion(path: destinationUrl.path!, error:nil)
             } else {
@@ -354,8 +371,8 @@ import Foundation
         return destinationUrl
     }
     
-
-
+    
+    
 }
 
 

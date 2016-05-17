@@ -42,6 +42,7 @@
 		122E54DA1BBE940100861367 /* valio.json in Resources */ = {isa = PBXBuildFile; fileRef = 122E54D91BBE940100861367 /* valio.json */; };
 		122E54DC1BBE975200861367 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E54DB1BBE975100861367 /* HomeViewController.swift */; };
 		122E70751BD0FFAF0053E980 /* DalleAccueilCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E70741BD0FFAF0053E980 /* DalleAccueilCollectionViewController.swift */; };
+		1232DF641CE918EF000038FC /* DrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1232DF631CE918EF000038FC /* DrawingView.swift */; };
 		1236D7EB1BB04FF400F84BD6 /* SCLAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1236D7EA1BB04FF400F84BD6 /* SCLAlertView.swift */; };
 		123A22AB1CDFE6E500540217 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 123A22AA1CDFE6E500540217 /* Images.xcassets */; };
 		123DA9771BBC3C80005E0402 /* JLToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123DA9741BBC3C80005E0402 /* JLToast.swift */; };
@@ -162,6 +163,7 @@
 		12B347EE1B10B10E00A8AC3D /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12B347EC1B10B10E00A8AC3D /* SWRevealViewController.m */; };
 		12C39E621C19ED62002422E7 /* Evenement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C39E611C19ED62002422E7 /* Evenement.swift */; };
 		12C40F3B1B9B1523007E98BD /* serverAdress.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12C40F3A1B9B1523007E98BD /* serverAdress.txt */; };
+		12C50EE01CEBA7A300022B04 /* JsonSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C50EDF1CEBA7A300022B04 /* JsonSerializer.swift */; };
 		12CF39E91B1789D100883192 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CF39DA1B1789D100883192 /* UIImageView+WebCache.m */; };
 		12CF39EC1B178A0900883192 /* CircularLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CF39EB1B178A0900883192 /* CircularLoaderView.swift */; };
 		12D5D2521C5A28FD00EBDCE8 /* CalendarPreferenceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D5D2511C5A28FD00EBDCE8 /* CalendarPreferenceTableViewController.swift */; };
@@ -247,6 +249,7 @@
 		122E54D91BBE940100861367 /* valio.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = valio.json; sourceTree = "<group>"; };
 		122E54DB1BBE975100861367 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		122E70741BD0FFAF0053E980 /* DalleAccueilCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DalleAccueilCollectionViewController.swift; sourceTree = "<group>"; };
+		1232DF631CE918EF000038FC /* DrawingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawingView.swift; sourceTree = "<group>"; };
 		1236D7EA1BB04FF400F84BD6 /* SCLAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCLAlertView.swift; sourceTree = "<group>"; };
 		123A22AA1CDFE6E500540217 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		123DA9741BBC3C80005E0402 /* JLToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JLToast.swift; sourceTree = "<group>"; };
@@ -404,6 +407,7 @@
 		12C266E31B4D296000BA4C5A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		12C39E611C19ED62002422E7 /* Evenement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Evenement.swift; sourceTree = "<group>"; };
 		12C40F3A1B9B1523007E98BD /* serverAdress.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = serverAdress.txt; sourceTree = "<group>"; };
+		12C50EDF1CEBA7A300022B04 /* JsonSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonSerializer.swift; sourceTree = "<group>"; };
 		12CF39D91B1789D100883192 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		12CF39DA1B1789D100883192 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		12CF39EB1B178A0900883192 /* CircularLoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularLoaderView.swift; sourceTree = "<group>"; };
@@ -442,6 +446,9 @@
 		120A1D5F1C164AE2007E98C3 /* MSCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				12D5D2511C5A28FD00EBDCE8 /* CalendarPreferenceTableViewController.swift */,
+				12553E9C1C1744B30051F30E /* CalendarsTableViewController.swift */,
+				129D28C41B1613EE00EF28FA /* CalendarViewController.swift */,
 				120A1D621C164B13007E98C3 /* MSCalendarViewController.h */,
 				120A1D631C164B13007E98C3 /* MSCalendarViewController.m */,
 				120A1D641C164B13007E98C3 /* MSEventCell.h */,
@@ -528,6 +535,17 @@
 				122E54D41BBE93EA00861367 /* SectionHeaderView.swift */,
 			);
 			name = valio;
+			sourceTree = "<group>";
+		};
+		1232DF621CE91885000038FC /* Gestion des documents */ = {
+			isa = PBXGroup;
+			children = (
+				12B347A71B10B0AD00A8AC3D /* FullScreenDocumentViewController.swift */,
+				12B347A51B10B0AD00A8AC3D /* DocumentTableViewCell.swift */,
+				12B347A31B10B0AD00A8AC3D /* DocumentPatientTableViewController.swift */,
+				1232DF631CE918EF000038FC /* DrawingView.swift */,
+			);
+			name = "Gestion des documents";
 			sourceTree = "<group>";
 		};
 		123DA97A1BBC3C86005E0402 /* JLToast */ = {
@@ -634,6 +652,7 @@
 		1286599E1B1475CA00C2EEDF /* Third part */ = {
 			isa = PBXGroup;
 			children = (
+				12C50EDF1CEBA7A300022B04 /* JsonSerializer.swift */,
 				1282508D1CD6A0AD00F69298 /* SimplePingHelper.h */,
 				1282508E1CD6A0AD00F69298 /* SimplePingHelper.m */,
 				1282508A1CD6A00200F69298 /* SimplePing.h */,
@@ -790,20 +809,16 @@
 		12B347F01B10B6E100A8AC3D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				1232DF621CE91885000038FC /* Gestion des documents */,
 				12B3479C1B10B0AD00A8AC3D /* ActesTableViewController.swift */,
 				12A6BC9A1CD1352A00A1FB33 /* saisie des actes */,
-				12D5D2511C5A28FD00EBDCE8 /* CalendarPreferenceTableViewController.swift */,
-				12553E9C1C1744B30051F30E /* CalendarsTableViewController.swift */,
-				129D28C41B1613EE00EF28FA /* CalendarViewController.swift */,
 				127B72C81BF3B0C50055FB3A /* CarousselViewController.swift */,
 				12B3479F1B10B0AD00A8AC3D /* ConfigurationViewController.swift */,
 				12B347F21B10B72E00A8AC3D /* Controllers */,
 				122E70741BD0FFAF0053E980 /* DalleAccueilCollectionViewController.swift */,
 				12B347A21B10B0AD00A8AC3D /* DetailsViewController.swift */,
-				12B347A31B10B0AD00A8AC3D /* DocumentPatientTableViewController.swift */,
 				12B347F11B10B70A00A8AC3D /* Dynamic content */,
 				12B347A61B10B0AD00A8AC3D /* EtatCivilViewController.swift */,
-				12B347A71B10B0AD00A8AC3D /* FullScreenDocumentViewController.swift */,
 				12B347A81B10B0AD00A8AC3D /* FullScreenRadioViewController.swift */,
 				12F75D301C14E751000E7259 /* HelpButton.swift */,
 				12172F031C14C59C00A99F49 /* HelpViewController.swift */,
@@ -834,7 +849,6 @@
 				12B3479B1B10B0AD00A8AC3D /* ActesTableViewCell.swift */,
 				12553E9E1C1748EA0051F30E /* CalendrierTableViewCell.swift */,
 				12CF39EB1B178A0900883192 /* CircularLoaderView.swift */,
-				12B347A51B10B0AD00A8AC3D /* DocumentTableViewCell.swift */,
 				12B347B01B10B0AD00A8AC3D /* NewsTableViewCell.swift */,
 				12B347B61B10B0AD00A8AC3D /* RadioCollectionViewCell.swift */,
 				1274F9251B1B7D2B002FCF43 /* SearchTableViewCell.swift */,
@@ -1115,6 +1129,7 @@
 				120A1DA01C164D01007E98C3 /* MASViewConstraint.m in Sources */,
 				127B727C1BF369770055FB3A /* LoadingOverlay.swift in Sources */,
 				12D5D2521C5A28FD00EBDCE8 /* CalendarPreferenceTableViewController.swift in Sources */,
+				12C50EE01CEBA7A300022B04 /* JsonSerializer.swift in Sources */,
 				12CF39E91B1789D100883192 /* UIImageView+WebCache.m in Sources */,
 				120A1D7A1C164B13007E98C3 /* MSDayColumnHeaderBackground.m in Sources */,
 				12553E961C17228B0051F30E /* UIFont+FontAwesome.m in Sources */,
@@ -1155,6 +1170,7 @@
 				127B72A61BF3849A0055FB3A /* NSData+ImageContentType.m in Sources */,
 				12B347CB1B10B0AD00A8AC3D /* Documents.swift in Sources */,
 				128CA4CD1C1654A000738FB9 /* Masonry-dummy.m in Sources */,
+				1232DF641CE918EF000038FC /* DrawingView.swift in Sources */,
 				12B347C11B10B0AD00A8AC3D /* Actes.swift in Sources */,
 				12553E9D1C1744B30051F30E /* CalendarsTableViewController.swift in Sources */,
 				12B347C61B10B0AD00A8AC3D /* ConfigurationViewController.swift in Sources */,

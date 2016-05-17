@@ -124,18 +124,64 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-
+    
+    
 
     
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
         cell.dentLayout.backgroundColor = UIColor.blueColor()
+        //set color with animation
+        UIView.animateWithDuration(0.1,
+            animations:{
+                cell.backgroundColor = UIColor(red: 232/255.0, green:232/255.0, blue:232/255.0, alpha:1);
+            },
+            completion:nil);
         print("Dent n°\(chart?.localisationFromIndexPath(indexPath.row)) sélectionné ")
         self.selectedCell = chart?.localisationFromIndexPath(indexPath.row)
         self.cell = cell
         self.indexPath = indexPath
         return true
+    }
+    
+    func reloadSelectedCell(){
+        cell?.dent8Layout.image = nil
+        cell?.dent7Layout.image = nil
+        cell?.dent6Layout.image = nil
+        cell?.dent5Layout.image = nil
+        cell?.dent4Layout.image = nil
+        cell?.dent3Layout.image = nil
+        cell?.dent2Layout.image = nil
+        cell?.dent1Layout.image = nil
+        cell?.dentLayout.image = nil
+        self.collectionView?.reloadItemsAtIndexPaths([self.indexPath!])
+        cell?.dent8Layout.image = nil
+        cell?.dent7Layout.image = nil
+        cell?.dent6Layout.image = nil
+        cell?.dent5Layout.image = nil
+        cell?.dent4Layout.image = nil
+        cell?.dent3Layout.image = nil
+        cell?.dent2Layout.image = nil
+        cell?.dent1Layout.image = nil
+        cell?.dentLayout.image = nil
+    }
+    
+    func addImageToSelectedCell(image:String){
+        var layers = [String]()
+        layers = (self.chart?.layerFromIndexPath((self.indexPath?.row)!))!
+        if layers.count > 0 {
+            layers.append(image)
+            self.chart?.setLayerFromIndexPath((self.indexPath?.row)!, layers: layers)
+            //                        schema.collectionView?.reloadData()
+            //                        let indexPath = NSIndexPath(forRow: (schema.chart?.indexPathFromLocalisation(selectedCell))!, inSection: 1)
+        }else {
+            self.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(NSDate()), localisation: self.selectedCell!, layer: image))
+        }
+        let cell = self.cell
+        if let c = cell{
+            self.reloadSelectedCell()
+        }
     }
 
 

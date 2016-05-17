@@ -63,52 +63,57 @@ import EventKit
         let resultsArr: NSArray = results["results"] as! NSArray
         dispatch_async(dispatch_get_main_queue(), {
             if resultsArr.count > 0 {
-            self.idPatient = resultsArr[0]["idpatient"] as? Int ?? self.idPatient
-            self.statut = resultsArr[0]["statutrdv"] as? Int ?? self.statut
-            self.modele = resultsArr[0]["modele"] as? Int ?? self.modele
-            self.descriptionModele = resultsArr[0]["description"] as? String ?? self.descriptionModele
-            self.cell?.updateLocation(self.descriptionModele)
-            self.dureeModele = resultsArr[0]["duree"] as? Int ?? 0
-            self.ressources = resultsArr[0]["ressources"] as? String ?? ""
-            self.updateStatut()
-            self.patient = patients.patientWithJSON(resultsArr)[0]
+                self.idPatient = resultsArr[0]["id"] as? Int ?? self.idPatient
+                self.statut = resultsArr[0]["statutrdv"] as? Int ?? self.statut
+                self.modele = resultsArr[0]["modele"] as? Int ?? self.modele
+                self.descriptionModele = resultsArr[0]["description"] as? String ?? self.descriptionModele
+                self.cell?.updateLocation(self.descriptionModele)
+                self.dureeModele = resultsArr[0]["duree"] as? Int ?? 0
+                self.ressources = resultsArr[0]["ressources"] as? String ?? ""
+                self.updateStatut()
+                self.patient = patients.patientWithJSON(resultsArr)[0]
+                if let callback = self.callback {
+                    callback()
+                }
+                if ((resultsArr[0]["nom"] as? String ) == nil){
+                    self.eventManager?.agenda?.reloadCalendars()
+                }
             }
-            if let callback = self.callback {
-                callback()
-            }
+            
+            
         })
     }
     func findRessources(ressources:String){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-
-        let a = ressources.componentsSeparatedByString(";")
-        var d:[String]
-        var e:[String]
-        var val:String
-        for b in a {
-            d = b.componentsSeparatedByString("X-ORE-")
-            for c in d {
-                e = c.componentsSeparatedByString("=")
-                if e.count > 1 {
-                val = e[1].stringByReplacingOccurrencesOfString("%", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                switch e[0]{
-                    case "IPP":
-                        self.idPatient = Int(val)!
-                        break
-                    case "STATUT":
-                        self.statut = Int(val)!
-                    break
-                    case "TYPE":
-                        self.modele = Int(val)!
-                        self.descriptionModele = TypeRDV.getTypeRDVById(self.eventManager!.TypesRDV, id: self.modele).description
-                    break
-                default:
-                    break
-                }
-                }
-            }
             
-        }
+            let a = ressources.componentsSeparatedByString(";")
+            var d:[String]
+            var e:[String]
+            var val:String
+            for b in a {
+                d = b.componentsSeparatedByString("X-ORE-")
+                for c in d {
+                    e = c.componentsSeparatedByString("=")
+                    if e.count > 1 {
+                        val = e[1].stringByReplacingOccurrencesOfString("%", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                        switch e[0]{
+                        case "IPP":
+                            self.idPatient = Int(val)!
+                            break
+                        case "STATUT":
+                            self.statut = Int(val)!
+                            break
+                        case "TYPE":
+                            self.modele = Int(val)!
+                            self.descriptionModele = TypeRDV.getTypeRDVById(self.eventManager!.TypesRDV, id: self.modele).description
+                            break
+                        default:
+                            break
+                        }
+                    }
+                }
+                
+            }
             dispatch_async(dispatch_get_main_queue(), {
                 self.updateStatut()
                 self.cell?.updateLocation(self.descriptionModele)
@@ -119,7 +124,7 @@ import EventKit
         let mabite = event!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
         if mabite.count>0 && event?.calendar.source.title == "iCloud"{
             api.sendRequest("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
-//            print("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
+            //            print("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
         }
     }
     func updateCalDavEvent(uid:String, initialDate:NSDate?) {
@@ -145,31 +150,31 @@ import EventKit
     }
     func updateStatut() {
         dispatch_async(dispatch_get_main_queue(), {
-                switch self.statut % 10{
-                case 1 :
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x26A65B)
-                    break
-                case 2 :
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xF89406)
-                    break
-                case 3 :
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xD35400)
-                    break
-                case 4 :
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xC0392B)
-                    break
-                case 5 :
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x96281B)
-                    break
-                case 6 :
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xC0392B)
-                    break
-                default:
-                    self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x2C3E50)
-                    break
-                }
-            })
-        }
+            switch self.statut % 10{
+            case 1 :
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x26A65B)
+                break
+            case 2 :
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xF89406)
+                break
+            case 3 :
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xD35400)
+                break
+            case 4 :
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xC0392B)
+                break
+            case 5 :
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x96281B)
+                break
+            case 6 :
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0xC0392B)
+                break
+            default:
+                self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x2C3E50)
+                break
+            }
+        })
+    }
     func handleError(results: Int) {
         if results == 1{
             let mabite = event!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
@@ -180,7 +185,7 @@ import EventKit
                     if ressources != nil {
                         self.findRessources(ressources!)
                     } else {
-//                        self.api.sendRequest("select e.statut as statutrdv,m.description, e.idPatient,e.modele, p.id, p.nir, p.genre, p.nom, p.prenom, p.adresse, p.codepostal, p.ville, p.telephone1,p.telephone2, p.email,p.statut, p.naissance, p.creation, p.idpraticien, p.idphoto,p.info, p.autorise_sms, p.correspondant, p.ipp2, p.adresse2, p.patient_par,amc, p.amc_prefs, p.profession, p.correspondants,p.famille,p.tel1_info, p.tel2_info FROM calendar_events e FULL OUTER JOIN calendar_events_modeles m ON e.modele = m.id INNER JOIN patients p ON p.id = e.idPatient WHERE e.idevent = '\(mabite[1])'")
+                        //                        self.api.sendRequest("select e.statut as statutrdv,m.description, e.idPatient,e.modele, p.id, p.nir, p.genre, p.nom, p.prenom, p.adresse, p.codepostal, p.ville, p.telephone1,p.telephone2, p.email,p.statut, p.naissance, p.creation, p.idpraticien, p.idphoto,p.info, p.autorise_sms, p.correspondant, p.ipp2, p.adresse2, p.patient_par,amc, p.amc_prefs, p.profession, p.correspondants,p.famille,p.tel1_info, p.tel2_info FROM calendar_events e FULL OUTER JOIN calendar_events_modeles m ON e.modele = m.id INNER JOIN patients p ON p.id = e.idPatient WHERE e.idevent = '\(mabite[1])'")
                     }
                 })
             }

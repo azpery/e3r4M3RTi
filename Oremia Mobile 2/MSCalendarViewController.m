@@ -361,6 +361,16 @@ UIPopoverPresentationController *popover;
         
     });
 }
+
+-(void) reloadCalendars
+{
+    if (self.selectedDate == nil) {
+        [self.fetchedResultsController.api getCalDavRessources:nil];
+    } else {
+        [self.fetchedResultsController.api getCalDavRessources:self.selectedDate];
+    }
+}
+
 -(void)showToday{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.collectionViewCalendarLayout scrollCollectionViewToClosetSectionToCurrentTimeAnimated:NO];

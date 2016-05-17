@@ -33,6 +33,7 @@ class NewEventTableViewController: UITableViewController  {
     @IBOutlet var addPatientButton: UIButton!
     @IBOutlet var consulterDossier: UIButton!
     @IBOutlet var image: UIImageView!
+    var tryed = false
     override func viewDidLoad() {
         super.viewDidLoad()
         eventManager.selectedCalendarIdentifier = eventManager.defaultCalendar?.title
@@ -52,8 +53,11 @@ class NewEventTableViewController: UITableViewController  {
             consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
             loadPhoto()
         } else {
-            self.eventManager.internalEvent.loadPatient(loadMe)
-            consulterDossier.titleLabel?.text = ""
+            if(!tryed){
+                self.tryed = true
+                self.eventManager.internalEvent.loadPatient(loadMe)
+                consulterDossier.titleLabel?.text = ""
+            }
         }
         if eventManager.editEvent != nil {
             patientText.text = eventManager.editEvent?.title
@@ -105,6 +109,9 @@ class NewEventTableViewController: UITableViewController  {
         } else {
             consulterDossier.titleLabel?.text = ""
         }
+    }
+    override func viewDidDisappear(animated: Bool) {
+        self.tryed = false
     }
     @IBAction func dateDebutChanged(sender: UIDatePicker) {
         dateDebutLabel.text = dateFormatter.stringFromDate(sender.date)
@@ -194,7 +201,7 @@ class NewEventTableViewController: UITableViewController  {
                 self.eventManager.agenda = self.caller
                 let mabite = self.eventManager.editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
 //                self.eventManager.CalDavRessource[mabite[1]] = "X-ORE-IPP=%\(eventManager.internalEvent.patient?.id)"
-                self.eventManager.loadCalendars()
+                self.tryed = false
                 self.caller?.reloadItMotherFucker()
             }))
         } else {

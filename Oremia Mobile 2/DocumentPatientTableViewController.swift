@@ -192,7 +192,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.section == 1 && lesDocuments.count > 0 && lesModeleDocuments.count > 0 || indexPath.section == 0 &&  lesModeleDocuments.count > 0){
+        if (indexPath.section == 1 && lesDocuments.count > 0 && lesModeleDocuments.count > 0 || indexPath.section == 0 &&  lesModeleDocuments.count > 0 && lesDocuments.count == 0){
             self.performSegueWithIdentifier("showDocumentSegue", sender: self)
         } else {
             let previewQL = QLPreviewController()
