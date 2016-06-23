@@ -32,7 +32,10 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
         api = APIController(delegate: self)
         let tb : TabBarViewController = self.tabBarController as! TabBarViewController
         patient = tb.patient!
+        let title = self.navigationController!.navigationBar.topItem!
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
         if profilePicture != nil {
+            
             profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;
             profilePicture.clipsToBounds = true
             profilePicture.layer.borderWidth = 0.5

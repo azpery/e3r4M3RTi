@@ -37,6 +37,10 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
         newDocument.setFAIcon(FAType.FAPlus, iconSize: 24)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        
+        let title = self.navigationController!.navigationBar.topItem!
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+
 
     }
 
@@ -55,6 +59,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         if (lesDocuments.count > 0){i++}
         if (lesModeleDocuments.count > 0){i++}
         if (lesDocumentsWord.count > 0){i++}
+        ToolBox.setDefaultBackgroundMessage(self.tableView, elements: i, message: "Aucun document n'a été créé")
         return i
     }
 

@@ -84,6 +84,12 @@
             make.right.equalTo(self.mas_right).offset(-contentPadding.right);
             make.bottom.lessThanOrEqualTo(self.mas_bottom).offset(-contentPadding.bottom);
         }];
+        
+        CGFloat height = self.frame.size.height;
+        if(height >= 30){
+            
+            self.location.hidden = false;
+        }
     }
     
     return self;

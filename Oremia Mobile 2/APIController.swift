@@ -371,6 +371,10 @@ import Foundation
         return destinationUrl
     }
     
+    func getIduser()->Int
+    {
+        return preference.idUser
+    }
     
     
 }

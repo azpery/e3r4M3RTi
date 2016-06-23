@@ -205,8 +205,9 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
             dispatch_async(dispatch_get_main_queue(), {
                 self.prestation = Prestation.prestationWithJSON(resultsArr)
                 self.tableView.reloadData()
-                if self.actesController?.finished > 0 {
+                if self.actesController?.finished > 1 {
                     self.actesController?.activityIndicator.stopActivity(true)
+                    self.actesController?.activityIndicator.removeFromSuperview()
                 } else {
                     self.actesController?.finished++
                 }

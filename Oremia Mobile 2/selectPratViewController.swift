@@ -101,7 +101,6 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     }
     func scrollViewDidScroll(scrollView: UIScrollView) {
         // Load the pages that are now on screen
-        print("yolo")
         if(!UIApplication.sharedApplication().networkActivityIndicatorVisible){
             loadVisiblePages()
         }
@@ -183,7 +182,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     func pingResult(success:NSNumber){
         if(success.boolValue){
             api!.checkFileUpdate()
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "showActivityLoader", userInfo: nil, repeats: true)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "showActivityLoader", userInfo: nil, repeats: true)
         }else {
             self.handleError(1)
         }

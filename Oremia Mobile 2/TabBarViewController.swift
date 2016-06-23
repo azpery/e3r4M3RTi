@@ -16,6 +16,14 @@ class TabBarViewController: UITabBarController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set red as selected background color
+        let numberOfItems = CGFloat(tabBar.items!.count)
+        let tabBarItemSize = CGSize(width: tabBar.frame.width , height: tabBar.frame.height)
+        tabBar.selectionIndicatorImage = UIImage.imageWithColor(ToolBox.UIColorFromRGB(0xE86A0E), size: tabBarItemSize).resizableImageWithCapInsets(UIEdgeInsetsZero)
+        
+        // remove default border
+        tabBar.frame.size.width = self.view.frame.width + 4
+        tabBar.frame.origin.x = -2
         for item in self.tabBar.items! as [UITabBarItem] {
             if let image = item.image {
                 item.image = image.imageWithColor(UIColor.whiteColor()).imageWithRenderingMode(.AlwaysOriginal)
@@ -32,6 +40,7 @@ class TabBarViewController: UITabBarController {
         let radioCollectionViewController: RadioCollectionViewController = segue.destinationViewController as! RadioCollectionViewController
         radioCollectionViewController.patient = patient!
     }
+    //Write your code here
 
     /*
     // MARK: - Navigation

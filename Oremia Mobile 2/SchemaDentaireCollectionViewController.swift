@@ -24,12 +24,12 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.chart = Chart(idpatient: patient!.id, callback: self.collectionView!.reloadData)
+        self.chart = Chart(idpatient: patient!.id, callback: self.didReceiveData)
         self.collectionView!.reloadData()
         let value = UIInterfaceOrientation.LandscapeLeft.rawValue
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         // Register cell classes
-//        self.collectionView!.registerClass(DentCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        //        self.collectionView!.registerClass(DentCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         //set cell width and height
         self.view.layoutIfNeeded()
@@ -37,12 +37,14 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cellHeight = (self.view.bounds.size.height )/2
         
     }
+    
+    
     override func viewDidAppear(animated: Bool) {
         self.view.layoutIfNeeded()
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -55,25 +57,25 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cellHeight = (self.view.bounds.size.height )/2
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using [segue destinationViewController].
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
     // MARK: UICollectionViewDataSource
-
-
+    
+    
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 32
     }
-
+    
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
         cell.dent8Layout.image =  nil
@@ -85,10 +87,10 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cell.dent1Layout.image = nil
         cell.dentLayout.image = nil
         let i = indexPath.row
-//        let recipe = UIImageView(frame: cell.dentLayout.frame)
-//        recipe.contentMode = .ScaleAspectFit
-//        cell.clipsToBounds = true
-//        cell.addSubview(recipe)
+        //        let recipe = UIImageView(frame: cell.dentLayout.frame)
+        //        recipe.contentMode = .ScaleAspectFit
+        //        cell.clipsToBounds = true
+        //        cell.addSubview(recipe)
         cell.dentLayout.contentMode = .ScaleAspectFit
         cell.dentLayout.clipsToBounds = true
         let layer = chart?.layerFromIndexPath(i) ?? [""]
@@ -103,7 +105,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
             return CGSize(width: cellWidth*(6.7/6), height: cellHeight)
         } else {
             return CGSize(width: cellWidth*(5.3/6), height: cellHeight)
-
+            
         }
     }
     
@@ -116,9 +118,9 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 0
     }
-
+    
     // MARK: UICollectionViewDelegate
-
+    
     
     // Uncomment this method to specify if the specified item should be highlighted during tracking
     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -126,7 +128,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     }
     
     
-
+    
     
     // Uncomment this method to specify if the specified item should be selected
     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -134,10 +136,10 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cell.dentLayout.backgroundColor = UIColor.blueColor()
         //set color with animation
         UIView.animateWithDuration(0.1,
-            animations:{
-                cell.backgroundColor = UIColor(red: 232/255.0, green:232/255.0, blue:232/255.0, alpha:1);
+                                   animations:{
+                                    cell.backgroundColor = UIColor(red: 232/255.0, green:232/255.0, blue:232/255.0, alpha:1);
             },
-            completion:nil);
+                                   completion:nil);
         print("Dent n°\(chart?.localisationFromIndexPath(indexPath.row)) sélectionné ")
         self.selectedCell = chart?.localisationFromIndexPath(indexPath.row)
         self.cell = cell
@@ -183,21 +185,31 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
             self.reloadSelectedCell()
         }
     }
-
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
+    func didReceiveData(){
+        dispatch_async(dispatch_get_main_queue(), {
+            self.collectionView!.reloadData()
+            if self.actesController?.finished > 1 {
+                self.actesController?.activityIndicator.stopActivity(true)
+                self.actesController?.activityIndicator.removeFromSuperview()
+            } else {
+                self.actesController?.finished++
+            }
+        })
     }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
     
-    }
-    */
-
+    /*
+     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+     override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+     return false
+     }
+     
+     override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+     return false
+     }
+     
+     override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+     
+     }
+     */
+    
 }

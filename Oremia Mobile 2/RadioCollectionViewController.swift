@@ -56,6 +56,10 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
         self.collectionView?.addSubview(self.refreshControl!)
         self.collectionView?.alwaysBounceVertical = true
         
+        let title = self.navigationController!.navigationBar.topItem!
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+
+        
     }
     func quit(sender: UIBarButtonItem){
         self.performSegueWithIdentifier("unWind", sender: self)
@@ -66,6 +70,7 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
 
 
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        ToolBox.setDefaultBackgroundMessageForCollection(self.collectionView!, elements: nb, message: "Aucune radio n'a été prise")
         return 1
     }
 
@@ -137,6 +142,8 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
                 self.collectionView?.reloadData()
             }
         })
+        
+        
     }
     func handleError(results: Int) {
         if results == 1{

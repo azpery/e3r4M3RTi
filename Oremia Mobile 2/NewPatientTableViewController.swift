@@ -46,6 +46,10 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
             let ni = UIBarButtonItem.init(title: "Annuler",style: UIBarButtonItemStyle.Plain, target: self, action: Selector("dismissView:"))
             self.navigationItem.leftBarButtonItem = ni
         }
+        
+        let nav = self.navigationController as? NewPatientNavigationController
+        
+        self.parent = nav?.parent
     }
     @IBAction func dismissView(sender: AnyObject) {
         if self.fromCal{
@@ -107,7 +111,7 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
     func didReceiveAPIResults(results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
         dispatch_async(dispatch_get_main_queue(), {
-            if resultsArr.count != 0   {
+            if resultsArr.count != 0  && self.parent != nil {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
@@ -132,6 +136,7 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
                     self.cal?.patientText.text = ""+self.prenom.text!.lowercaseString.capitalizedString+" "+self.nom.text!.lowercaseString.capitalizedString
                     self.cal!.eventManager.internalEvent.idPatient = resultsArr[0]["id"] as! Int
                     self.cal!.eventManager.internalEvent.patient = patient
+                    self.cal!.eventManager.editEvent?.title = (self.cal?.patientText.text) ?? "Nouveau rendez-vous"
                     self.navigationController?.popToRootViewControllerAnimated(true)
                 }
             }

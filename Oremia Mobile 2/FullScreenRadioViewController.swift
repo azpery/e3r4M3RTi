@@ -42,6 +42,7 @@ class FullScreenRadioViewController: UIViewController, UIScrollViewDelegate {
         // 6
         centerScrollViewContents()
         // Do any additional setup after loading the view.
+
     }
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return imageView

@@ -15,23 +15,26 @@ class ActesViewController: UIViewController {
     let scl = SCLAlertView()
     var activityIndicator = DTIActivityIndicatorView()
     var finished = 0
+    @IBOutlet var dragside: UIButton!
+    @IBOutlet var dragbottom: UIButton!
     @IBOutlet var leftPanel: UIView!
     @IBOutlet var bottomPanel: UIView!
     @IBOutlet var rightPanel: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator = DTIActivityIndicatorView(frame: view.frame)
+        view.addSubview(activityIndicator)
         activityIndicator.indicatorColor = UIColor.blackColor()
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
                 let gestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
-                self.view.addGestureRecognizer(gestureRecognizer)
+                self.dragside.addGestureRecognizer(gestureRecognizer)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.destinationViewController.isKindOfClass(SchemaDentaireCollectionViewController){
             let destinationView: SchemaDentaireCollectionViewController = segue.destinationViewController as! SchemaDentaireCollectionViewController

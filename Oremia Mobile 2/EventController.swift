@@ -79,10 +79,10 @@ import EventKit
         return vretour
     }
     func loadDefaultCalendar() {
-        let calendarArray = api.getPref("calendrierpardefaut")
+        let calendarArray = api.getPref("calendrierpardefaut\(preference.idUser)")
         if(calendarArray.count==0){
             let kalendar = allCalendars![(allCalendars?.count)!-1]
-            api.addPref("calendrierpardefaut", prefs: [kalendar.title])
+            api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [kalendar.title])
             self.defaultCalendar = kalendar
             api.readPreference()
         } else {
@@ -111,7 +111,7 @@ import EventKit
             api.getCalDavRessources()
         }
         var bidule = [EKCalendar]()
-        let calendarArray = api.getPref("calendrier")
+        let calendarArray = api.getPref("calendrier\(preference.idUser)")
         var v = 0;
         for k in calendars! {
             v = 0
@@ -128,7 +128,7 @@ import EventKit
             for k in calendars! {
                 titles.append(k.title)
             }
-            api.addPref("calendrier", prefs: titles)
+            api.addPref("calendrier\(preference.idUser)", prefs: titles)
             api.readPreference()
         } else {
             self.calendars = bidule
@@ -155,14 +155,14 @@ import EventKit
                     for var i = 0; i < eventsArray.count; i++ {
                         let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
                         var eventExists: Bool = false
-                        if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
-                            for var j = 0; j < uniqueEventsArray.count; j++ {
-                                if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
-                                    eventExists = true
-                                }
-                            }
-                        }
-                        if !eventExists && auj.compare(currentEvent.startDate) == NSComparisonResult.OrderedAscending {
+//                        if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
+//                            for var j = 0; j < uniqueEventsArray.count; j++ {
+//                                if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
+//                                    eventExists = true
+//                                }
+//                            }
+//                        }
+                        if  auj.compare(currentEvent.startDate) == NSComparisonResult.OrderedAscending {
                             uniqueEventsArray.append(currentEvent)
                         }
                     }
@@ -193,16 +193,16 @@ import EventKit
                 for var i = 0; i < eventsArray.count; i++ {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
                     var eventExists: Bool = false
-                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
-                        for var j = 0; j < uniqueEventsArray.count; j++ {
-                            if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
-                                eventExists = true
-                            }
-                        }
-                    }
-                    if !eventExists  {
+//                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
+//                        for var j = 0; j < uniqueEventsArray.count; j++ {
+//                            if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
+//                                eventExists = true
+//                            }
+//                        }
+//                    }
+//                    if !eventExists  {
                         uniqueEventsArray.append(currentEvent)
-                    }
+//                    }
                 }
             }
         }
@@ -239,16 +239,16 @@ import EventKit
                 for var i = 0; i < eventsArray.count; i++ {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
                     var eventExists: Bool = false
-                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
-                        for var j = 0; j < uniqueEventsArray.count; j++ {
-                            if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
-                                eventExists = true
-                            }
-                        }
-                    }
-                    if !eventExists  {
+//                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
+//                        for var j = 0; j < uniqueEventsArray.count; j++ {
+//                            if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
+//                                eventExists = true
+//                            }
+//                        }
+//                    }
+//                    if !eventExists  {
                         uniqueEventsArray.append(currentEvent)
-                    }
+//                    }
                 }
             }
         }
@@ -436,7 +436,7 @@ import EventKit
         return self.sortEventsByDay(EventManager.allEvents!)
     }
     func setDefautCalendar(dCal:EKCalendar){
-        api.addPref("calendrierpardefaut", prefs: [dCal.title])
+        api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [dCal.title])
         self.defaultCalendar = dCal
         api.readPreference()
     }

@@ -36,6 +36,12 @@ class NewEventTableViewController: UITableViewController  {
     var tryed = false
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadMe()
+    }
+    
+    func loadMe(){
+        consulterDossier.hidden = true
         eventManager.selectedCalendarIdentifier = eventManager.defaultCalendar?.title
         calendrier.text = eventManager.defaultCalendar?.title
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
@@ -45,17 +51,15 @@ class NewEventTableViewController: UITableViewController  {
         rightArrowBis.setFAIcon(FAType.FAArrowRight, iconSize: 17)
         rightArrowBis.tintColor = UIColor.whiteColor()
         addPatientButton.setFAIcon(FAType.FAPlusCircle, forState: UIControlState.Normal)
-        loadMe()
-    }
-    
-    func loadMe(){
         if self.eventManager.internalEvent.patient != nil{
+            consulterDossier.hidden = false
             consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
             loadPhoto()
         } else {
             if(!tryed){
                 self.tryed = true
                 self.eventManager.internalEvent.loadPatient(loadMe)
+                consulterDossier.hidden = true
                 consulterDossier.titleLabel?.text = ""
             }
         }
@@ -103,6 +107,7 @@ class NewEventTableViewController: UITableViewController  {
         })
     }
     override func viewDidAppear(animated: Bool) {
+        loadMe()
         if self.eventManager.internalEvent.patient != nil{
             consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
             loadPhoto()

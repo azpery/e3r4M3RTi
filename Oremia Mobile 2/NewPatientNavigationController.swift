@@ -1,22 +1,18 @@
 //
-//  MSCalendarViewController.swift
+//  NewPatientNavigationController.swift
 //  OremiaMobile2
 //
-//  Created by Zumatec on 08/12/2015.
-//  Copyright © 2015 Zumatec. All rights reserved.
+//  Created by Zumatec on 22/06/2016.
+//  Copyright © 2016 Zumatec. All rights reserved.
 //
 
 import UIKit
 
-class MSCalendarNavigationViewController: UINavigationController {
-
+class NewPatientNavigationController: UINavigationController {
+    var parent:DetailsViewController?
     override func viewDidLoad() {
         super.viewDidLoad()
-        let  calendarViewController  = MSCalendarViewController.init()
-        self.title = "\(self.title) -  Dr \(preference.nomUser)"
-        self.showViewController(calendarViewController, sender: self)
-        
-        // Do any additional setup after loading the view.
+
     }
 
     override func didReceiveMemoryWarning() {

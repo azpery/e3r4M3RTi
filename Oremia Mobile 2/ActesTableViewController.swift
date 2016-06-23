@@ -29,7 +29,9 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
         quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
         
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        
+        let title = self.navigationController!.navigationBar.topItem!
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+
         
 
     }
@@ -42,15 +44,14 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
+        ToolBox.setDefaultBackgroundMessage(self.tableView, elements: sortedActes.count, message: "Aucun acte n'a été appliqué à ce jour")
         return sortedActes.count
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        let index = sortedActes.startIndex.advancedBy(section)
+                let index = sortedActes.startIndex.advancedBy(section)
         return sortedActes[sortedActes.keys[index]]!.count
     }
 

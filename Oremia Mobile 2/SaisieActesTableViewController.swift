@@ -65,8 +65,9 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
             if let dict = resultsArr as? NSArray {
                 self.prestation = PrestationActe.prestationActesWithJSON(dict)
                 self.tableView.reloadData()
-                if self.actesController?.finished > 0 {
+                if self.actesController?.finished > 1 {
                     self.actesController?.activityIndicator.stopActivity(true)
+                    self.actesController?.activityIndicator.removeFromSuperview()
                 } else {
                     self.actesController?.finished++
                 }

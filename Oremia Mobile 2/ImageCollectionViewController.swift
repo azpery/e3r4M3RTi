@@ -62,6 +62,10 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         self.collectionView?.addSubview(self.refreshControl!)
         self.collectionView?.alwaysBounceVertical = true
         
+        let title = self.navigationController!.navigationBar.topItem!
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+
+        
         
     }
     func quit(sender: UIBarButtonItem){
@@ -99,11 +103,13 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        ToolBox.setDefaultBackgroundMessageForCollection(self.collectionView!, elements: nb, message: "Aucune photo n'a été prise")
         return 1
     }
     
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         return nb
     }
     

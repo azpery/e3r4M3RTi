@@ -142,6 +142,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
             self.patientText!.text = ""+track.prenom.lowercaseString.capitalizedString+" "+track.nom.lowercaseString.capitalizedString
             self.eventManager!.internalEvent.idPatient = track.id
             self.eventManager!.internalEvent.patient = track
+            self.eventManager!.editEvent?.title = ""+track.prenom.lowercaseString.capitalizedString+" "+track.nom.lowercaseString.capitalizedString
             self.navigationController?.popToRootViewControllerAnimated(true)
         }
         if self.searchActive || self.searchDisplayController!.active {
@@ -176,8 +177,8 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         searchActive = true;
     }
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText != ""  {
-            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercaseString)percent' OR prenom LIKE 'percent\(searchText.uppercaseString)percent' OR nom LIKE 'percent\( searchText.lowercaseString)percent' OR prenom LIKE 'percent\(searchText.lowercaseString)percent' ORDER BY nom LIMIT 10")
+        if searchText != ""  && searchText.characters.count >= 2{
+            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercaseString)percent' OR prenom LIKE 'percent\(searchText.uppercaseString)percent' OR nom LIKE 'percent\( searchText.lowercaseString)percent' OR prenom LIKE 'percent\(searchText.lowercaseString)percent' ORDER BY nom, prenom LIMIT 30")
             
         }
         //        self.filtredpatients = self.tracks.filter({( patient: patients) -> Bool in
@@ -252,9 +253,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
                 selectedAlbum = self.tracks[albumIndex]
             }
             detailsViewController.patient = selectedAlbum
-        } else if (segue.identifier=="register"){
-            let newpatient: NewPatientTableViewController = segue.destinationViewController as! NewPatientTableViewController
-            newpatient.parent = self
+        }
+        if (segue.identifier=="register"){
+            let navnewpatient: NewPatientNavigationController = segue.destinationViewController as! NewPatientNavigationController
+            navnewpatient.parent = self
         }
     }
     func handleError(results: Int) {

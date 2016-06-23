@@ -135,25 +135,37 @@ UIPopoverPresentationController *popover;
                                            nil]forState:UIControlStateNormal];
     buttonSetting.title = [NSString fontAwesomeIconStringForEnum:FACogs];
     buttonSetting.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *buttonRefresh = [[UIBarButtonItem alloc]
+                                      initWithTitle:@"Your Button"
+                                      style:UIBarButtonItemStylePlain
+                                      target:self
+                                      action:@selector(reloadItMotherFucker)];
+    [buttonRefresh setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                           [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
+                                           [UIColor whiteColor], NSForegroundColorAttributeName,
+                                           nil]forState:UIControlStateNormal];
+    buttonRefresh.title = [NSString fontAwesomeIconStringForEnum:FARefresh];
+    buttonRefresh.tintColor = [UIColor whiteColor];
     UIBarButtonItem *buttonAuj = [[UIBarButtonItem alloc]
                                       initWithTitle:@"Aujourd'hui"
                                       style:UIBarButtonItemStylePlain
                                       target:self
                                       action:@selector(showToday)];
     buttonSetting.tintColor = [UIColor whiteColor];
-    [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting]];
+    [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting, buttonRefresh]];
     [self.navigationItem setLeftBarButtonItems:@[tamere, buttonAuj]];
     //update Early and lastest hours
     self.api = [[APIController alloc] initWithDelegate:self];
-
-    NSArray *pref = [_api getPref:@"time"];
+    NSString* time = [NSString stringWithFormat:@"time%i", self.api.getIduser];
+    NSArray *pref = [_api getPref:time];
     if ([pref count] != 0) {
         NSString *begin = pref[0];
         NSString *end = pref[1];
         [self.collectionViewCalendarLayout setBeginHour: begin.intValue];
         [self.collectionViewCalendarLayout setEndHour: end.intValue];
     } else{
-        [_api addPref:@"time" prefs:@[@"8",@"18"]];
+        
+        [_api addPref:time prefs:@[@"8",@"18"]];
         [self.collectionViewCalendarLayout setBeginHour:8];
         [self.collectionViewCalendarLayout setEndHour:18];
     }
@@ -205,11 +217,6 @@ UIPopoverPresentationController *popover;
     [dwGs setDirection:UISwipeGestureRecognizerDirectionDown];
     [super.view addGestureRecognizer:upGs];
     [super.view addGestureRecognizer:dwGs];
-    
-    
-    
-    
-    
     
 }
 -(void) iSaidReloadit
@@ -267,14 +274,15 @@ UIPopoverPresentationController *popover;
     
     //update Early and lastest hours
     APIController *api = [[APIController alloc] initWithDelegate:self];
-    NSArray *pref = [api getPref:@"time"];
+    NSString* time = [NSString stringWithFormat:@"time%i", self.api.getIduser];
+    NSArray *pref = [api getPref:time];
     if ([pref count] != 0) {
         NSString *begin = pref[0];
         NSString *end = pref[1];
         [self.collectionViewCalendarLayout setBeginHour: begin.intValue];
         [self.collectionViewCalendarLayout setEndHour: end.intValue];
     } else{
-        [api addPref:@"time" prefs:@[@"8",@"18"]];
+        [api addPref:time prefs:@[@"8",@"18"]];
         [self.collectionViewCalendarLayout setBeginHour:8];
         [self.collectionViewCalendarLayout setEndHour:18];
     }
@@ -373,9 +381,8 @@ UIPopoverPresentationController *popover;
 
 -(void)showToday{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.collectionViewCalendarLayout scrollCollectionViewToClosetSectionToCurrentTimeAnimated:NO];
         NSDate *date = [[NSDate alloc] init];
-        [self.fetchedResultsController.api getCalDavRessources:date];
+        [self moveToDate:date];
     });
 }
 -(void)addNewCell:(UILongPressGestureRecognizer *)sender {
@@ -384,33 +391,36 @@ UIPopoverPresentationController *popover;
         CGPoint touchPoint = [sender locationInView:self.collectionView];
         [sender setEnabled:NO];
         NSDate *date = [self.collectionViewCalendarLayout dateFromOffset:touchPoint];
-        CGFloat calendarContentMinX = (self.collectionViewCalendarLayout.timeRowHeaderWidth + self.collectionViewCalendarLayout.contentMargin.left + self.collectionViewCalendarLayout.sectionMargin.left);
-        NSInteger closestSectionToCurrentTime = floor((touchPoint.x-calendarContentMinX )/ self.collectionViewCalendarLayout.sectionWidth);
+//        CGFloat calendarContentMinX = (self.collectionViewCalendarLayout.timeRowHeaderWidth + self.collectionViewCalendarLayout.contentMargin.left + self.collectionViewCalendarLayout.sectionMargin.left);
+//        NSInteger closestSectionToCurrentTime = floor((touchPoint.x-calendarContentMinX )/ self.collectionViewCalendarLayout.sectionWidth);
 //        NSInteger closestSectionToCurrentTime = [self.collectionViewCalendarLayout closestSectionToCurrentTime:date];
         self.uniqueEventsArray = [self.fetchedResultsController addNewEventToArray:date];
-        NSArray *items = self.uniqueEventsArray[closestSectionToCurrentTime ][@"lesDates"];
-        int i = 0;
-        bool found = false;
-        for(EKEvent* evt in items){
-            NSDate* evtDate = evt.startDate;
-            if ([evtDate compare:date] == NSOrderedSame) {
-                break;
-            }
-            i++;
-        }
-        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i
-                                                          inSection:closestSectionToCurrentTime ]];
-        //
-        [self.collectionView performBatchUpdates:^{
-            
-            [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
-            
-        } completion:^(BOOL finished){
-            dispatch_async(dispatch_get_main_queue(), ^ {
-                [self.collectionView reloadData];
-            });
-        }];
+        [self reloadItMotherFucker];
+//        NSArray *items = self.uniqueEventsArray[closestSectionToCurrentTime][@"lesDates"];
+//        int i = 0;
+//        bool found = false;
+//        for(EKEvent* evt in items){
+//            NSDate* evtDate = evt.startDate;
+//            if ([evtDate compare:date] == NSOrderedSame) {
+//                break;
+//            }
+//            i++;
+//        }
+//        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+//        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:(i - 1)
+//                                                          inSection:closestSectionToCurrentTime ]];
+//        //
+//        [UIView animateWithDuration:0 animations:^{
+//            [self.collectionView performBatchUpdates:^{
+//            
+//                [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
+//            
+//            }   completion:^(BOOL finished){
+//                dispatch_async(dispatch_get_main_queue(), ^ {
+//                    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:closestSectionToCurrentTime]];
+//                });
+//            }];
+//        }];
 
     } else {
         [sender setEnabled:YES];
@@ -419,12 +429,17 @@ UIPopoverPresentationController *popover;
 }
 
 - (void)datePickerDonePressed:(THDatePickerViewController *)picker {
-    self.selectedDate = picker.date;
-    [self dismissSemiModalView];
-    [LoadingOverlay.shared showOverlay:self.collectionView];
-    [self.fetchedResultsController.api getCalDavRessources:picker.date];
     
-    self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:picker.date]];
+    [self moveToDate:picker.date];
+    [self dismissSemiModalView];
+}
+-(void)moveToDate:(NSDate *)date
+{
+    self.selectedDate = date;
+    
+    [self.fetchedResultsController.api getCalDavRessources:date];
+    
+    self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:date]];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
         // DATA PROCESSING 1
@@ -433,19 +448,10 @@ UIPopoverPresentationController *popover;
             [self.collectionViewCalendarLayout invalidateLayoutCache];
             self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
             [self.collectionView reloadData];
-            [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:picker.date andAnimated:NO];
-            [LoadingOverlay.shared hideOverlayView];
+            [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:date andAnimated:NO];
         });
         
     });
-//    if () {
-//        
-//       
-//        
-////        [self iSaidReloadit];
-//    } else {
-//        [ToolBox shakeIt:self.datePicker.view];
-//    }
 }
 - (void)datePickerCancelPressed:(THDatePickerViewController *)picker {
     [self dismissSemiModalView];

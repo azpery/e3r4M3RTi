@@ -34,18 +34,18 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
             }
         }
         self.navigationItem.title = ""
-        self.myCalendar = api.getPref("calendrier")
+        self.myCalendar = api.getPref("calendrier\(preference.idUser)")
         self.selectedCalendar = myCalendar
         
     }
     
     @IBAction func validerTapped(sender: AnyObject) {
-        api.addPref("calendrier", prefs: selectedCalendar)
+        api.addPref("calendrier\(preference.idUser)", prefs: selectedCalendar)
         let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! PreferenceTableViewCell
         let heureDebut = Int(cell.heureDebut.text!)
         let heureFin = Int(cell.heureFin.text!)
         if(heureDebut != nil && heureFin != nil && cell.heureDebut.text! != "" && cell.heureFin.text! != "" && heureDebut! >= 0 && heureDebut! <= 11 && heureFin! > 0 && heureFin! <= 23){
-            api.addPref("time", prefs: [cell.heureDebut.text!, cell.heureFin.text!])
+            api.addPref("time\(preference.idUser)", prefs: [cell.heureDebut.text!, cell.heureFin.text!])
             
             self.dismissViewControllerAnimated(true, completion: ({
                 self.caller?.iSaidReloadit()
@@ -81,7 +81,11 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
         if(indexPath.row == 0){
             
             let preferenceCell = tableView.dequeueReusableCellWithIdentifier("PreferenceTableViewCell", forIndexPath: indexPath) as! PreferenceTableViewCell
-            let heure = api.getPref("time")
+            var heure = api.getPref("time\(preference.idUser)")
+            if(heure.count == 0){
+                heure = ["8","20"]
+                api.addPref("time\(preference.idUser)", prefs: heure)
+            }
             preferenceCell.heureDebut.text = heure[0]
             preferenceCell.heureFin.text = heure[1]
             

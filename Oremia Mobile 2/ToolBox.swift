@@ -56,4 +56,45 @@ import Foundation
         print(day)
         return "\(day)/\(month)/\(year)"
     }
+    
+    static func setDefaultBackgroundMessage(tableView:UITableView, elements:Int, message:String){
+        let messageLbl = UILabel( frame:CGRectMake(0, 0,
+            tableView.bounds.size.width,
+            tableView.bounds.size.height))
+        if (elements == 0) {
+            //set the message
+            messageLbl.text = message
+        }else{
+            messageLbl.text = ""
+        }
+        messageLbl.font = UIFont(name: "Avenir Next", size: 30)
+        messageLbl.textColor = ToolBox.UIColorFromRGB(0x878787)
+        //center the text
+        messageLbl.textAlignment = NSTextAlignment.Center
+        //auto size the text
+        messageLbl.sizeToFit()
+        tableView.backgroundView = messageLbl
+        //no separator
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+    }
+    
+    static func setDefaultBackgroundMessageForCollection(tableView:UICollectionView, elements:Int, message:String){
+        let messageLbl = UILabel( frame:CGRectMake(0, 0,
+            tableView.bounds.size.width,
+            tableView.bounds.size.height))
+        if (elements == 0) {
+            //set the message
+            messageLbl.text = message
+        }else{
+            messageLbl.text = ""
+        }
+        messageLbl.font = UIFont(name: "Avenir Next", size: 30)
+        messageLbl.textColor = ToolBox.UIColorFromRGB(0x878787)
+        //center the text
+        messageLbl.textAlignment = NSTextAlignment.Center
+        //auto size the text
+        messageLbl.sizeToFit()
+        tableView.backgroundView = messageLbl
+        //no separator
+    }
 }
