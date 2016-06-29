@@ -107,11 +107,12 @@ import EventKit
             print("An error occured \(error)")
         }
         eventStore.refreshSourcesIfNecessary()
-        if agenda != nil{
-            api.getCalDavRessources()
-        }
+        
         var bidule = [EKCalendar]()
         let calendarArray = api.getPref("calendrier\(preference.idUser)")
+        if agenda != nil{
+            api.getCalDavRessources(NSDate(), calendars: calendarArray)
+        }
         var v = 0;
         for k in calendars! {
             v = 0
@@ -132,6 +133,7 @@ import EventKit
             api.readPreference()
         } else {
             self.calendars = bidule
+            
         }
         
     }

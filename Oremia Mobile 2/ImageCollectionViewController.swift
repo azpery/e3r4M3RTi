@@ -63,7 +63,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         self.collectionView?.alwaysBounceVertical = true
         
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
 
         
         

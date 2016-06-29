@@ -68,13 +68,13 @@ UIPopoverPresentationController *popover;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-//        if (granted) {
-//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventStoreChangedNotification:) name:EKEventStoreChangedNotification object:nil];
-//        }
-//    }];
-   
+    [self iSaidReloadit];
     
+
+    
+}
+-(void) iSaidReloadit
+{
     self.collectionView.backgroundColor = [UIColor whiteColor];
     
     [self.collectionView registerClass:MSEventCell.class forCellWithReuseIdentifier:MSEventCellReuseIdentifier];
@@ -147,10 +147,10 @@ UIPopoverPresentationController *popover;
     buttonRefresh.title = [NSString fontAwesomeIconStringForEnum:FARefresh];
     buttonRefresh.tintColor = [UIColor whiteColor];
     UIBarButtonItem *buttonAuj = [[UIBarButtonItem alloc]
-                                      initWithTitle:@"Aujourd'hui"
-                                      style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(showToday)];
+                                  initWithTitle:@"Aujourd'hui"
+                                  style:UIBarButtonItemStylePlain
+                                  target:self
+                                  action:@selector(showToday)];
     buttonSetting.tintColor = [UIColor whiteColor];
     [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting, buttonRefresh]];
     [self.navigationItem setLeftBarButtonItems:@[tamere, buttonAuj]];
@@ -185,7 +185,7 @@ UIPopoverPresentationController *popover;
         controller.modalPresentationStyle = UIModalPresentationPopover;
         destinationView.caller = self;
         destinationView.eventManager = self.fetchedResultsController;
-
+        
         
         if ([EventManager.allEvents count] > 0) {
             self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[EventManager allEvents]];
@@ -217,104 +217,6 @@ UIPopoverPresentationController *popover;
     [dwGs setDirection:UISwipeGestureRecognizerDirectionDown];
     [super.view addGestureRecognizer:upGs];
     [super.view addGestureRecognizer:dwGs];
-    
-}
--(void) iSaidReloadit
-{
-    self.collectionView.backgroundColor = [UIColor whiteColor];
-    
-    [self setDecoration];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                             style:UIBarButtonSystemItemDone
-                                                                            target:self.revealViewController action:@selector(revealToggle:)] ;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                              style:UIBarButtonSystemItemDone
-                                                                             target:self action:@selector(showNewEvent)] ;
-    //Navigation Items !!
-    UIBarButtonItem *tamere= self.navigationItem.leftBarButtonItem;
-    UIBarButtonItem *rightButton= self.navigationItem.rightBarButtonItem;
-    [tamere setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
-                                    [UIColor whiteColor], NSForegroundColorAttributeName,
-                                    nil]forState:UIControlStateNormal];
-    [rightButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                         [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
-                                         [UIColor whiteColor], NSForegroundColorAttributeName,
-                                         nil]forState:UIControlStateNormal];
-    
-    tamere.title = [NSString fontAwesomeIconStringForEnum:FABars];
-    tamere.tintColor = [UIColor whiteColor];
-    rightButton.title = [NSString fontAwesomeIconStringForEnum:FAPlus];
-    rightButton.tintColor = [UIColor whiteColor];
-    UIBarButtonItem *buttonCalendarPicker = [[UIBarButtonItem alloc]
-                                             initWithTitle:@"Your Button"
-                                             style:UIBarButtonItemStylePlain
-                                             target:self
-                                             action:@selector(showMiniCalendar)];
-    [buttonCalendarPicker setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                  [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
-                                                  [UIColor whiteColor], NSForegroundColorAttributeName,
-                                                  nil]forState:UIControlStateNormal];
-    buttonCalendarPicker.title = [NSString fontAwesomeIconStringForEnum:FAcalendarTimesO];
-    buttonCalendarPicker.tintColor = [UIColor whiteColor];
-    
-    UIBarButtonItem *buttonSetting = [[UIBarButtonItem alloc]
-                                      initWithTitle:@"Your Button"
-                                      style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(showSettings)];
-    [buttonSetting setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                           [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
-                                           [UIColor whiteColor], NSForegroundColorAttributeName,
-                                           nil]forState:UIControlStateNormal];
-    buttonSetting.title = [NSString fontAwesomeIconStringForEnum:FACogs];
-    buttonSetting.tintColor = [UIColor whiteColor];
-    [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting]];
-    
-    //update Early and lastest hours
-    APIController *api = [[APIController alloc] initWithDelegate:self];
-    NSString* time = [NSString stringWithFormat:@"time%i", self.api.getIduser];
-    NSArray *pref = [api getPref:time];
-    if ([pref count] != 0) {
-        NSString *begin = pref[0];
-        NSString *end = pref[1];
-        [self.collectionViewCalendarLayout setBeginHour: begin.intValue];
-        [self.collectionViewCalendarLayout setEndHour: end.intValue];
-    } else{
-        [api addPref:time prefs:@[@"8",@"18"]];
-        [self.collectionViewCalendarLayout setBeginHour:8];
-        [self.collectionViewCalendarLayout setEndHour:18];
-    }
-    // Divide into sections by the "day" key path
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.fetchedResultsController = [[EventManager alloc]init];
-        [self.fetchedResultsController setAgenda:self];
-        
-        mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        controller = [mainStoryboard instantiateViewControllerWithIdentifier:@"newEvent"];
-        destinationView = controller.viewControllers.firstObject;
-        controller.modalPresentationStyle = UIModalPresentationPopover;
-        destinationView.caller = self;
-        destinationView.eventManager = self.fetchedResultsController;
-
-        
-        self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
-        // DATA PROCESSING 1
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.collectionView.collectionViewLayout invalidateLayout];
-            [self.collectionViewCalendarLayout invalidateLayoutCache];
-            self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
-            [self.collectionView reloadData];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.collectionViewCalendarLayout scrollCollectionViewToClosetSectionToCurrentTimeAnimated:NO];
-            });
-        });
-        
-    });
-    UIPinchGestureRecognizer *twoFingerPinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(showMiniCalendar)];
-    [self.collectionView addGestureRecognizer:twoFingerPinch];
-    //[self touchedButton];
 }
 -(void)setDecoration{
     [self.collectionView registerClass:MSEventCell.class forCellWithReuseIdentifier:MSEventCellReuseIdentifier];
@@ -372,10 +274,14 @@ UIPopoverPresentationController *popover;
 
 -(void) reloadCalendars
 {
+    NSMutableArray *cals = [@[@""] mutableCopy];
+    for (EKCalendar *cal in [self.fetchedResultsController calendars]) {
+        [cals addObject:[cal title]];
+    }
     if (self.selectedDate == nil) {
-        [self.fetchedResultsController.api getCalDavRessources:nil];
+        [self.fetchedResultsController.api getCalDavRessources:nil calendars:cals];
     } else {
-        [self.fetchedResultsController.api getCalDavRessources:self.selectedDate];
+        [self.fetchedResultsController.api getCalDavRessources:self.selectedDate calendars:cals];
     }
 }
 
@@ -436,8 +342,11 @@ UIPopoverPresentationController *popover;
 -(void)moveToDate:(NSDate *)date
 {
     self.selectedDate = date;
-    
-    [self.fetchedResultsController.api getCalDavRessources:date];
+    NSMutableArray *cals = [@[@""] mutableCopy];
+    for (EKCalendar *cal in [self.fetchedResultsController calendars]) {
+        [cals addObject:[cal title]];
+    }
+    [self.fetchedResultsController.api getCalDavRessources:date calendars:cals];
     
     self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:date]];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -579,9 +488,9 @@ UIPopoverPresentationController *popover;
     if (scrollView.contentOffset.y < 0) {
         scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, 0);
     }
-    if (scrollView.contentOffset.y > scrollView.frame.size.height + [self.collectionViewCalendarLayout getCellHeight]) {
-        scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, scrollView.frame.size.height + [self.collectionViewCalendarLayout getCellHeight]);
-    }
+//    if (scrollView.contentOffset.y > scrollView.frame.size.height + [self.collectionViewCalendarLayout getCellHeight]) {
+//        scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, scrollView.frame.size.height + [self.collectionViewCalendarLayout getCellHeight]);
+//    }
     if (self.isScrollingVertical){
         [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:YES];
     }

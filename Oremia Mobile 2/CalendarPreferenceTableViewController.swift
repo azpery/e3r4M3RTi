@@ -41,6 +41,7 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
     
     @IBAction func validerTapped(sender: AnyObject) {
         api.addPref("calendrier\(preference.idUser)", prefs: selectedCalendar)
+        self.tableView.setContentOffset(CGPoint.zero, animated: false)
         let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! PreferenceTableViewCell
         let heureDebut = Int(cell.heureDebut.text!)
         let heureFin = Int(cell.heureFin.text!)

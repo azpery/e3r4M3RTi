@@ -168,25 +168,14 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         self.tracksTableView.reloadData()
     }
     
-    //    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-    //        searchActive = false;
-    //        self.tracksTableView.reloadData()
-    //    }
-    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchActive = true;
     }
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != ""  && searchText.characters.count >= 2{
-            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercaseString)percent' OR prenom LIKE 'percent\(searchText.uppercaseString)percent' OR nom LIKE 'percent\( searchText.lowercaseString)percent' OR prenom LIKE 'percent\(searchText.lowercaseString)percent' ORDER BY nom, prenom LIMIT 30")
+            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercaseString)percent' OR prenom LIKE '\(searchText.uppercaseString)percent' OR nom LIKE 'percent\( searchText.lowercaseString)percent' ORDER BY prenom LIMIT 30")
             
         }
-        //        self.filtredpatients = self.tracks.filter({( patient: patients) -> Bool in
-        //            //            let categoryMatch = (scope == "All")
-        //            let stringMatch = patient.prenom.capitalizedString.rangeOfString(searchText.capitalizedString)
-        //            let nomMatch = patient.nom.capitalizedString.rangeOfString(searchText.capitalizedString)
-        //            return (stringMatch != nil) || (nomMatch != nil)
-        //        })
         if(filtredpatients.count == 0){
         } else {
             searchActive = true;

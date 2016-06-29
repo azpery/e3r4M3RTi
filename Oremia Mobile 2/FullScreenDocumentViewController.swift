@@ -18,12 +18,10 @@ class FullScreenDocumentViewController: UIViewController {
     var isCreate:Bool = false
     var patient:patients?
     var webView: WKWebView?
+    var idDocument:Int?
     @IBOutlet var containerView: UIView!
     override func loadView() {
         super.loadView()
-        NSURLCache.sharedURLCache().removeAllCachedResponses()
-        NSURLCache.sharedURLCache().diskCapacity = 0
-        NSURLCache.sharedURLCache().memoryCapacity = 0
         self.webView = WKWebView()
         
         self.view = self.webView!
@@ -31,24 +29,19 @@ class FullScreenDocumentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
             if isNew {
-            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/?idPrat=\(preference.idUser)&&idPatient=\(patient!.id)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
+            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/fill.html?idPrat=\(preference.idUser)&&idPatient=\(patient!.id)&&idDocument=\(self.idDocument!)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
             print(leDocument)
         }
         if modeleDocument != nil {
-            var scandale="http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/?idPrat=\(preference.idUser)&&idPatient=\(patient!.id)"
-            scandale += "&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw
+            var scandale="http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/fill.html"
+            scandale += "?db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw
             scandale += "&&idDocument=\(self.modeleDocument!.idDocument)"
             leDocument = NSURL(string : scandale)
         }
         if isCreate{
-            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/modele/Tool.html?v=1.1")
+            leDocument = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/?v=1.1")
         }
-        NSURLCache.sharedURLCache().removeAllCachedResponses()
-        NSURLCache.sharedURLCache().diskCapacity = 0
-        NSURLCache.sharedURLCache().memoryCapacity = 0
-        let day_url_request = NSURLRequest(URL: leDocument!,
-            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,
-            timeoutInterval: 10.0)
+        let day_url_request = NSURLRequest(URL: leDocument!)
 
         webView!.loadRequest(day_url_request)
         // Do any additional setup after loading the view.

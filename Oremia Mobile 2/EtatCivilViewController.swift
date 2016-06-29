@@ -33,7 +33,7 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
         let tb : TabBarViewController = self.tabBarController as! TabBarViewController
         patient = tb.patient!
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
         if profilePicture != nil {
             
             profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;

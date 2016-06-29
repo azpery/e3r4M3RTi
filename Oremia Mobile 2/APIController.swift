@@ -28,11 +28,11 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/updater.php"
         get(urlPath, searchString: "query='')")
     }
-    func sendRequest(searchString: String) {
+    func sendRequest(searchString: String, success: NSDictionary->Bool = {defaut->Bool in return false}){
         self.itunesSearchTerm = searchString.stringByReplacingOccurrencesOfString(" ", withString: "+", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
         if let _ = itunesSearchTerm!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
             let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"
-            get(urlPath, searchString: "query=\(searchString)")
+            get(urlPath, searchString: "query=\(searchString)", success: success)
         }
     }
     func insertActes(patient:patients, actes: [PrestationActe]) -> Bool {
@@ -52,12 +52,20 @@ import Foundation
             return false
         }
     }
-    func getCalDavRessources(var date:NSDate? = nil){
+    func getCalDavRessources(var date:NSDate? = nil, calendars:[String]? = [""]){
+        var cals = ""
+        if calendars != nil {
+            cals = "&calendars="
+            for c in calendars! {
+                cals += "\(c),"
+            }
+        }
+        
         if date == nil {
             date = NSDate()
         }
-        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/getEvents.php?idP=\(preference.idUser)&date=\(ToolBox.getFormatedDate(date!))"
-        get(urlPath, searchString: "query=\("")")
+        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/getEvents.php?idP=\(preference.idUser)&date=\(ToolBox.getFormatedDate(date!))\(cals)"
+        get(urlPath.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, searchString: "query=\("")")
     }
     func setCalDavRessources(uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int, var date:NSDate? = NSDate()){
         if let newsummary = summary.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
@@ -90,8 +98,8 @@ import Foundation
         SimplePingHelper.ping(url, target: self.delegate, sel: "pingResult:")
     }
     
-    func get(path: String, searchString:String) {
-        if let url = NSURL(string: path) {
+    func get(path: String, searchString:String, success: NSDictionary->Bool? = {defaut->Bool in return false}) {
+        if let url = NSURL(string: path ) {
             
             let request = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData, timeoutInterval: 3600)
             request.HTTPMethod = "POST"
@@ -118,7 +126,9 @@ import Foundation
                             do {
                                 jsonResult = (try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as? NSDictionary
                                 if jsonResult != nil {
-                                    self.delegate!.didReceiveAPIResults(jsonResult!)
+                                    if success(jsonResult!) == false {
+                                        self.delegate!.didReceiveAPIResults(jsonResult!)
+                                    }
                                 } else {
                                     self.delegate!.handleError(1)
                                 }

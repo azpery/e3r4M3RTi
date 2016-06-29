@@ -39,7 +39,7 @@ NSString * const MSCollectionElementKindHorizontalGridline = @"MSCollectionEleme
 
 
 
-NSUInteger const MSCollectionMinOverlayZ = 1000.0; // Allows for 900 items in a section without z overlap issues
+NSUInteger const MSCollectionMinOverlayZ = 500.0; // Allows for 900 items in a section without z overlap issues
 NSUInteger const MSCollectionMinCellZ = 100.0;  // Allows for 100 items in a section's background
 NSUInteger const MSCollectionMinBackgroundZ = 0.0;
 
@@ -737,7 +737,7 @@ NSUInteger const MSCollectionMinBackgroundZ = 0.0;
     self.currentTimeIndicatorAttributes = [NSMutableDictionary new];
     self.currentTimeHorizontalGridlineAttributes = [NSMutableDictionary new];
     
-    self.hourHeight = ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 60.0 : 60.0);
+    self.hourHeight = ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 100 : 100);
     self.sectionWidth = ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 120 : 180);
     self.dayColumnHeaderHeight = ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 110.0 : 90.0);
     self.timeRowHeaderWidth = 56.0;
@@ -869,7 +869,7 @@ NSUInteger const MSCollectionMinBackgroundZ = 0.0;
 -(NSDate*)dateFromOffset:(CGPoint) offset{
     CGFloat calendarContentMinY = (self.dayColumnHeaderHeight + self.contentMargin.top + self.sectionMargin.top);
     CGFloat calendarContentMinX = (self.timeRowHeaderWidth + self.contentMargin.left + self.sectionMargin.left);
-    CGFloat hourY = (((offset.y+(30*self.minuteHeight)) - calendarContentMinY) /self.hourHeight) + self.beginHour - 1 ;
+    CGFloat hourY = (((offset.y+(50*self.minuteHeight)) - calendarContentMinY) /self.hourHeight) + self.beginHour - 1 ;
     NSInteger hour = floor(hourY) ;
     NSInteger minute = *[self getClosestQuarter:floor((floor(((hourY - hour)*100)/self.minuteHeight)*60)/100)];
     NSInteger closestSectionToCurrentTime = floor((offset.x-calendarContentMinX )/ self.sectionWidth);

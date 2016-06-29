@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		120A1D751C164B13007E98C3 /* MSCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 120A1D631C164B13007E98C3 /* MSCalendarViewController.m */; };
-		120A1D761C164B13007E98C3 /* MSEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120A1D651C164B13007E98C3 /* MSEventCell.m */; };
 		120A1D771C164B13007E98C3 /* MSTimeRowHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 120A1D671C164B13007E98C3 /* MSTimeRowHeader.m */; };
 		120A1D781C164B13007E98C3 /* MSDayColumnHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 120A1D691C164B13007E98C3 /* MSDayColumnHeader.m */; };
 		120A1D791C164B13007E98C3 /* MSTimeRowHeaderBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 120A1D6B1C164B13007E98C3 /* MSTimeRowHeaderBackground.m */; };
@@ -67,6 +66,14 @@
 		126448A41D1B3DC90037062B /* NewPatientNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126448A31D1B3DC90037062B /* NewPatientNavigationController.swift */; };
 		126448A61D1C5EB70037062B /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126448A51D1C5EB70037062B /* ImageExtension.swift */; };
 		1268592D1BF78027008FB0D5 /* NewEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1268592C1BF78027008FB0D5 /* NewEventTableViewController.swift */; };
+		126F29581D1D2D1F00BC9CD5 /* MSEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 120A1D651C164B13007E98C3 /* MSEventCell.m */; };
+		126F29591D1D2DE900BC9CD5 /* SimplePingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282508E1CD6A0AD00F69298 /* SimplePingHelper.m */; };
+		126FC40D1D23E4FF0002173E /* ModeleDocumentEditorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC40C1D23E4FF0002173E /* ModeleDocumentEditorTableViewController.swift */; };
+		126FC40F1D23E5120002173E /* ModeleDocumentEditorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC40E1D23E5120002173E /* ModeleDocumentEditorTableViewCell.swift */; };
+		126FC4111D23E5280002173E /* ModeleDocumentEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC4101D23E5280002173E /* ModeleDocumentEditorViewController.swift */; };
+		126FC4131D23E6070002173E /* ModeleDocumentEditorSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC4121D23E6070002173E /* ModeleDocumentEditorSplitViewController.swift */; };
+		126FC4151D23EAB90002173E /* SplitViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC4141D23EAB90002173E /* SplitViewExtension.swift */; };
+		126FC4171D23F6410002173E /* TypeModeleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126FC4161D23F6410002173E /* TypeModeleDocument.swift */; };
 		1271D9361B95BF1D00911A88 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C266E31B4D296000BA4C5A /* ImageIO.framework */; };
 		1274E34C1CE12FB900B7E728 /* SelectionDocumentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1274E34B1CE12FB900B7E728 /* SelectionDocumentTableViewController.swift */; };
 		1274F9241B1B6F52002FCF43 /* date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1274F9231B1B6F52002FCF43 /* date.swift */; };
@@ -114,7 +121,6 @@
 		127FE9091B2045D80009B2E7 /* EtatCivilNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127FE9081B2045D80009B2E7 /* EtatCivilNavigationViewController.swift */; };
 		1282507B1CD681C300F69298 /* SwiftSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282507A1CD681C300F69298 /* SwiftSpinner.swift */; };
 		1282508C1CD6A00200F69298 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282508B1CD6A00200F69298 /* SimplePing.m */; };
-		1282508F1CD6A0AD00F69298 /* SimplePingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1282508E1CD6A0AD00F69298 /* SimplePingHelper.m */; };
 		128CA4CB1C1654A000738FB9 /* Masonry.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 128CA4C71C1654A000738FB9 /* Masonry.xcconfig */; };
 		128CA4CC1C1654A000738FB9 /* Masonry-Private.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 128CA4C81C1654A000738FB9 /* Masonry-Private.xcconfig */; };
 		128CA4CD1C1654A000738FB9 /* Masonry-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 128CA4C91C1654A000738FB9 /* Masonry-dummy.m */; };
@@ -279,6 +285,12 @@
 		126448A31D1B3DC90037062B /* NewPatientNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPatientNavigationController.swift; sourceTree = "<group>"; };
 		126448A51D1C5EB70037062B /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		1268592C1BF78027008FB0D5 /* NewEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEventTableViewController.swift; sourceTree = "<group>"; };
+		126FC40C1D23E4FF0002173E /* ModeleDocumentEditorTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeleDocumentEditorTableViewController.swift; sourceTree = "<group>"; };
+		126FC40E1D23E5120002173E /* ModeleDocumentEditorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeleDocumentEditorTableViewCell.swift; sourceTree = "<group>"; };
+		126FC4101D23E5280002173E /* ModeleDocumentEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeleDocumentEditorViewController.swift; sourceTree = "<group>"; };
+		126FC4121D23E6070002173E /* ModeleDocumentEditorSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeleDocumentEditorSplitViewController.swift; sourceTree = "<group>"; };
+		126FC4141D23EAB90002173E /* SplitViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewExtension.swift; sourceTree = "<group>"; };
+		126FC4161D23F6410002173E /* TypeModeleDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeModeleDocument.swift; sourceTree = "<group>"; };
 		1274E34B1CE12FB900B7E728 /* SelectionDocumentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionDocumentTableViewController.swift; sourceTree = "<group>"; };
 		1274F9231B1B6F52002FCF43 /* date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = date.swift; sourceTree = "<group>"; };
 		1274F9251B1B7D2B002FCF43 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -632,6 +644,17 @@
 			name = MSCalendar;
 			sourceTree = "<group>";
 		};
+		126FC40B1D23E4B70002173E /* Gestion des modèles de document */ = {
+			isa = PBXGroup;
+			children = (
+				126FC40C1D23E4FF0002173E /* ModeleDocumentEditorTableViewController.swift */,
+				126FC40E1D23E5120002173E /* ModeleDocumentEditorTableViewCell.swift */,
+				126FC4101D23E5280002173E /* ModeleDocumentEditorViewController.swift */,
+				126FC4121D23E6070002173E /* ModeleDocumentEditorSplitViewController.swift */,
+			);
+			name = "Gestion des modèles de document";
+			sourceTree = "<group>";
+		};
 		12756E991C5949870019F1FB /* THCalendarDatePicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -697,6 +720,8 @@
 				12A6BC9F1CD228FE00A1FB33 /* Prestation.swift */,
 				12A6BCA71CD28C4200A1FB33 /* PrestationActe.swift */,
 				126448A51D1C5EB70037062B /* ImageExtension.swift */,
+				126FC4141D23EAB90002173E /* SplitViewExtension.swift */,
+				126FC4161D23F6410002173E /* TypeModeleDocument.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -862,6 +887,7 @@
 		12B347F01B10B6E100A8AC3D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				126FC40B1D23E4B70002173E /* Gestion des modèles de document */,
 				126448A11D1B1CF40037062B /* Gestion des patients */,
 				123C7E031CED039F00211407 /* Accueil */,
 				123C7E021CED033B00211407 /* Gestion images */,
@@ -1081,6 +1107,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				126F29591D1D2DE900BC9CD5 /* SimplePingHelper.m in Sources */,
+				126F29581D1D2D1F00BC9CD5 /* MSEventCell.m in Sources */,
 				127B72A11BF383D70055FB3A /* UIImageView+HighlightedWebCache.m in Sources */,
 				127B72C21BF38BC30055FB3A /* DTIAnimWanderingCubes.swift in Sources */,
 				12AE86611C05D3CB0031C5A3 /* ModeleDocument.swift in Sources */,
@@ -1100,6 +1128,7 @@
 				123DA9781BBC3C80005E0402 /* JLToastCenter.swift in Sources */,
 				12172F041C14C59C00A99F49 /* HelpViewController.swift in Sources */,
 				1274F9241B1B6F52002FCF43 /* date.swift in Sources */,
+				126FC40D1D23E4FF0002173E /* ModeleDocumentEditorTableViewController.swift in Sources */,
 				12A6BCA01CD228FF00A1FB33 /* Prestation.swift in Sources */,
 				12750CB91C3EA4D0002999F5 /* SchemaDentaireCollectionViewController.swift in Sources */,
 				12B347D61B10B0AD00A8AC3D /* NewsTableViewCell.swift in Sources */,
@@ -1109,6 +1138,7 @@
 				124A21141C1A3E1100991A55 /* TypeRDVTableViewController.swift in Sources */,
 				120A1DA41C164D01007E98C3 /* ViewController+MASAdditions.m in Sources */,
 				127B72BA1BF38BC30055FB3A /* CALayer+DTI.swift in Sources */,
+				126FC4151D23EAB90002173E /* SplitViewExtension.swift in Sources */,
 				127B72C91BF3B0C50055FB3A /* CarousselViewController.swift in Sources */,
 				120A1D9D1C164D01007E98C3 /* MASConstraintMaker.m in Sources */,
 				124243E21BC575840067E6A1 /* MenuTableViewController.swift in Sources */,
@@ -1116,6 +1146,7 @@
 				124A21181C1A441C00991A55 /* TypeRDVTableViewCell.swift in Sources */,
 				120A1D9F1C164D01007E98C3 /* MASViewAttribute.m in Sources */,
 				127B72BF1BF38BC30055FB3A /* DTIAnimPulse.swift in Sources */,
+				126FC4111D23E5280002173E /* ModeleDocumentEditorViewController.swift in Sources */,
 				12B347EE1B10B10E00A8AC3D /* SWRevealViewController.m in Sources */,
 				12B347C31B10B0AD00A8AC3D /* ActesTableViewController.swift in Sources */,
 				120A1DA31C164D01007E98C3 /* View+MASAdditions.m in Sources */,
@@ -1137,7 +1168,6 @@
 				1282508C1CD6A00200F69298 /* SimplePing.m in Sources */,
 				12553E9B1C1737360051F30E /* NewEventNavigationController.swift in Sources */,
 				123DA9771BBC3C80005E0402 /* JLToast.swift in Sources */,
-				120A1D761C164B13007E98C3 /* MSEventCell.m in Sources */,
 				127B72A31BF383D70055FB3A /* UIView+WebCacheOperation.m in Sources */,
 				1282507B1CD681C300F69298 /* SwiftSpinner.swift in Sources */,
 				1220FE751BB8643600E8FF83 /* KaedeTextField.swift in Sources */,
@@ -1151,6 +1181,7 @@
 				12B347C51B10B0AD00A8AC3D /* AppDelegate.swift in Sources */,
 				1223CBBB1B1884BC00A42C80 /* PickerViewController.swift in Sources */,
 				1274F9261B1B7D2B002FCF43 /* SearchTableViewCell.swift in Sources */,
+				126FC4171D23F6410002173E /* TypeModeleDocument.swift in Sources */,
 				12A6BCA81CD28C4200A1FB33 /* PrestationActe.swift in Sources */,
 				127B72A21BF383D70055FB3A /* UIImageView+WebCache.m in Sources */,
 				127B728F1BF36B900055FB3A /* SDWebImageDownloader.m in Sources */,
@@ -1212,12 +1243,14 @@
 				12B347C61B10B0AD00A8AC3D /* ConfigurationViewController.swift in Sources */,
 				120A1D791C164B13007E98C3 /* MSTimeRowHeaderBackground.m in Sources */,
 				124A21161C1A422200991A55 /* TypeRDV.swift in Sources */,
+				126FC40F1D23E5120002173E /* ModeleDocumentEditorTableViewCell.swift in Sources */,
 				12F75D311C14E751000E7259 /* HelpButton.swift in Sources */,
 				1220FE771BB864FD00E8FF83 /* TextFieldsEffects.swift in Sources */,
 				12B347C71B10B0AD00A8AC3D /* ConnexionString.swift in Sources */,
 				12DE59231C131191001BC3AD /* NSDate+CupertinoYankee.m in Sources */,
 				12E453471C6BE2A30075251A /* CalendrierDefautTableViewCell.swift in Sources */,
 				1268592D1BF78027008FB0D5 /* NewEventTableViewController.swift in Sources */,
+				126FC4131D23E6070002173E /* ModeleDocumentEditorSplitViewController.swift in Sources */,
 				127B728C1BF36B900055FB3A /* SDImageCache.m in Sources */,
 				12D5D2541C5A2AB400EBDCE8 /* PreferenceTableViewCell.swift in Sources */,
 				122E54D71BBE93EA00861367 /* SectionHeaderView.swift in Sources */,
@@ -1234,7 +1267,6 @@
 				128FCFCB1C6AC0FD00FABB77 /* imageColor.swift in Sources */,
 				120A1D9C1C164D01007E98C3 /* MASConstraint.m in Sources */,
 				12B347E21B10B0AD00A8AC3D /* TabBarViewController.swift in Sources */,
-				1282508F1CD6A0AD00F69298 /* SimplePingHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1370,9 +1402,12 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = "Oremia Mobile 2/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_MODULE_NAME = OremiaMobile2;
 				PRODUCT_NAME = OremiaMobile2;
 				PROVISIONING_PROFILE = "";
@@ -1392,9 +1427,11 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = "Oremia Mobile 2/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "$(OTHER_LDFLAGS)";
 				PRODUCT_MODULE_NAME = OremiaMobile2;
 				PRODUCT_NAME = OremiaMobile2;
 				PROVISIONING_PROFILE = "";

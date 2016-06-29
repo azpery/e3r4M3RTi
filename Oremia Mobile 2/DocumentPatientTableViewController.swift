@@ -16,6 +16,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
     var lesDocumentsWord = [Document]()
     var lesModeleDocuments = [ModeleDocument]()
     var whichType = 0
+    var index = 0
     @IBOutlet var documentTableView: UITableView!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -39,7 +40,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
 
 
     }
@@ -155,7 +156,6 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
             fullScreenView.callback = self.callback
             if let controller = segue.destinationViewController as? UIViewController {
                 controller.popoverPresentationController!.delegate = self
-                controller.preferredContentSize = CGSize(width: 320, height: 90)
             }
         }else
         if segue.destinationViewController.isKindOfClass(FullScreenDocumentViewController){
@@ -178,6 +178,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
             case "addNewDocument" :
                 fullScreenView.isNew = true
                 fullScreenView.patient = self.patient
+                fullScreenView.idDocument = self.index
                 break
             case "createNewDocument" :
                 fullScreenView.isCreate = true
@@ -189,11 +190,8 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         }
     }
     func callback(index:Int){
-        if(index == 0){
-            self.performSegueWithIdentifier("addNewDocument", sender: self)
-        }else {
-            self.performSegueWithIdentifier("createNewDocument", sender: self)
-        }
+        self.index = index
+        self.performSegueWithIdentifier("addNewDocument", sender: self)
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -30,7 +30,7 @@ import Foundation
 //        overlayView.addSubview(activityIndicator)
 //        activityIndicator.startAnimating()
         LoadingOverlay.updateBlur(overlayView)
-        view.addSubview(overlayView)
+//        view.addSubview(overlayView)
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
         activityIndicator.indicatorColor = UIColor.blackColor()
@@ -74,6 +74,7 @@ import Foundation
     }
     public func hideOverlayView() {
         activityIndicator.stopActivity()
+        activityIndicator.removeFromSuperview()
         overlayView.removeFromSuperview()
     }
 }
