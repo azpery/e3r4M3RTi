@@ -27,19 +27,19 @@ class StatutTableViewController: UITableViewController {
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         switch indexPath.row{
-        case 1 :
+        case 0 :
             label!.text = "À l'heure"
             break
-        case 2 :
+        case 1 :
             label!.text = "En retard"
             break
-        case 3 :
+        case 2 :
             label!.text = "Retard important"
             break
-        case 4 :
+        case 3 :
             label!.text = "Annulé avant 48 heures"
             break
-        case 5 :
+        case 4 :
             label!.text = "Annulé"
             break
         default:

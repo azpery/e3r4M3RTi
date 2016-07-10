@@ -16,15 +16,10 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
     override func viewDidLoad() {
         super.viewDidLoad()
         api.getIniFile("SELECT inifile FROM fses WHERE idPatient = \((self.patient?.id)!) AND idpraticien = \(preference.idUser) ")
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        ToolBox.setDefaultBackgroundMessage(self.tableView, elements: self.prestation.count, message: "Cette FSE est vide.")
         return self.prestation.count
     }
     
@@ -41,13 +36,21 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Table view data source
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            self.prestation.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            api.insertActes(self.patient!, actes: prestation, success: {defaut->Bool in return true} )
+        }
+    }
     
+    func refresh()
+    {
+        api.getIniFile("SELECT inifile FROM fses WHERE idPatient = \((self.patient?.id)!) AND idpraticien = \(preference.idUser) ")
+    }
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
@@ -63,7 +66,8 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
         let resultsArr: NSArray = results["results"] as! NSArray
         dispatch_async(dispatch_get_main_queue(), {
             if let dict = resultsArr as? NSArray {
-                self.prestation = PrestationActe.prestationActesWithJSON(dict)
+                let prestation = PrestationActe.prestationActesWithJSON(dict)
+                self.prestation = prestation.sort({$0.nom < $1.nom})
                 self.tableView.reloadData()
                 if self.actesController?.finished > 1 {
                     self.actesController?.activityIndicator.stopActivity(true)
@@ -77,59 +81,6 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
     func handleError(results: Int) {
         api.getIniFile("SELECT inifile FROM config WHERE titre ='favoris' AND idpraticien = 500 ")
     }
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-    
-    // Configure the cell...
-    
-    return cell
-    }
-    */
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
+
     
 }

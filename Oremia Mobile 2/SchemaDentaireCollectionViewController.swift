@@ -18,20 +18,19 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     var sourceViewTabBar:UITabBarController?
     var sourceViewNavigationBar:UINavigationController?
     var actesController:ActesViewController?
-    var selectedCell:Int?
-    var cell:DentCollectionViewCell?
-    var indexPath:NSIndexPath?
+    var selectedCell:[Int] = []
+    var cell:[DentCollectionViewCell] = []
+    var indexPath:[NSIndexPath] = []
+    var chartLayouts:[Int:[Int:String]] = [0:[0:""]]
     override func viewDidLoad() {
         super.viewDidLoad()
+        if ToolBox.calcAge(patient?.dateNaissance ?? "03/04/1993") <= 10 {
+            self.chart = ChartForChildren(idpatient: patient!.id, callback: self.didReceiveData)
+        }else{
+            self.chart = Chart(idpatient: patient!.id, callback: self.didReceiveData)
+        }
         
-        self.chart = Chart(idpatient: patient!.id, callback: self.didReceiveData)
         self.collectionView!.reloadData()
-        let value = UIInterfaceOrientation.LandscapeLeft.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
-        // Register cell classes
-        //        self.collectionView!.registerClass(DentCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        //set cell width and height
         self.view.layoutIfNeeded()
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
@@ -56,17 +55,6 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using [segue destinationViewController].
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
-    // MARK: UICollectionViewDataSource
     
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -77,26 +65,31 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
-        cell.dent8Layout.image =  nil
+        let i = indexPath.row
+        cell.dentLayout.contentMode = .ScaleAspectFit
+        cell.dentLayout.clipsToBounds = true
+        let layer = self.chart?.layerFromIndexPath(i) ?? [""]
+        cell.dent8Layout.image = nil
+        cell.dent7Layout.image = nil
         cell.dent6Layout.image = nil
         cell.dent5Layout.image = nil
         cell.dent4Layout.image = nil
         cell.dent3Layout.image = nil
         cell.dent2Layout.image = nil
         cell.dent1Layout.image = nil
-        cell.dentLayout.image = nil
-        let i = indexPath.row
-        //        let recipe = UIImageView(frame: cell.dentLayout.frame)
-        //        recipe.contentMode = .ScaleAspectFit
-        //        cell.clipsToBounds = true
-        //        cell.addSubview(recipe)
-        cell.dentLayout.contentMode = .ScaleAspectFit
-        cell.dentLayout.clipsToBounds = true
-        let layer = chart?.layerFromIndexPath(i) ?? [""]
-        chart?.imagesFromIndexPath(i, layer: layer, cell: cell)
-        cell.setNeedsLayout() //invalidate current layout
-        cell.layoutIfNeeded()
+        cell.dentLayout.image = UIImage(named: "\(self.chart?.localisationFromIndexPath(i))")
+        self.chart?.imagesFromIndexPath(i, layer: layer, cell: cell)
+        
+        if(self.isSelected(indexPath.row) != -1){
+            cell.layer.borderWidth = 2.0
+            cell.layer.borderColor = UIColor.grayColor().CGColor
+        }else{
+            cell.layer.borderWidth = 0.0
+        }
+        cell.setNeedsLayout()
+        cell.setNeedsDisplay()
         return cell
     }
     func collectionView(collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -119,97 +112,87 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         return 0
     }
     
-    // MARK: UICollectionViewDelegate
     
-    
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    
-    
-    
-    
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func collectionView(collectionView: UICollectionView!, didSelectItemAtIndexPath indexPath: NSIndexPath!) {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
-        cell.dentLayout.backgroundColor = UIColor.blueColor()
-        //set color with animation
-        UIView.animateWithDuration(0.1,
-                                   animations:{
-                                    cell.backgroundColor = UIColor(red: 232/255.0, green:232/255.0, blue:232/255.0, alpha:1);
-            },
-                                   completion:nil);
-        print("Dent n°\(chart?.localisationFromIndexPath(indexPath.row)) sélectionné ")
-        self.selectedCell = chart?.localisationFromIndexPath(indexPath.row)
-        self.cell = cell
-        self.indexPath = indexPath
-        return true
+        
+        self.toggleSelectedCell(indexPath.row, cell: cell, indexPath: indexPath)
+        cell.dent8Layout.image = nil
+        cell.dent7Layout.image = nil
+        cell.dent6Layout.image = nil
+        cell.dent5Layout.image = nil
+        cell.dent4Layout.image = nil
+        cell.dent3Layout.image = nil
+        cell.dent2Layout.image = nil
+        cell.dent1Layout.image = nil
+        cell.dentLayout.image = nil
+        self.collectionView?.setNeedsLayout()
+        self.collectionView?.reloadItemsAtIndexPaths([indexPath])
     }
     
     func reloadSelectedCell(){
-        cell?.dent8Layout.image = nil
-        cell?.dent7Layout.image = nil
-        cell?.dent6Layout.image = nil
-        cell?.dent5Layout.image = nil
-        cell?.dent4Layout.image = nil
-        cell?.dent3Layout.image = nil
-        cell?.dent2Layout.image = nil
-        cell?.dent1Layout.image = nil
-        cell?.dentLayout.image = nil
-        self.collectionView?.reloadItemsAtIndexPaths([self.indexPath!])
-        cell?.dent8Layout.image = nil
-        cell?.dent7Layout.image = nil
-        cell?.dent6Layout.image = nil
-        cell?.dent5Layout.image = nil
-        cell?.dent4Layout.image = nil
-        cell?.dent3Layout.image = nil
-        cell?.dent2Layout.image = nil
-        cell?.dent1Layout.image = nil
-        cell?.dentLayout.image = nil
+        
+        self.collectionView?.reloadItemsAtIndexPaths(self.indexPath)
+        
     }
     
     func addImageToSelectedCell(image:String){
-        var layers = [String]()
-        layers = (self.chart?.layerFromIndexPath((self.indexPath?.row)!))!
-        if layers.count > 0 {
-            layers.append(image)
-            self.chart?.setLayerFromIndexPath((self.indexPath?.row)!, layers: layers)
-            //                        schema.collectionView?.reloadData()
-            //                        let indexPath = NSIndexPath(forRow: (schema.chart?.indexPathFromLocalisation(selectedCell))!, inSection: 1)
-        }else {
-            self.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(NSDate()), localisation: self.selectedCell!, layer: image))
+        var i = 0
+        for index in self.selectedCell{
+            let localisation = self.chart?.localisationFromIndexPath(index) ?? index
+            var layers = [String]()
+            layers = (self.chart?.layerFromIndexPath(self.indexPath[i].row))!
+            if layers.count > 0 {
+                layers.append(image)
+                self.chart?.setLayerFromIndexPath(self.indexPath[i].row, layers: layers)
+            }else {
+                self.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(NSDate()), localisation: localisation, layer: image))
+            }
+            i += 1
         }
-        let cell = self.cell
-        if let c = cell{
-            self.reloadSelectedCell()
-        }
+        
+        
+        
     }
     func didReceiveData(){
         dispatch_async(dispatch_get_main_queue(), {
+            
             self.collectionView!.reloadData()
+            
             if self.actesController?.finished > 1 {
                 self.actesController?.activityIndicator.stopActivity(true)
                 self.actesController?.activityIndicator.removeFromSuperview()
             } else {
                 self.actesController?.finished++
             }
+            
         })
     }
+    func toggleSelectedCell(index:Int, cell: DentCollectionViewCell, indexPath:NSIndexPath){
+        let found = self.isSelected(index)
+        let previous = self.indexPath
+        if found == -1{
+            self.cell = [cell]
+            self.indexPath = [indexPath]
+            self.selectedCell = [index]
+        }else{
+            self.selectedCell.removeAtIndex(found)
+            self.cell.removeAtIndex(found)
+            self.indexPath.removeAtIndex(found)
+        }
+        self.collectionView?.reloadItemsAtIndexPaths(previous)
+    }
     
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-     return false
-     }
-     
-     override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-     return false
-     }
-     
-     override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-     
-     }
-     */
+    func isSelected(index:Int)->Int{
+        var found = -1
+        var cpt = 0
+        for i in selectedCell {
+            if i == index {
+                found = cpt
+            }
+            cpt += 1
+        }
+        return found
+    }
     
 }

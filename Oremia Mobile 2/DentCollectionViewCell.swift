@@ -37,5 +37,19 @@ class DentCollectionViewCell: UICollectionViewCell {
             chart?.imageFromIndexPath(indexPath!, layer: layer, imageView: recipe)
         }
     }
+    
+    override func prepareForReuse() {
+        
+        self.dent8Layout.image =  nil
+        self.dent6Layout.image = nil
+        self.dent5Layout.image = nil
+        self.dent4Layout.image = nil
+        self.dent3Layout.image = nil
+        self.dent2Layout.image = nil
+        self.dent1Layout.image = nil
+        self.dentLayout.image = nil
+        
+        super.prepareForReuse()
+    }
 
 }

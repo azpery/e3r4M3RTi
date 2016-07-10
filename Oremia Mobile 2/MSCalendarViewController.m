@@ -187,12 +187,12 @@ UIPopoverPresentationController *popover;
         destinationView.eventManager = self.fetchedResultsController;
         
         
-        if ([EventManager.allEvents count] > 0) {
-            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[EventManager allEvents]];
-            [self reloadItMotherFucker];
-        } else{
+//        if ([EventManager.allEvents count] > 0) {
+//            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[EventManager allEvents]];
+//            [self reloadItMotherFucker];
+//        } else{
             self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
-        }
+//        }
         // DATA PROCESSING 1
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView.collectionViewLayout invalidateLayout];
@@ -399,7 +399,7 @@ UIPopoverPresentationController *popover;
     // display the controller in the usual way
     [self presentViewController:controller animated:YES completion:^{
         [destinationView loadMe];
-        
+        [destinationView loadEvent];
     }];
 }
 - (void)showSettings

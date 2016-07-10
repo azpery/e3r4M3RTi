@@ -98,9 +98,10 @@ import EventKit
         
     }
     func loadCalendars() {
+    
         self.calendars = eventStore.calendarsForEntityType(EKEntityType.Event)
         self.allCalendars = eventStore.calendarsForEntityType(EKEntityType.Event)
-//        eventStore.reset()
+        //        eventStore.reset()
         do {
             try eventStore.commit()
         } catch {

@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 
 
-class ImageCollectionViewController: UICollectionViewController, APIControllerProtocol  {
+class ImageCollectionViewController: UICollectionViewController, APIControllerProtocol, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     let reuseIdentifier = "ImageCell"
     var api:APIController?
     var nb = 0
@@ -19,6 +20,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     var refreshControl:UIRefreshControl?
     var patient:patients?
     let scl = SCLAlertView()
+    var cameraUI:UIImagePickerController = UIImagePickerController()
     var selectedPhoto:UIImage?
     var imageCache = [Int:UIImage]()
     var activityIndicator = DTIActivityIndicatorView()
@@ -28,6 +30,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet var cv: UICollectionView!
+    @IBOutlet var takePic: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +57,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         self.collectionView?.reloadData()
         menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
         quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
+        takePic.setFAIcon(FAType.FACamera, iconSize: 24)
         api!.sendRequest("select id from images where idpatient=\(patient!.id)")
         
         
@@ -199,6 +203,9 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         })
     }
     func handleError(results: Int) {
+        if results != 0{
+            self.api!.sendRequest("select id from images where idpatient=\(self.patient!.id)")
+        }else
         if results == 1{
             api!.sendRequest("select id from images where idpatient=\(patient!.id)")
         }
@@ -209,6 +216,35 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     func handleRefresh(refreshControl:UIRefreshControl){
         api!.sendRequest("select id from images where idpatient=\(patient!.id)")
         
+    }
+    
+    @IBAction func takePic(sender: AnyObject) {
+        presentCamera()
+    }
+    
+    func presentCamera()
+    {
+        cameraUI = UIImagePickerController()
+        cameraUI.delegate = self
+        cameraUI.sourceType = UIImagePickerControllerSourceType.Camera
+        //cameraUI.mediaTypes = [kUTTypeImage] as! String
+        cameraUI.allowsEditing = true
+        cameraUI.navigationItem.title = "kikou"
+        self.presentViewController(cameraUI, animated: true, completion: nil)
+    }
+    
+    
+    
+    func imagePickerControllerDidCancel(picker:UIImagePickerController)
+    {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        var imageToSave:UIImage
+        imageToSave = image
+        self.dismissViewControllerAnimated(true, completion: nil)
+        api?.insertImage(image, idPatient: self.patient!.id, isNewPp: false)
     }
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){

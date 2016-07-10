@@ -36,33 +36,12 @@ class NewEventTableViewController: UITableViewController  {
     var tryed = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadMe()
-    }
-    
-    func loadMe(){
-        consulterDossier.hidden = true
-        eventManager.selectedCalendarIdentifier = eventManager.defaultCalendar?.title
-        calendrier.text = eventManager.defaultCalendar?.title
         dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
         dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
-        rightArrow.setFAIcon(FAType.FAArrowRight, iconSize: 17)
-        rightArrow.tintColor = UIColor.whiteColor()
-        rightArrowBis.setFAIcon(FAType.FAArrowRight, iconSize: 17)
-        rightArrowBis.tintColor = UIColor.whiteColor()
-        addPatientButton.setFAIcon(FAType.FAPlusCircle, forState: UIControlState.Normal)
-        if self.eventManager.internalEvent.patient != nil{
-            consulterDossier.hidden = false
-            consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
-            loadPhoto()
-        } else {
-            if(!tryed){
-                self.tryed = true
-                self.eventManager.internalEvent.loadPatient(loadMe)
-                consulterDossier.hidden = true
-                consulterDossier.titleLabel?.text = ""
-            }
-        }
+
+    }
+    
+    func loadEvent(){
         if eventManager.editEvent != nil {
             patientText.text = eventManager.editEvent?.title
             calendrier.text = eventManager.editEvent?.calendar.title
@@ -81,6 +60,31 @@ class NewEventTableViewController: UITableViewController  {
         } else {
             delete.removeFromSuperview()
         }
+    }
+    
+    func loadMe(){
+        consulterDossier.hidden = true
+        eventManager.selectedCalendarIdentifier = eventManager.defaultCalendar?.title
+        calendrier.text = eventManager.defaultCalendar?.title
+        
+        rightArrow.setFAIcon(FAType.FAArrowRight, iconSize: 17)
+        rightArrow.tintColor = UIColor.whiteColor()
+        rightArrowBis.setFAIcon(FAType.FAArrowRight, iconSize: 17)
+        rightArrowBis.tintColor = UIColor.whiteColor()
+        addPatientButton.setFAIcon(FAType.FAPlusCircle, forState: UIControlState.Normal)
+        if self.eventManager.internalEvent.patient != nil{
+            consulterDossier.hidden = false
+            consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
+            loadPhoto()
+        } else {
+            if(!tryed){
+                self.tryed = true
+                self.eventManager.internalEvent.loadPatient(loadMe)
+                consulterDossier.hidden = true
+                consulterDossier.titleLabel?.text = ""
+            }
+        }
+        
         delete.addTarget(self, action: Selector("deleteEvent"), forControlEvents: UIControlEvents.TouchUpInside)
     }
     func loadPhoto(){

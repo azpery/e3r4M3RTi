@@ -35,13 +35,13 @@ import Foundation
             get(urlPath, searchString: "query=\(searchString)", success: success)
         }
     }
-    func insertActes(patient:patients, actes: [PrestationActe]) -> Bool {
+    func insertActes(patient:patients, actes: [PrestationActe], success: NSDictionary->Bool = {defaut->Bool in return false}) -> Bool {
         do{
             
             let uuid = NSUUID().UUIDString
             if let string = PrestationActe.prestationToFormattedOutput(patient, prestations: actes){
                 let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=17"
-                get(urlPath, searchString: "idPatient=\(patient.id)&idPraticien=\(preference.idUser)&UID=\(uuid)&arr=\(string)")
+                get(urlPath, searchString: "idPatient=\(patient.id)&idPraticien=\(preference.idUser)&UID=\(uuid)&arr=\(string)", success: success)
                 return true
             }else{
                 return false
@@ -86,9 +86,14 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"
         insert(urlPath, searchString: "query=\(searchString)")
     }
-    func insertImage(image:UIImage, idPatient:Int){
-        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/?type=7&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)"
+    func insertImage(image:UIImage, idPatient:Int, isNewPp:Bool = true){
+        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/?type=7&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)&&isNewPp=\(isNewPp ? 1 : 0)"
         sendImage(image, path: urlPath)
+    }
+    func signDocument(sPrat:String, sPatient:String, idDoc:Int, idPatient:Int, success: Int->Bool = {defaut->Bool in return false}){
+        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/documentSigner.php?idDocument=\(idDoc)&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)"
+        let query = "sPrat=\(percentEscapeString(sPrat))&sPatient=\(percentEscapeString(sPatient))"
+        insert(urlPath, searchString:query,  success: success)
     }
     func lookupAlbum(collectionId: Int) {
         sendRequest("select * from patients")
@@ -117,7 +122,7 @@ import Foundation
                     if httpResponse.statusCode == 200 {
                         if(error != nil) {
                             print(error!.localizedDescription)
-                            self.delegate!.handleError(1)
+                            self.delegate?.handleError(1)
                         }else {
                             print(response)
                             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
@@ -127,21 +132,21 @@ import Foundation
                                 jsonResult = (try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as? NSDictionary
                                 if jsonResult != nil {
                                     if success(jsonResult!) == false {
-                                        self.delegate!.didReceiveAPIResults(jsonResult!)
+                                        self.delegate?.didReceiveAPIResults(jsonResult!)
                                     }
                                 } else {
-                                    self.delegate!.handleError(1)
+                                    self.delegate?.handleError(1)
                                 }
                             } catch {
-                                self.delegate!.handleError(1)
+                                self.delegate?.handleError(1)
                             }
                         }
                     } else if httpResponse.statusCode == 404{
-                        self.delegate!.handleError(1)
+                        self.delegate?.handleError(1)
                     }else if httpResponse.statusCode == 406{
-                        self.delegate!.handleError(2)
+                        self.delegate?.handleError(2)
                     }else if httpResponse.statusCode == 502{
-                        self.delegate!.didReceiveAPIResults(["results":"Success"])
+                        self.delegate?.didReceiveAPIResults(["results":"Success"])
                     }else {
                         
                         dispatch_async(dispatch_get_main_queue(), {
@@ -154,16 +159,16 @@ import Foundation
                         })
                     }
                 }else  {
-                    self.delegate!.handleError(1)
+                    self.delegate?.handleError(1)
                 }
             })
             task.resume()
         } else {
-            delegate!.handleError(1)
+            delegate?.handleError(1)
         }
     }
     
-    func insert(path:String, searchString:String){
+    func insert(path:String, searchString:String, success: Int->Bool = {defaut->Bool in return false}){
         if let url = NSURL(string: path) {
             let request = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
@@ -173,8 +178,10 @@ import Foundation
             let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
                 print("Task completed")
                 print(response)
-                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                let responseString = NSString(data: data ?? NSData(), encoding: NSUTF8StringEncoding)!
                 print("responseString = \(responseString)")
+                let idInserted = Int(responseString as! String)
+                success(idInserted ?? 0)
                 if(error != nil) {
                     print(error!.localizedDescription)
                 }
@@ -182,6 +189,13 @@ import Foundation
             task.resume()
             
         }
+    }
+    func percentEscapeString(string: String) -> String {
+        return CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                       string,
+                                                       nil,
+                                                       ":/?@!$&'()*+,;=",
+                                                       CFStringBuiltInEncodings.UTF8.rawValue) as String;
     }
     func sendImage(image:UIImage, path: String){
         let url = NSURL(string: path)

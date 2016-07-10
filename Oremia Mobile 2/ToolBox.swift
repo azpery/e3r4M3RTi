@@ -97,4 +97,29 @@ import Foundation
         tableView.backgroundView = messageLbl
         //no separator
     }
+    
+    static func startActivity(view: UIView) -> DTIActivityIndicatorView{
+        let activityIndicator = DTIActivityIndicatorView(frame: view.frame)
+        view.addSubview(activityIndicator)
+        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
+        activityIndicator.startActivity()
+        return activityIndicator
+    }
+    
+    static func stopActivity(activityIndicator:DTIActivityIndicatorView){
+        activityIndicator.stopActivity()
+        activityIndicator.removeFromSuperview()
+    }
+    
+    static func calcAge(birthday:String) -> Int{
+        let dateFormater = NSDateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd"
+        let birthdayDate = dateFormater.dateFromString(birthday)
+        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        let now: NSDate! = NSDate()
+        let calcAge = calendar.components(.Year, fromDate: birthdayDate!, toDate: now, options: [])
+        let age = calcAge.year
+        return age
+    }
 }

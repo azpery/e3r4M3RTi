@@ -8,55 +8,156 @@
 
 import UIKit
 
-class DrawableView: UIView {
+@IBDesignable
+public class DrawableView: UIView {
     
-    let path=UIBezierPath()
-    var previousPoint:CGPoint
-    var lineWidth:CGFloat=0.0
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override init(frame: CGRect) {
-        previousPoint=CGPoint.zero
+    weak var delegate: DrawableViewDelegate!
+    
+    // MARK: - Public properties
+    @IBInspectable public var strokeWidth: CGFloat = 2.0 {
+        didSet {
+            self.path.lineWidth = strokeWidth
+        }
+    }
+    
+    @IBInspectable public var strokeColor: UIColor = UIColor.blackColor() {
+        didSet {
+            self.strokeColor.setStroke()
+        }
+    }
+    
+    @IBInspectable public var signatureBackgroundColor: UIColor = UIColor.whiteColor() {
+        didSet {
+            self.backgroundColor = signatureBackgroundColor
+        }
+    }
+    
+    // Computed Property returns true if the view actually contains a signature
+    public var containsSignature: Bool {
+        get {
+            if self.path.empty {
+                return false
+            } else {
+                return true
+            }
+        }
+    }
+    
+    // MARK: - Private properties
+    private var path = UIBezierPath()
+    private var pts = [CGPoint](count: 5, repeatedValue: CGPoint())
+    private var ctr = 0
+    
+    // MARK: - Init
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.backgroundColor = self.signatureBackgroundColor
+        self.path.lineWidth = self.strokeWidth
+        self.path.lineJoinStyle = CGLineJoin.Round
+    }
+    
+    override public init(frame: CGRect) {
         super.init(frame: frame)
+        
+        self.backgroundColor = self.signatureBackgroundColor
+        self.path.lineWidth = self.strokeWidth
+        self.path.lineJoinStyle = CGLineJoin.Round
     }
     
-    required init(coder aDecoder: NSCoder) {
-        previousPoint=CGPoint.zero
-        super.init(coder: aDecoder)!
-        var panGestureRecognizer=UIPanGestureRecognizer(target: self, action: "pan:")
-        panGestureRecognizer.maximumNumberOfTouches=1
-        self.addGestureRecognizer(panGestureRecognizer)
-        
+    // MARK: - Draw
+    override public func drawRect(rect: CGRect) {
+        self.strokeColor.setStroke()
+        self.path.stroke()
     }
     
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-        UIColor.greenColor().setStroke()
-        path.stroke()
-        path.lineWidth=lineWidth
+    // MARK: - Touch handling functions
+    override public func touchesBegan(touches: Set <UITouch>, withEvent event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let touchPoint = firstTouch.locationInView(self)
+            self.ctr = 0
+            self.pts[0] = touchPoint
+        }
+        
+        if let delegate = self.delegate {
+            delegate.startedSignatureDrawing!()
+        }
     }
-    func pan(panGestureRecognizer:UIPanGestureRecognizer)->Void
-    {
-        var currentPoint=panGestureRecognizer.locationInView(self)
-        let midPoint=self.midPoint(previousPoint, p1: currentPoint)
-        
-        if panGestureRecognizer.state == .Began
-        {
-            path.moveToPoint(currentPoint)
+    
+    override public func touchesMoved(touches: Set <UITouch>, withEvent event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let touchPoint = firstTouch.locationInView(self)
+            self.ctr += 1
+            self.pts[self.ctr] = touchPoint
+            if (self.ctr == 4) {
+                self.pts[3] = CGPointMake((self.pts[2].x + self.pts[4].x)/2.0, (self.pts[2].y + self.pts[4].y)/2.0)
+                self.path.moveToPoint(self.pts[0])
+                self.path.addCurveToPoint(self.pts[3], controlPoint1:self.pts[1], controlPoint2:self.pts[2])
+                
+                self.setNeedsDisplay()
+                self.pts[0] = self.pts[3]
+                self.pts[1] = self.pts[4]
+                self.ctr = 1
+            }
+            
+            self.setNeedsDisplay()
         }
-        else if panGestureRecognizer.state == .Changed
-        {
-            path.addQuadCurveToPoint(midPoint,controlPoint: previousPoint)
+    }
+    
+    override public func touchesEnded(touches: Set <UITouch>, withEvent event: UIEvent?) {
+        if self.ctr == 0 {
+            let touchPoint = self.pts[0]
+            self.path.moveToPoint(CGPointMake(touchPoint.x-1.0,touchPoint.y))
+            self.path.addLineToPoint(CGPointMake(touchPoint.x+1.0,touchPoint.y))
+            self.setNeedsDisplay()
+        } else {
+            self.ctr = 0
         }
         
-        previousPoint=currentPoint
+        if let delegate = self.delegate {
+            delegate.finishedSignatureDrawing!()
+        }
+    }
+    
+    // MARK: - Methods for interacting with Signature View
+    
+    // Clear the Signature View
+    public func clearSignature() {
+        self.path.removeAllPoints()
         self.setNeedsDisplay()
     }
-    func midPoint(p0:CGPoint,p1:CGPoint)->CGPoint
-    {
-        let x=(p0.x+p1.x)/2
-        let y=(p0.y+p1.y)/2
-        return CGPoint(x: x, y: y)
+    
+    // Save the Signature as an UIImage
+    public func getSignature(scale scale:CGFloat = 1) -> UIImage? {
+        if !containsSignature { return nil }
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, scale)
+        self.path.stroke()
+        let signature = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return signature
     }
     
+    // Save the Signature (cropped of outside white space) as a UIImage
+    public func getSignatureCropped(scale scale:CGFloat = 1) -> UIImage? {
+        guard let fullRender = getSignature(scale:scale) else { return nil }
+        let bounds = scaleRect(path.bounds.insetBy(dx: -strokeWidth/2, dy: -strokeWidth/2), byFactor: scale)
+        guard let imageRef = CGImageCreateWithImageInRect(fullRender.CGImage, bounds) else { return nil }
+        return UIImage(CGImage: imageRef)
+    }
+    
+    func scaleRect(rect: CGRect, byFactor factor: CGFloat) -> CGRect
+    {
+        var scaledRect = rect
+        scaledRect.origin.x *= factor
+        scaledRect.origin.y *= factor
+        scaledRect.size.width *= factor
+        scaledRect.size.height *= factor
+        return scaledRect
+    }
+}
+
+// MARK: - Optional Protocol Methods for YPDrawSignatureViewDelegate
+@objc protocol DrawableViewDelegate: class {
+    optional func startedSignatureDrawing()
+    optional func finishedSignatureDrawing()
 }

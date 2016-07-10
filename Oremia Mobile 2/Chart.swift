@@ -75,125 +75,54 @@ class Chart :  NSObject, APIControllerProtocol{
         return localisation
     }
     
-    //    func imageFromIndexPath(var indexPath:Int, var layer:String, imageView:UIImageView){
-    //        if layer != "" {
-    //            layer = "-\(layer)"
-    //        }
-    //        if indexPath <= 7 {
-    //
-    //            indexPath = 18 - indexPath
-    //            if let image = UIImage(named: "\(indexPath)\(layer)"){
-    //                imageView.image = image
-    //            } else {
-    //                imageView.image = UIImage(named: "\(indexPath)")
-    //            }
-    //        }else if indexPath > 7 && indexPath <= 15 {
-    //            indexPath = 3 + indexPath
-    //            if let image = UIImage(named: "\(indexPath)\(layer)"){
-    //                imageView.image = image
-    //            } else {
-    //                imageView.image = UIImage(named: "\(indexPath)")
-    //            }
-    //            imageView.transform = CGAffineTransformMakeScale(-1, 1)
-    //        }else if indexPath > 15 && indexPath <= 23 {
-    //            indexPath = 64 - indexPath
-    //        }else if indexPath > 23  {
-    //            indexPath = 17 + indexPath
-    //            if let image = UIImage(named: "\(indexPath)\(layer)"){
-    //                imageView.image = image
-    //            } else {
-    //                imageView.image = UIImage(named: "\(indexPath)")
-    //            }
-    //            imageView.transform = CGAffineTransformMakeScale(-1, 1)
-    //        }
-    //
-    //    }
-    /*
+
     func imagesFromIndexPath(indexPath:Int, layer:[String], cell:DentCollectionViewCell){
+        var cpt = 0
         if layer.count > 0 {
-            self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dent8Layout)
+            var imageView:UIImageView?
             for lay in layer{
-                if(lay.rangeOfString("x") != nil){
-                    cell.dent8Layout.image =  nil
-                    cell.dent6Layout.image = nil
-                    cell.dent5Layout.image = nil
-                    cell.dent4Layout.image = nil
-                    cell.dent3Layout.image = nil
-                    cell.dent2Layout.image = nil
-                    cell.dent1Layout.image = nil
-                    cell.dentLayout.image = nil
-                    
-                }
-                var imageView:UIImageView = UIImageView()
-                if cell.dent8Layout.image == nil{
-                    imageView = cell.dent8Layout
-                }else if cell.dent7Layout.image == nil{
-                    imageView = cell.dent7Layout
-                }else if cell.dent6Layout.image == nil{
-                    imageView = cell.dent6Layout
-                }else if cell.dent5Layout.image == nil{
-                    imageView = cell.dent5Layout
-                }else if cell.dent4Layout.image == nil{
-                    imageView = cell.dent4Layout
-                }else if cell.dent3Layout.image == nil{
-                    imageView = cell.dent3Layout
-                }else if cell.dent2Layout.image == nil{
-                    imageView = cell.dent2Layout
+                if cell.dentLayout.image == nil || cpt == 0{
+                    imageView = cell.dentLayout
                 }else if cell.dent1Layout.image == nil{
                     imageView = cell.dent1Layout
-                } else {
-                    imageView = cell.dentLayout
-                }
-                imageView.alpha = 0.5
-                self.imageFromIndexPath(indexPath, layer: lay, imageView: imageView)
-            }
-        } else {
-            self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dentLayout)
-        }
-    }*/
-    func imagesFromIndexPath(indexPath:Int, layer:[String], cell:DentCollectionViewCell){
-        if layer.count > 0 {
-            for lay in layer{
-                self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dentLayout)
-                
-                var imageView:UIImageView = UIImageView()
-                if cell.dent8Layout.image == nil{
-                    imageView = cell.dent8Layout
-                }else if cell.dent7Layout.image == nil{
-                    imageView = cell.dent7Layout
-                }else if cell.dent6Layout.image == nil{
-                    imageView = cell.dent6Layout
-                }else if cell.dent5Layout.image == nil{
-                    imageView = cell.dent5Layout
-                }else if cell.dent4Layout.image == nil{
-                    imageView = cell.dent4Layout
-                }else if cell.dent3Layout.image == nil{
-                    imageView = cell.dent3Layout
                 }else if cell.dent2Layout.image == nil{
                     imageView = cell.dent2Layout
-                }else if cell.dent1Layout.image == nil{
-                    imageView = cell.dent1Layout
-                } else {
-                    imageView = cell.dentLayout
+                }else if cell.dent3Layout.image == nil{
+                    imageView = cell.dent3Layout
+                }else if cell.dent4Layout.image == nil{
+                    imageView = cell.dent4Layout
+                }else if cell.dent5Layout.image == nil{
+                    imageView = cell.dent5Layout
+                }else if cell.dent6Layout.image == nil{
+                    imageView = cell.dent6Layout
+                }else if cell.dent7Layout.image == nil{
+                    imageView = cell.dent7Layout
+                } else if cell.dent8Layout.image == nil{
+                    imageView = cell.dent8Layout
+                }else{
+                    imageView = nil
                 }
-                imageView.alpha = 0.7
-                if(lay == "xabst"){
-                    cell.dent8Layout.image =  nil
-                    cell.dent6Layout.image = nil
-                    cell.dent5Layout.image = nil
-                    cell.dent4Layout.image = nil
-                    cell.dent3Layout.image = nil
-                    cell.dent2Layout.image = nil
-                    cell.dent1Layout.image = nil
-                    cell.dentLayout.image = nil
-                    
-                } else {
-                    self.imageFromIndexPath(indexPath, layer: lay, imageView: imageView)
+                if let img = imageView{
+                    img.alpha = 0.7
+                    if(lay == "xabst"){
+                        cell.dent8Layout.image =  nil
+                        cell.dent6Layout.image = nil
+                        cell.dent5Layout.image = nil
+                        cell.dent4Layout.image = nil
+                        cell.dent3Layout.image = nil
+                        cell.dent2Layout.image = nil
+                        cell.dent1Layout.image = nil
+                        cell.dentLayout.image = nil
+                        
+                    } else {
+                        self.imageFromIndexPath(indexPath, layer: lay, imageView: img)
+                    }
                 }
+                cpt++
             }
         } else {
             cell.dentLayout.alpha = 0.7
-            self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dentLayout)
+            self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dent8Layout)
         }
     }
     
@@ -222,7 +151,6 @@ class Chart :  NSObject, APIControllerProtocol{
                 imageView.image = image
             } else {
                 imageView.image = UIImage(named: "\(indexPath)")
-                
             }
         }else if indexPath > 23  {
             indexPath = 17 + indexPath
@@ -234,6 +162,7 @@ class Chart :  NSObject, APIControllerProtocol{
             imageView.transform = CGAffineTransformMakeScale(-1, 1)
         }
         imageView.layer.minificationFilter = kCAFilterTrilinear
+        
     }
     
     func chartFromLocalisation(localisation:Int) -> Chart?{

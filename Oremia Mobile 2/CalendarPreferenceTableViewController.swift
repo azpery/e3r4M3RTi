@@ -17,6 +17,8 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
     var caller:MSCalendarViewController?
     lazy var api:APIController = APIController(delegate: self)
     var myCalendar:[String] = []
+    var calDavName:String = ""
+    
     
     
     var calendars: [EKCalendar]?
@@ -25,15 +27,49 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let alert = SCLAlertView()
+        alert.showCloseButton = false
+        alert.addButton("J'ai compris"){
+            
+        }
+        
         // Do any additional setup after loading the view, typically from a nib.
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_BACKGROUND.rawValue), 0)) {
+            self.api.sendRequest("select inifile from config where titre = 'calendarNamesForUsers'", success: {results->Bool in
+                do{
+                    let res = results["results"] as! NSArray
+                    if(res.count > 0){
+                        let value = res[0] as! NSDictionary
+                        let calName = value["inifile"] as! NSString
+                        let jsonResult = try NSJSONSerialization.JSONObjectWithData(calName.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                        if let calendarName = jsonResult!["\(preference.idUser)"] as? String {
+                            self.calDavName = calendarName
+                            self.api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [calendarName])
+                            self.api.addPref("calendrier\(preference.idUser)", prefs: [calendarName])
+                            self.eventManager.loadCalendars()
+                            
+                        }else{
+                            dispatch_async(dispatch_get_main_queue(), {
+                                alert.showInfo("Calendrier introuvable", subTitle: "Le calendrier de l'agenda 2 n'a pas été configuré pour ce praticien. \n Veuillez sélectionner un calendrier dans les préférences du calendrier dans Oremia pour le Dr \(preference.nomUser).")
+                            })
+                        }
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.tableView.reloadData()
+                        })
+                    }
+                    return true
+                }catch{
+                    return true
+                }
+                
+            })
             self.calendars = self.eventManager.allCalendars
             
             dispatch_async(dispatch_get_main_queue()) {
                 self.tableView.reloadData()
             }
         }
-        self.navigationItem.title = ""
+        self.navigationItem.title = "Configuration"
         self.myCalendar = api.getPref("calendrier\(preference.idUser)")
         self.selectedCalendar = myCalendar
         
@@ -107,7 +143,7 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
             //        }
             if let calendars = self.calendars {
                 let calendarName = calendars[indexPath.row - 1].title
-                calendarCell.calendarLabel.text = calendarName
+                calendarCell.calendarLabel.text = calendarName == self.calDavName ? "\(calendarName) - Oremia" : calendarName
                 for k in myCalendar {
                     if k == calendarName {
                         calendarCell.tickIcon.setFAIcon(FAType.FACheck, iconSize: 12)

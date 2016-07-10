@@ -9,52 +9,63 @@
 import UIKit
 
 class ListeActesTableViewController: UITableViewController, APIControllerProtocol {
-    var prestation:NSArray? = NSArray()
+    var prestation = NSArray()
     lazy var api:APIController = APIController(delegate: self)
     var patient:patients?
     var actesController:ActesViewController?
+    let searchController = UISearchController(searchResultsController: nil)
+    var filteredPrestations = [Prestation]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         api.getIniFile("SELECT inifile FROM config WHERE titre ='ccam_favoris' AND idpraticien = \(preference.idUser) ")
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+        self.searchController.hidesNavigationBarDuringPresentation = false
         
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    //    @IBAction func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
-    //        if gestureRecognizer.state == UIGestureRecognizerState.Began || gestureRecognizer.state == UIGestureRecognizerState.Changed {
-    //            if gestureRecognizer.locationInView(self.view).x >= 0 && gestureRecognizer.locationInView(self.view).x < 50{
-    //                let translation = gestureRecognizer.translationInView(self.view)
-    //                // note: 'view' is optional and need to be unwrapped
-    //                self.actesController?.rightPanel.frame =  CGRect(x: self.actesController!.rightPanel.frame.origin.x, y: self.actesController!.rightPanel.frame.origin.y, width: ((self.actesController?.rightPanel.frame.width)! + translation.x), height: (self.actesController?.rightPanel.frame.height)!)
-    //            }
-    //        }
-    //    }
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        filteredPrestations = prestation.filter { pres in
+            let p = pres as! Prestation
+            let dexcr = p.description
+            return dexcr.lowercaseString.containsString(searchText.lowercaseString)
+            } as! [Prestation]
+        
+        tableView.reloadData()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
+    func refresh(){
+        api.getIniFile("SELECT inifile FROM config WHERE titre ='ccam_favoris' AND idpraticien = \(preference.idUser) ")
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.prestation!.count
+        if searchController.active && searchController.searchBar.text != "" {
+            return filteredPrestations.count
+        }
+        return self.prestation.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("prestationCell", forIndexPath: indexPath) as! ListeActesTableViewCell
-        let pres = self.prestation![indexPath.row] as? Prestation
+        var pres:Prestation?
+        if searchController.active && searchController.searchBar.text != "" {
+            pres = self.filteredPrestations[indexPath.row] as? Prestation
+        } else {
+            pres = self.prestation[indexPath.row] as? Prestation
+        }
         var description = pres?.description ?? "Aucune description disponible"
         var index = 1
         if description.rangeOfString("+") != nil {
@@ -67,9 +78,10 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         }
         
         if index == 0{
-            
-            description = "      \(description)"
-            cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
+            if !searchController.active && searchController.searchBar.text == ""{
+                description = "      \(description)"
+                cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
+            }
         }else {
             cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x000000)
         }
@@ -87,123 +99,89 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let schema = actesController?.schemaDentController{
-            if let selectedCell = schema.selectedCell{
-                
-                self.addActeForCell(indexPath.row, selectedCell: selectedCell, schema: schema)
-                addAllActesForCell(indexPath.row, selectedCell: selectedCell, schema: schema)
-                
-            }else {
-                if let acte = actesController{
-                    self.addActeForCell(indexPath.row)
-                    addAllActesForCell(indexPath.row)
-                }else {
-                    if let vc = UIApplication.topViewController(){
-                        let alert = UIAlertController(title: "Alerte", message: "La vue a mal été chargée, veuillez redémarrer l'application. \nSi le problème persiste, veuillez contacter le service technique.", preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                        vc.presentViewController(alert, animated: true, completion: nil)
-                    }
-                }
-            }
+            self.addActeForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema)
+            addAllActesForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema)
+            
+            
         }
     }
     
-    func addAllActesForCell(indexPath:Int, selectedCell:Int? = nil, schema:SchemaDentaireCollectionViewController? = nil){
+    func addAllActesForCell(indexPath:Int, selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil){
         var i = indexPath + 1
         var index = 0
-        
-        while index == 0 {
-            index = 1
-            let pres = self.prestation![i] as? Prestation
-            let description = pres?.description ?? "Aucune description disponible"
-            if description.rangeOfString("+") != nil {
-                index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+        if searchController.active && searchController.searchBar.text != "" && filteredPrestations.count > i || prestation.count > i {
+            while index == 0 {
+                index = 1
+                var pres:Prestation
+                if searchController.active && searchController.searchBar.text != "" {
+                    pres = filteredPrestations[i]
+                }else{
+                    pres = prestation[i] as! Prestation
+                }
+                let description = pres.description ?? "Aucune description disponible"
+                if description.rangeOfString("+") != nil {
+                    index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+                }
+                if index == 0{
+                    addActeForCell(i, selectedCell: selectedCell, schema: schema)
+                    
+                    i++
+                }
             }
-            if index == 0{
-                addActeForCell(i, selectedCell: selectedCell, schema: schema)
-                
-                i++
-            }
+            api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
         }
-        api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
         
     }
     
     
-    func addActeForCell(indexPath:Int, var selectedCell:Int? = nil, schema:SchemaDentaireCollectionViewController? = nil){
+    func addActeForCell(indexPath:Int, var selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil){
         let index = indexPath
-        let presta = prestation![index] as! Prestation
+        var presta:Prestation
+        if searchController.active && searchController.searchBar.text != "" {
+            presta = filteredPrestations[index]
+        }else{
+            presta = prestation[index] as! Prestation
+        }
         let date = ToolBox.getFormatedDateWithSlash(NSDate())
         let cotation = presta.coefficient
         let descriptif = presta.description
         let montant = presta.montant
+        let qualificatif = presta.qualificatif
         let lettreCle = presta.lettreCle
         let image = presta.image
         if let acte = self.actesController?.saisieActesController{
             let numPresta = acte.prestation.count ?? 1
             if selectedCell == nil{
-                selectedCell = 0
+                selectedCell = [0]
             }
-            let newPresta = PrestationActe(nom: "Prestation_\(numPresta + 1)", coefficient: cotation, description: descriptif, lettreCle: lettreCle, coefficientEnft: 0, image: image, montant: montant, numDent: selectedCell!, dateActe: date)
-            acte.prestation.append(newPresta)
-            if image != "" && schema != nil && selectedCell != nil{
-                schema!.addImageToSelectedCell(image)
-                api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(selectedCell!)', '\(image)') ")
+            if schema != nil && selectedCell != nil{
+                var query = ""
+                for cell in selectedCell! {
+                    let localisation = schema?.chart?.localisationFromIndexPath(cell)
+                    let newPresta = PrestationActe(nom: numPresta + 1, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: cell, dateActe: date)
+                    acte.prestation.append(newPresta)
+                    if image != ""{
+                        api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(localisation)', '\(image)');")
+                    }
+                    
+                }
+                if image != ""{
+                    schema!.addImageToSelectedCell(image)
+                }
                 
             }
+            schema?.reloadSelectedCell()
             acte.tableView.reloadData()
             
         }
     }
-
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
     
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
     func didReceiveAPIResults(results: NSDictionary) {
         if let resultsArr: NSArray = results["results"] as? NSArray {
             dispatch_async(dispatch_get_main_queue(), {
-                self.prestation = Prestation.prestationWithJSON(resultsArr)
+                let prestation = Prestation.prestationWithJSON(resultsArr)
+                self.prestation = prestation.sort({$0.nom < $1.nom})
                 self.tableView.reloadData()
                 if self.actesController?.finished > 1 {
                     self.actesController?.activityIndicator.stopActivity(true)
@@ -220,3 +198,11 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     }
     
 }
+
+extension ListeActesTableViewController: UISearchResultsUpdating, UISearchBarDelegate,  UISearchDisplayDelegate, UISearchControllerDelegate {
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+
+

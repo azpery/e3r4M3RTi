@@ -16,7 +16,7 @@ class MenuTableViewController: UITableViewController {
     @IBOutlet weak var logout: UILabel!
     @IBOutlet var devBlog: UILabel!
     @IBOutlet var assistance: UILabel!
-    @IBOutlet var modele: UILabel!
+   // @IBOutlet var modele: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         Accueil.setFAIcon(FAType.FAHome, iconSize: 22)
@@ -26,7 +26,7 @@ class MenuTableViewController: UITableViewController {
         logout.setFAIcon(FAType.FASignOut, iconSize: 22)
         devBlog.setFAIcon(FAType.FACode, iconSize: 21)
         assistance.setFAIcon(FAType.FAMedkit, iconSize: 22)
-        modele.setFAIcon(FAType.FAFile, iconSize: 21)
+        //modele.setFAIcon(FAType.FAFile, iconSize: 21)
 
 
         
