@@ -22,15 +22,15 @@ import Foundation
     }
     
     public func showOverlay(view: UIView!) {
-        overlayView = UIView(frame: view.bounds)
-        overlayView.backgroundColor = UIColor(patternImage: UIImage(named: "sprite")!)
+        overlayView = UIView(frame: view.frame)
+        overlayView.backgroundColor = UIColor.whiteColor()
         
 //        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
 //        activityIndicator.center = overlayView.center
 //        overlayView.addSubview(activityIndicator)
 //        activityIndicator.startAnimating()
         LoadingOverlay.updateBlur(overlayView)
-//        view.addSubview(overlayView)
+        view.addSubview(overlayView)
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
         activityIndicator.indicatorColor = UIColor.blackColor()

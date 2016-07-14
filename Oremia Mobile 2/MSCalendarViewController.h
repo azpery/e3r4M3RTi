@@ -23,5 +23,6 @@
 @property (nonatomic, strong) THDatePickerViewController * datePicker;
 @property (nonatomic, assign) Boolean *isScrollingVertical;
 @property (nonatomic, assign) Boolean *isLoading;
-
+@property (nonatomic, assign) Boolean *isInitialLoading;
+@property (nonatomic, assign) CGFloat offsetView;
 @end

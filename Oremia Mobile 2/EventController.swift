@@ -190,7 +190,7 @@ import EventKit
             for k in calendars! {
                 var calendarsArray: [EKCalendar]
                 calendarsArray = [k]
-                let yearSeconds: Double = 7 * (60 * 60 * 24)
+                let yearSeconds: Double = 8 * (60 * 60 * 24)
                 let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSinceNow: -yearSeconds), endDate: NSDate(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
                 var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
                 for var i = 0; i < eventsArray.count; i++ {
@@ -215,7 +215,7 @@ import EventKit
         let component = NSDateComponents()
         var aujDefault:EKEvent
         var laDate:NSDate
-        for var i:Int = -7; i<7; i++ {
+        for var i:Int = -7; i<=7; i++ {
             aujDefault = EKEvent(eventStore: eventStore)
             aujDefault.title = "Ceci est une erreur"
             component.day = i
@@ -236,7 +236,7 @@ import EventKit
             for k in calendars! {
                 var calendarsArray: [EKCalendar]
                 calendarsArray = [k]
-                let yearSeconds: Double = 7 * (60 * 60 * 24)
+                let yearSeconds: Double = 8 * (60 * 60 * 24)
                 let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(date.dateByAddingTimeInterval( -yearSeconds), endDate: date.dateByAddingTimeInterval(yearSeconds), calendars: calendarsArray)
                 var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
                 for var i = 0; i < eventsArray.count; i++ {
@@ -261,7 +261,7 @@ import EventKit
         let component = NSDateComponents()
         var aujDefault:EKEvent
         var laDate:NSDate
-        for var i:Int = -7; i<7; i++ {
+        for var i:Int = -7; i<=7; i++ {
             aujDefault = EKEvent(eventStore: eventStore)
             aujDefault.title = "Ceci est une erreur"
             component.day = i
@@ -420,7 +420,7 @@ import EventKit
         let nouvelEvt = EKEvent(eventStore: eventStore)
         var endDate:NSDate
         nouvelEvt.title = "Nouveau rendez-vous"
-        component.hour = 1
+        component.minute = 15
         endDate = NSCalendar.currentCalendar().dateByAddingComponents(component, toDate: date, options: NSCalendarOptions.MatchStrictly)!
         nouvelEvt.startDate = date
         nouvelEvt.endDate = endDate

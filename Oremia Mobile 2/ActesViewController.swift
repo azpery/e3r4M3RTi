@@ -25,6 +25,7 @@ class ActesViewController: UIViewController {
     @IBOutlet var trashButton: UIBarButtonItem!
     @IBOutlet var refreshButton: UIBarButtonItem!
     @IBOutlet var favorisButton: UIBarButtonItem!
+    @IBOutlet var saveButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
@@ -36,7 +37,9 @@ class ActesViewController: UIViewController {
         trashButton.setFAIcon(FAType.FATrash, iconSize: 24)
         refreshButton.setFAIcon(FAType.FARefresh, iconSize: 24)
         closeButton.setFAIcon(FAType.FATimes, iconSize: 24)
-        favorisButton.setFAIcon(FAType.FAPlus, iconSize: 24)
+        //favorisButton.setFAIcon(FAType.FAPlus, iconSize: 24)
+        favorisButton.title = ""
+        saveButton.setFAIcon(FAType.FAFloppyO, iconSize: 24)
         let title = self.navigationController!.navigationBar.topItem!
         title.title = "Saisie des actes -  Dr \(preference.nomUser) - \(schemaDentController!.patient!.nom) \(schemaDentController!.patient!.prenom.capitalizedString)"
         if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Pad){
@@ -105,6 +108,7 @@ class ActesViewController: UIViewController {
             alert.addButton("Confirmer"){
                 let api = APIController()
                 self.saisieActesController!.prestation = []
+                self.schemaDentController?.chart?.sql = ""
                 api.insertActes(self.saisieActesController!.patient!, actes: [] )
                 self.saisieActesController!.tableView.reloadData()
             }
@@ -114,19 +118,33 @@ class ActesViewController: UIViewController {
         })
     }
     @IBAction func showFavoris(sender: AnyObject) {
-        let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("FavorisViewController") as! UINavigationController
-        let viewControllers = VC1.viewControllers
-        VC1.modalPresentationStyle = UIModalPresentationStyle.PageSheet
-        let favorisView: FavorisTableViewController = viewControllers.first as! FavorisTableViewController
-        favorisView.favorisPlus = self.listeActesController?.favorisPlus
-        favorisView.listeController = self.listeActesController
-        self.listeActesController?.favorisViewController = favorisView
-        self.listeActesController?.presentViewController(VC1, animated: true, completion: nil)
+//        let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("FavorisViewController") as! UINavigationController
+//        let viewControllers = VC1.viewControllers
+//        VC1.modalPresentationStyle = UIModalPresentationStyle.PageSheet
+//        let favorisView: FavorisTableViewController = viewControllers.first as! FavorisTableViewController
+//        favorisView.favorisPlus = self.listeActesController?.favorisPlus
+//        favorisView.listeController = self.listeActesController
+//        self.listeActesController?.favorisViewController = favorisView
+//        self.listeActesController?.presentViewController(VC1, animated: true, completion: nil)
     }
     
     @IBAction func resfreshViews(sender: AnyObject) {
         saisieActesController!.refresh()
         schemaDentController?.loadData()
+    }
+    @IBAction func saveBridge(sender: AnyObject) {
+        let alert = SCLAlertView()
+        alert.showCloseButton = false
+        alert.addButton("Confirmer"){
+            var  sql = self.schemaDentController?.chart?.sql ?? ","
+            sql = sql.substringToIndex(sql.endIndex.predecessor())
+            self.listeActesController?.api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES\(sql);")
+            self.schemaDentController?.chart?.sql = ""
+        }
+        alert.addButton("Annuler"){
+        }
+        alert.showInfo("Voulez-vous enregister le schéma?", subTitle: "Vous allez enregistrer le schéma dentaire.\n Note: la FSE s'enregistre automatiquement.")
+        
     }
 
     

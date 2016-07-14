@@ -14,6 +14,8 @@ class SaisieActesTableViewCell: UITableViewCell {
     @IBOutlet var cotation: UILabel!
     @IBOutlet var date: UILabel!
     @IBOutlet var descriptif: UILabel!
+    @IBOutlet var depense: UILabel!
+    @IBOutlet var lettre: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

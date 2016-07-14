@@ -29,7 +29,9 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
         cell.descriptif.text = pres.description
         cell.date.text = pres.dateActe
         cell.localisation.text = "\(pres.numDent )"
+        cell.lettre.text = "\(pres.lettreCle)"
         cell.cotation.text = "\(pres.coefficient)"
+        cell.depense.text = "\(pres.qualificatif)"
         cell.montant.text = "\(pres.montant)E"
         return cell
     }

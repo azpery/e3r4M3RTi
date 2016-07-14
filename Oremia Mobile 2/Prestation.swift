@@ -38,7 +38,7 @@ class Prestation{
         })
     }
     
-    class func prestationWithJSON(allResults: NSArray) -> (favoris:[Prestation], favorisPlus: [String:[Prestation]]) {
+    class func prestationWithJSON(allResults: NSArray) -> (favoris:[Prestation], favorisPlus: [[String:[Prestation]]]) {
         var prestations = [Prestation]()
         if allResults.count>0 {
             for value in allResults {
@@ -70,13 +70,15 @@ class Prestation{
         return dispatchPrestation(prestations)
     }
     
-    class func dispatchPrestation(allPrestations: [Prestation]) -> (favoris:[Prestation], favorisPlus: [String:[Prestation]]) {
+    class func dispatchPrestation(allPrestations: [Prestation]) -> (favoris:[Prestation], favorisPlus: [[String:[Prestation]]]) {
         var favoris:[Prestation] = []
         var favorisPlus:[String:[Prestation]] = [:]
+        var arrayFavoris = [[String:[Prestation]]]()
         
         var isPlusPassed = false
         var index = 1
         var parent = ""
+        favorisPlus["-favoris"] = []
         for presation in allPrestations {
             var description = presation.description ?? "Aucune description disponible"
             
@@ -85,6 +87,7 @@ class Prestation{
             }
             
             if !isPlusPassed {
+                favorisPlus["-favoris"]?.append(presation)
                 favoris.append(presation)
             }else{
                 index = 1
@@ -93,15 +96,19 @@ class Prestation{
                 }
                 
                 if index == 0 {
+                    arrayFavoris.append(favorisPlus)
                     parent = description
+                    favorisPlus = [String:[Prestation]]()
                     favorisPlus[parent] = []
                 }else{
                     favorisPlus[parent]?.append(presation)
                 }
             }
         }
+        arrayFavoris.append(favorisPlus)
         
-        return (favoris, favorisPlus ?? ["Pas de favoris":[]])
+        
+        return (favoris, arrayFavoris)
     }
 
 }

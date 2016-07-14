@@ -11,6 +11,7 @@ class Chart :  NSObject, APIControllerProtocol{
     var idpatient: Int = 0
     var date: String = ""
     var localisation: Int = 0
+    var sql = ""
     var layer: [String] = [String]()
     var chart = [Chart]()
     var callback:(()->Void)?
@@ -120,6 +121,16 @@ class Chart :  NSObject, APIControllerProtocol{
                 }
                 if let img = imageView{
                     img.alpha = 0.7
+                    if lay == "tfm-or" || lay == "tfm-metal" || lay == "tfm-fibre" || lay == "imp_xlocator" || lay == "imp_pilier"{
+                        cell.dent8Layout.image =  nil
+                        cell.dent6Layout.image = nil
+                        cell.dent5Layout.image = nil
+                        cell.dent4Layout.image = nil
+                        cell.dent3Layout.image = nil
+                        cell.dent2Layout.image = nil
+                        cell.dent1Layout.image = nil
+                        cell.dentLayout.image = nil
+                    }
                     if(lay == "xabst"){
                         cell.dent8Layout.image =  nil
                         cell.dent6Layout.image = nil
@@ -209,6 +220,9 @@ class Chart :  NSObject, APIControllerProtocol{
         for p in prestations {
             let chart = Chart(idpatient: self.idpatient, date: p.dateActe, localisation: p.numDent, layer: p.image)
             self.chart.append(chart)
+            if p.image != ""{
+                self.sql += "('\(self.idpatient)', '\(ToolBox.getFormatedDateFromString(p.dateActe))', '\(p.numDent)', '\(p.image)'),"
+            }
         }
     }
     

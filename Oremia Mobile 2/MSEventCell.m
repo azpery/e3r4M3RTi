@@ -84,12 +84,7 @@
             make.right.equalTo(self.mas_right).offset(-contentPadding.right);
             make.bottom.lessThanOrEqualTo(self.mas_bottom).offset(-contentPadding.bottom);
         }];
-        
-        CGFloat height = self.frame.size.height;
-        if(height >= 30){
-            
-            self.location.hidden = false;
-        }
+
     }
     
     return self;
@@ -142,6 +137,12 @@
     self.location.attributedText = [[NSAttributedString alloc] initWithString:dateDebFin attributes:[self subtitleAttributesHighlighted:self.selected]];
     [self updateColors];
     self.evenement = [[Evennement alloc] initWithEvent:self.event statut:self.statut cell:self eventManager:self.eventManager];
+    CGFloat height = self.bounds.size.height;
+    if(height >= 50){
+        self.location.hidden = false;
+    }else{
+        self.location.hidden = true;
+    }
 //    [self.evenement updateStatut];
 }
 
@@ -155,8 +156,10 @@
 }
 -(void)updateLocation:(NSString*)text{
     if (![text  isEqual: @""]) {
-        NSString *dateDebFin = [NSString stringWithFormat:@"%@ : %@",text, self.location.text];
-        self.location.attributedText = [[NSAttributedString alloc] initWithString:dateDebFin attributes:[self subtitleAttributesHighlighted:self.selected]];
+        
+            NSString *dateDebFin = [NSString stringWithFormat:@"%@ : %@",text, self.location.text];
+            self.location.attributedText = [[NSAttributedString alloc] initWithString:dateDebFin attributes:[self subtitleAttributesHighlighted:self.selected]];
+        
     }
 }
 

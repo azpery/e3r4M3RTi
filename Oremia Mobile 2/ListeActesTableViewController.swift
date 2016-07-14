@@ -8,16 +8,18 @@
 
 import UIKit
 
-class ListeActesTableViewController: UITableViewController, APIControllerProtocol {
+class ListeActesTableViewController: UITableViewController, APIControllerProtocol, UIGestureRecognizerDelegate {
     var prestation = [Prestation]()
     lazy var api:APIController = APIController(delegate: self)
     var patient:patients?
     var actesController:ActesViewController?
     let searchController = UISearchController(searchResultsController: nil)
-    var filteredPrestations = [Prestation]()
-    var favorisPlus:[String:[Prestation]] = [String:[Prestation]]()
+    var filteredFavoris:[Prestation]?
+    var favorisPlus = [[String:[Prestation]]]()
     var favorisViewController:FavorisTableViewController?
-
+    var sectionShow = [Int]()
+    var selectedCell = [Int]()
+    
     
     
     override func viewDidLoad() {
@@ -32,11 +34,18 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     }
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
-        filteredPrestations = prestation.filter { pres in
-            let p = pres
-            let dexcr = p.description
-            return dexcr.lowercaseString.containsString(searchText.lowercaseString)
-            }
+        filteredFavoris = []
+        var cpt = 0
+        for favoris in favorisPlus {
+            let key = Array(favorisPlus[cpt].keys)[0]
+            let array = favorisPlus[cpt][key]
+            filteredFavoris?.appendContentsOf(array!.filter { pres in
+                let p = pres
+                let dexcr = p.description
+                return dexcr.lowercaseString.containsString(searchText.lowercaseString)
+                })
+            cpt++
+        }
         
         tableView.reloadData()
     }
@@ -47,7 +56,10 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        if searchController.active && searchController.searchBar.text != "" {
+            return 1
+        }
+        return favorisPlus.count ?? 0
     }
     
     func refresh(){
@@ -56,162 +68,98 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.active && searchController.searchBar.text != "" {
-            return filteredPrestations.count
+            return self.filteredFavoris?.count ?? 0
         }
-        return self.prestation.count
+        let key = Array(favorisPlus[section].keys)[0]
+        let array = favorisPlus[section][key]
+        return array?.count ?? 0
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("prestationCell", forIndexPath: indexPath) as! ListeActesTableViewCell
-        var pres:Prestation?
+        var pres:Prestation
         if searchController.active && searchController.searchBar.text != "" {
-            pres = self.filteredPrestations[indexPath.row]
-        } else {
-            pres = self.prestation[indexPath.row]
+            pres = self.filteredFavoris![indexPath.row]
+        }else {
+            let key = Array(favorisPlus[indexPath.section].keys)[0]
+            let array = favorisPlus[indexPath.section][key]
+            pres = array![indexPath.row]
         }
-        var description = pres?.description ?? "Aucune description disponible"
+        var description = pres.description ?? "Aucune description disponible"
         var index = 1
         if description.rangeOfString("+") != nil {
             
             index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
         }
-        if description.rangeOfString("-") != nil && index != 0 {
-            
-            index = description.startIndex.distanceTo((description.rangeOfString("-")?.startIndex)!)
-        }
         
         if index == 0{
-            if !searchController.active && searchController.searchBar.text == ""{
-                description = "      \(description)"
-                cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
-            }
+            description = "      \(description)"
+            cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x878787)
         }else {
             cell.descriptifLabel.textColor = ToolBox.UIColorFromRGB(0x000000)
         }
         cell.descriptifLabel.text = description
         return cell
     }
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = SectionHeaderView()
-        let title = "Liste des actes favoris"
-        view.titleLabel.text = title
-        return view
-    }
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
-    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let schema = actesController?.schemaDentController{
             
-            self.addActeForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema)
-            addAllActesForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema)
+            self.addActeForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema, section: indexPath.section)
+            addAllActesForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema, section: indexPath.section)
             
             
         }
     }
-    
-    func addAllActesForCell(indexPath:Int, selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil, section: Int? = nil){
-        var i = indexPath + 1
-        var index = 0
-        var array = []
-        if let s = section{
-            let key = Array(favorisPlus.keys)[s]
-            array = favorisPlus[key]!
-        }
-        if !searchController.active && prestation.count > i && section == nil || !self.favorisViewController!.searchController.active && section != nil && array.count > i {
-            while index == 0 {
-                index = 1
-                var pres:Prestation
-                if let s = section{
-                    if self.favorisViewController!.searchController.active && self.favorisViewController!.searchController.searchBar.text != "" {
-                        pres = self.favorisViewController!.filteredFavoris![i]
-                    }else{
-                        let key = Array(favorisPlus.keys)[s]
-                        let array = favorisPlus[key]
-                        pres = array![i]
-                    }
-                }else{
-                    if searchController.active && searchController.searchBar.text != "" {
-                        pres = filteredPrestations[i]
-                    }else{
-                        pres = prestation[i] 
-                    }
-                }
-                let description = pres.description ?? "Aucune description disponible"
-                if description.rangeOfString("+") != nil {
-                    index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
-                }
-                if index == 0{
-                    addActeForCell(i, selectedCell: selectedCell, schema: schema)
-                    
-                    i++
-                }
-            }
-            api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
-        }
-        
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = SectionHeaderView()
+        var title = Array(favorisPlus[section].keys)[0]
+        title.removeAtIndex(title.startIndex.advancedBy(0))
+        view.titleLabel.text = title
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didSelectHeader(_:)))
+        tapRecognizer.delegate = self
+        tapRecognizer.numberOfTapsRequired = 1
+        tapRecognizer.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(tapRecognizer)
+        return view
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if let index = self.sectionShow.indexOf(indexPath.section) {
+            return 45
+        }else if searchController.active  && searchController.searchBar.text != "" {
+            return 45
+        }
+        return 0
+    }
     
-    func addActeForCell(indexPath:Int, var selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil, section: Int? = nil){
-        var presta:Prestation
-        if let s = section{
-            if self.favorisViewController!.searchController.active && self.favorisViewController!.searchController.searchBar.text != "" {
-                presta = self.favorisViewController!.filteredFavoris![indexPath]
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if searchController.active && searchController.searchBar.text != "" {
+            return 0
+        }
+        return 45
+    }
+    
+    func didSelectHeader(sender : UITapGestureRecognizer){
+        let tapLocation = sender.locationInView(self.tableView)
+        let formerIndex = sectionShow.count > 0 ? sectionShow[0] : 0
+        let formerIndexSet = NSIndexSet(index: formerIndex)
+        if let indexPath : NSIndexPath = self.tableView.indexPathForRowAtPoint(tapLocation){
+            let section = indexPath.section
+            if formerIndex != section || sectionShow.count == 0{
+                self.sectionShow = [section]
+                let indexSet = NSIndexSet(index: section)
+                self.tableView.reloadSections(formerIndexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.tableView.reloadSections(indexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
             }else{
-                let key = Array(favorisPlus.keys)[s]
-                let array = favorisPlus[key]
-                presta = array![indexPath]
+                self.sectionShow = []
+                self.tableView.reloadSections(formerIndexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
             }
         }else{
-            if searchController.active && searchController.searchBar.text != "" {
-                presta = filteredPrestations[indexPath]
-            }else{
-                presta = prestation[indexPath]
-            }
-        }
-        let date = ToolBox.getFormatedDateWithSlash(NSDate())
-        let cotation = presta.coefficient
-        let descriptif = presta.description
-        let montant = presta.montant
-        let qualificatif = presta.qualificatif
-        let lettreCle = presta.lettreCle
-        let image = presta.image
-        if let acte = self.actesController?.saisieActesController{
-            let numPresta = acte.prestation.count ?? 1
-            if selectedCell == nil{
-                selectedCell = [0]
-            }
-            if schema != nil && selectedCell != nil{
-                for cell in selectedCell! {
-                    let localisation = schema?.chart?.localisationFromIndexPath(cell)
-                    let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: cell, dateActe: date)
-                    acte.prestation.append(newPresta)
-                    if image != ""{
-                        api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(localisation)', '\(image)');")
-                    }
-                    
-                }
-                if(selectedCell?.count == 0){
-                    let localisation = 0
-                    let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
-                    acte.prestation.append(newPresta)
-                }
-                if image != ""{
-                    schema!.addImageToSelectedCell(image)
-                }
-                
-            }else{
-                let localisation = 0
-                let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
-                acte.prestation.append(newPresta)
-            }
-            schema?.reloadSelectedCell()
-            acte.tableView.reloadData()
-            
+            self.sectionShow = []
+            self.tableView.reloadSections(formerIndexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
-    
     
     func didReceiveAPIResults(results: NSDictionary) {
         if let resultsArr: NSArray = results["results"] as? NSArray {
@@ -233,6 +181,88 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     func handleError(results: Int) {
         //api.getIniFile("SELECT inifile FROM config WHERE titre ='ccam_favoris' AND idpraticien = \(preference.idUser) ")
     }
+    
+    func addAllActesForCell(indexPath:Int, selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil, section: Int? = nil){
+        var i = indexPath + 1
+        var index = 0
+        var array = []
+        if let s = section{
+            let key = Array(favorisPlus[s].keys)[0]
+            array = favorisPlus[s][key]!
+            if !searchController.active && section != nil && array.count > i {
+                while index == 0 {
+                    index = 1
+                    var pres:Prestation
+                    pres = array[i] as! Prestation
+                    let description = pres.description ?? "Aucune description disponible"
+                    if description.rangeOfString("+") != nil {
+                        index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+                    }
+                    if index == 0{
+                        addActeForCell(i, selectedCell: selectedCell, schema: schema)
+                        
+                        i++
+                    }
+                }
+                api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
+            }
+        }
+    }
+    
+    
+    func addActeForCell(indexPath:Int, var selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil, section: Int? = nil){
+        var presta:Prestation
+        if let s = section{
+            if searchController.active && searchController.searchBar.text != "" {
+                presta = self.filteredFavoris![indexPath]
+            }else {
+                let key = Array(favorisPlus[s].keys)[0]
+                let array = favorisPlus[s][key]
+                presta = array![indexPath]
+            }
+            let date = ToolBox.getFormatedDateWithSlash(NSDate())
+            let cotation = presta.coefficient
+            let descriptif = presta.description
+            let montant = presta.montant
+            let qualificatif = presta.qualificatif
+            let lettreCle = presta.lettreCle
+            let image = presta.image
+            if let acte = self.actesController?.saisieActesController{
+                let numPresta = acte.prestation.count ?? 1
+                if selectedCell == nil{
+                    selectedCell = [0]
+                }
+                if schema != nil && selectedCell != nil{
+                    for cell in selectedCell! {
+                        let localisation = schema?.chart?.localisationFromIndexPath(cell) ?? 0
+                        let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: cell, dateActe: date)
+                        acte.prestation.append(newPresta)
+                        if image != ""{
+                            self.actesController?.schemaDentController?.chart?.sql += "('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(localisation)', '\(image)'),"
+                        }
+                        
+                    }
+                    if(selectedCell?.count == 0){
+                        let localisation = 0
+                        let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
+                        acte.prestation.append(newPresta)
+                    }
+                    if image != ""{
+                        schema!.addImageToSelectedCell(image)
+                    }
+                    
+                }else{
+                    let localisation = 0
+                    let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
+                    acte.prestation.append(newPresta)
+                }
+                schema?.reloadSelectedCell()
+                acte.tableView.reloadData()
+                
+            }
+        }
+    }
+    
     
 }
 

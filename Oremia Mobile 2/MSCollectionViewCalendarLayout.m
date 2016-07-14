@@ -869,9 +869,9 @@ NSUInteger const MSCollectionMinBackgroundZ = 0.0;
 -(NSDate*)dateFromOffset:(CGPoint) offset{
     CGFloat calendarContentMinY = (self.dayColumnHeaderHeight + self.contentMargin.top + self.sectionMargin.top);
     CGFloat calendarContentMinX = (self.timeRowHeaderWidth + self.contentMargin.left + self.sectionMargin.left);
-    CGFloat hourY = (((offset.y+(50*self.minuteHeight)) - calendarContentMinY) /self.hourHeight) + self.beginHour - 1 ;
+    CGFloat hourY = (((offset.y+(50*self.minuteHeight)) - calendarContentMinY) /self.hourHeight) + self.beginHour - 0.75 ; // 0.75 parce que l'evt dure 1/4 d'heure
     NSInteger hour = floor(hourY) ;
-    NSInteger minute = *[self getClosestQuarter:floor((floor(((hourY - hour)*100)/self.minuteHeight)*60)/100)];
+    NSInteger minute = *[self getClosestQuarter:floor((hourY - hour) * 60)];
     NSInteger closestSectionToCurrentTime = floor((offset.x-calendarContentMinX )/ self.sectionWidth);
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
                                               inSection:closestSectionToCurrentTime];

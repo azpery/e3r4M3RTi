@@ -76,7 +76,7 @@ UIPopoverPresentationController *popover;
 -(void) iSaidReloadit
 {
     self.collectionView.backgroundColor = [UIColor whiteColor];
-    
+    self.isInitialLoading = true;
     [self.collectionView registerClass:MSEventCell.class forCellWithReuseIdentifier:MSEventCellReuseIdentifier];
     [self.collectionView registerClass:MSDayColumnHeader.class forSupplementaryViewOfKind:MSCollectionElementKindDayColumnHeader withReuseIdentifier:MSDayColumnHeaderReuseIdentifier];
     [self.collectionView registerClass:MSTimeRowHeader.class forSupplementaryViewOfKind:MSCollectionElementKindTimeRowHeader withReuseIdentifier:MSTimeRowHeaderReuseIdentifier];
@@ -151,10 +151,31 @@ UIPopoverPresentationController *popover;
                                   style:UIBarButtonItemStylePlain
                                   target:self
                                   action:@selector(showToday)];
+    UIBarButtonItem *buttonLeft = [[UIBarButtonItem alloc]
+                                      initWithTitle:@"Your Button"
+                                      style:UIBarButtonItemStylePlain
+                                      target:self
+                                      action:@selector(showLeft)];
+    [buttonLeft setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                           [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
+                                           [UIColor whiteColor], NSForegroundColorAttributeName,
+                                           nil]forState:UIControlStateNormal];
+    buttonLeft.title = [NSString fontAwesomeIconStringForEnum:FAChevronLeft];
+    buttonLeft.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *buttonRight = [[UIBarButtonItem alloc]
+                                   initWithTitle:@"Your Button"
+                                   style:UIBarButtonItemStylePlain
+                                   target:self
+                                   action:@selector(showRight)];
+    [buttonRight setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                        [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
+                                        [UIColor whiteColor], NSForegroundColorAttributeName,
+                                        nil]forState:UIControlStateNormal];
+    buttonRight.title = [NSString fontAwesomeIconStringForEnum:FAChevronRight];
+    buttonRight.tintColor = [UIColor whiteColor];
     buttonSetting.tintColor = [UIColor whiteColor];
     [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting, buttonRefresh]];
-    [self.navigationItem setLeftBarButtonItems:@[tamere, buttonAuj]];
-    //update Early and lastest hours
+    [self.navigationItem setLeftBarButtonItems:@[tamere, buttonLeft, buttonAuj, buttonRight]];
     self.api = [[APIController alloc] initWithDelegate:self];
     NSString* time = [NSString stringWithFormat:@"time%i", self.api.getIduser];
     NSArray *pref = [_api getPref:time];
@@ -172,9 +193,7 @@ UIPopoverPresentationController *popover;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [LoadingOverlay.shared showOverlay:self.collectionView];
-        self.isLoading = YES;
     });
-    // Divide into sections by the "day" key path
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.fetchedResultsController = [[EventManager alloc]init];
         [self.fetchedResultsController setAgenda:self];
@@ -187,14 +206,8 @@ UIPopoverPresentationController *popover;
         destinationView.caller = self;
         destinationView.eventManager = self.fetchedResultsController;
         
-        //Bellow commented cache
-        //        if ([EventManager.allEvents count] > 0) {
-        //            self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[EventManager allEvents]];
-        //            [self reloadItMotherFucker];
-        //        } else{
+
         self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
-        //        }
-        // DATA PROCESSING 1
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView.collectionViewLayout invalidateLayout];
             [self.collectionViewCalendarLayout invalidateLayoutCache];
@@ -203,7 +216,7 @@ UIPopoverPresentationController *popover;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.collectionViewCalendarLayout scrollCollectionViewToClosetSectionToCurrentTimeAnimated:NO];
                 [LoadingOverlay.shared hideOverlayView];
-                self.isLoading = NO;
+                self.isInitialLoading = NO;
             });
         });
         
@@ -293,43 +306,20 @@ UIPopoverPresentationController *popover;
         [self moveToDate:date];
     });
 }
+-(void)showLeft{
+    [self moveTo:-1];
+}
+-(void)showRight{
+    [self moveTo:1];
+}
 -(void)addNewCell:(UILongPressGestureRecognizer *)sender {
     if(sender.state == UIGestureRecognizerStateBegan){
         
         CGPoint touchPoint = [sender locationInView:self.collectionView];
         [sender setEnabled:NO];
         NSDate *date = [self.collectionViewCalendarLayout dateFromOffset:touchPoint];
-        //        CGFloat calendarContentMinX = (self.collectionViewCalendarLayout.timeRowHeaderWidth + self.collectionViewCalendarLayout.contentMargin.left + self.collectionViewCalendarLayout.sectionMargin.left);
-        //        NSInteger closestSectionToCurrentTime = floor((touchPoint.x-calendarContentMinX )/ self.collectionViewCalendarLayout.sectionWidth);
-        //        NSInteger closestSectionToCurrentTime = [self.collectionViewCalendarLayout closestSectionToCurrentTime:date];
         self.uniqueEventsArray = [self.fetchedResultsController addNewEventToArray:date];
         [self reloadItMotherFucker];
-        //        NSArray *items = self.uniqueEventsArray[closestSectionToCurrentTime][@"lesDates"];
-        //        int i = 0;
-        //        bool found = false;
-        //        for(EKEvent* evt in items){
-        //            NSDate* evtDate = evt.startDate;
-        //            if ([evtDate compare:date] == NSOrderedSame) {
-        //                break;
-        //            }
-        //            i++;
-        //        }
-        //        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-        //        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:(i - 1)
-        //                                                          inSection:closestSectionToCurrentTime ]];
-        //        //
-        //        [UIView animateWithDuration:0 animations:^{
-        //            [self.collectionView performBatchUpdates:^{
-        //
-        //                [self.collectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
-        //
-        //            }   completion:^(BOOL finished){
-        //                dispatch_async(dispatch_get_main_queue(), ^ {
-        //                    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:closestSectionToCurrentTime]];
-        //                });
-        //            }];
-        //        }];
-        
     } else {
         [sender setEnabled:YES];
         
@@ -349,16 +339,17 @@ UIPopoverPresentationController *popover;
         [cals addObject:[cal title]];
     }
     [self.fetchedResultsController.api getCalDavRessources:date calendars:cals];
-    
     self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:date]];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        // DATA PROCESSING 1
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView.collectionViewLayout invalidateLayout];
             [self.collectionViewCalendarLayout invalidateLayoutCache];
             self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
             [self.collectionView reloadData];
+            self.isLoading = false;
             [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:date andAnimated:YES];
+            
+            
         });
         
     });
@@ -473,55 +464,30 @@ UIPopoverPresentationController *popover;
     _lastContentOffset = scrollView.contentOffset;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y < 0) {
-        scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, 0);
-    }
-    
-    if (scrollView.contentOffset.x < 0) {
-        [self moveAfterScrollToBounds: @-1];
-    }else if (scrollView.contentOffset.x > scrollView.contentSize.width - scrollView.frame.size.width){
-        [self moveAfterScrollToBounds: @1];
-    }
-    if (self.isScrollingVertical){
-        [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:YES];
-    }
-    if (ABS(_lastContentOffset.x - scrollView.contentOffset.x) < ABS(_lastContentOffset.y - scrollView.contentOffset.y) ) {
-        [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:NO];
-    } else {
-        scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, _lastContentOffset.y);
-        
-    }
-    
-}
-
--(void)moveAfterScrollToBounds:(NSNumber*) coefficient{
-    if (!self.isLoading) {
-        [self.handlerTimer invalidate];
-        if ([coefficient isEqual:@1]) {
-            self.handlerTimer = [NSTimer timerWithTimeInterval:0.5
-                                                        target:self
-                                                      selector:@selector(respondAfterScroll:)
-                                                      userInfo:@{@"coefficient": @1}
-                                                       repeats:NO];
-            [[NSRunLoop mainRunLoop] addTimer:self.handlerTimer
-                                      forMode:NSDefaultRunLoopMode];
-        }else{
-            self.handlerTimer = [NSTimer timerWithTimeInterval:0.5
-                                                        target:self
-                                                      selector:@selector(respondAfterScroll:)
-                                                      userInfo:@{@"coefficient": @-1}
-                                                       repeats:NO];
-            [[NSRunLoop mainRunLoop] addTimer:self.handlerTimer
-                                      forMode:NSDefaultRunLoopMode];
+    if (!self.isInitialLoading) {
+        if (scrollView.contentOffset.y < 0) {
+            scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, 0);
         }
         
+        if (scrollView.contentOffset.x < 0 + self.collectionViewCalendarLayout.sectionWidth) {
+            scrollView.contentOffset = CGPointMake(self.collectionViewCalendarLayout.sectionWidth, self.collectionView.contentOffset.y);
+        }
+        
+        if (self.isScrollingVertical){
+            [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:YES];
+        }
+        if (ABS(_lastContentOffset.x - scrollView.contentOffset.x) < ABS(_lastContentOffset.y - scrollView.contentOffset.y) ) {
+            [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:NO];
+        } else {
+            scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, _lastContentOffset.y);
+            
+        }
+    }else{
+        self.offsetView = scrollView.contentSize.width - scrollView.frame.size.width;
     }
-    
 }
 
--(void)respondAfterScroll:(NSTimer *) timer{
-    
-    NSInteger coefficient = [[[timer userInfo] objectForKey:@"coefficient"] integerValue];
+-(void)moveTo:(NSInteger ) coefficient{
     NSDate *now = [NSDate date];
     if (self.selectedDate != nil) {
         now = self.selectedDate;
