@@ -38,7 +38,7 @@ class Prestation{
         })
     }
     
-    class func prestationWithJSON(allResults: NSArray) -> [Prestation] {
+    class func prestationWithJSON(allResults: NSArray) -> (favoris:[Prestation], favorisPlus: [String:[Prestation]]) {
         var prestations = [Prestation]()
         if allResults.count>0 {
             for value in allResults {
@@ -63,7 +63,45 @@ class Prestation{
                 prestations.append(newPrest)
             }
         }
-        return prestations
+        prestations = prestations.sort({$0.nom < $1.nom})
+        
+        
+        
+        return dispatchPrestation(prestations)
+    }
+    
+    class func dispatchPrestation(allPrestations: [Prestation]) -> (favoris:[Prestation], favorisPlus: [String:[Prestation]]) {
+        var favoris:[Prestation] = []
+        var favorisPlus:[String:[Prestation]] = [:]
+        
+        var isPlusPassed = false
+        var index = 1
+        var parent = ""
+        for presation in allPrestations {
+            var description = presation.description ?? "Aucune description disponible"
+            
+            if description.rangeOfString("Plus...") != nil{
+                isPlusPassed = true
+            }
+            
+            if !isPlusPassed {
+                favoris.append(presation)
+            }else{
+                index = 1
+                if description.rangeOfString("-") != nil {
+                    index = description.startIndex.distanceTo((description.rangeOfString("-")?.startIndex)!)
+                }
+                
+                if index == 0 {
+                    parent = description
+                    favorisPlus[parent] = []
+                }else{
+                    favorisPlus[parent]?.append(presation)
+                }
+            }
+        }
+        
+        return (favoris, favorisPlus ?? ["Pas de favoris":[]])
     }
 
 }

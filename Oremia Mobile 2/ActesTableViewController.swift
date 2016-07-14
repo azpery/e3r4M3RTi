@@ -65,7 +65,7 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
         let ddate = dateFormat.dateFromString(lActe.date)
         dateFormat.timeStyle = NSDateFormatterStyle.NoStyle
         dateFormat.dateStyle = NSDateFormatterStyle.MediumStyle
-        cell.date.text = dateFormat.stringFromDate(ddate!)
+        cell.date.text = dateFormat.stringFromDate(ddate ?? NSDate())
         cell.cotation.text = "\(lActe.cotation)"
         cell.descriptif.text = lActe.descriptif
         cell.montant.text = "\(lActe.montant)"

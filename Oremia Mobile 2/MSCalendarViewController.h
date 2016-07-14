@@ -22,6 +22,6 @@
 -(void)showEditEventFromEvent:(UITapGestureRecognizer*) sender;
 @property (nonatomic, strong) THDatePickerViewController * datePicker;
 @property (nonatomic, assign) Boolean *isScrollingVertical;
-
+@property (nonatomic, assign) Boolean *isLoading;
 
 @end

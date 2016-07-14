@@ -76,29 +76,45 @@ class Chart :  NSObject, APIControllerProtocol{
     }
     
 
-    func imagesFromIndexPath(indexPath:Int, layer:[String], cell:DentCollectionViewCell){
+    func imagesFromIndexPath(indexPath:Int, layer:[String], cell:DentCollectionViewCell)->DentCollectionViewCell{
         var cpt = 0
+        cell.dent8Layout.image = nil
+        cell.dent7Layout.image = nil
+        cell.dent6Layout.image = nil
+        cell.dent5Layout.image = nil
+        cell.dent4Layout.image = nil
+        cell.dent3Layout.image = nil
+        cell.dent2Layout.image = nil
+        cell.dent1Layout.image = nil
+        cell.dentLayout.image = nil
         if layer.count > 0 {
+            self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dentLayout)
             var imageView:UIImageView?
             for lay in layer{
-                if cell.dentLayout.image == nil || cpt == 0{
-                    imageView = cell.dentLayout
-                }else if cell.dent1Layout.image == nil{
-                    imageView = cell.dent1Layout
-                }else if cell.dent2Layout.image == nil{
-                    imageView = cell.dent2Layout
-                }else if cell.dent3Layout.image == nil{
-                    imageView = cell.dent3Layout
-                }else if cell.dent4Layout.image == nil{
-                    imageView = cell.dent4Layout
-                }else if cell.dent5Layout.image == nil{
-                    imageView = cell.dent5Layout
-                }else if cell.dent6Layout.image == nil{
-                    imageView = cell.dent6Layout
+                if cell.dent8Layout.image == nil{
+                    imageView = cell.dent8Layout
+                    cell.dent7Layout.image = nil
                 }else if cell.dent7Layout.image == nil{
                     imageView = cell.dent7Layout
-                } else if cell.dent8Layout.image == nil{
-                    imageView = cell.dent8Layout
+                    cell.dent6Layout.image = nil
+                }else if cell.dent6Layout.image == nil{
+                    imageView = cell.dent6Layout
+                    cell.dent5Layout.image = nil
+                }else if cell.dent5Layout.image == nil{
+                    imageView = cell.dent5Layout
+                    cell.dent4Layout.image = nil
+                }else if cell.dent4Layout.image == nil{
+                    imageView = cell.dent4Layout
+                    cell.dent3Layout.image = nil
+                }else if cell.dent3Layout.image == nil{
+                    imageView = cell.dent3Layout
+                    cell.dent2Layout.image = nil
+                }else if cell.dent2Layout.image == nil{
+                    imageView = cell.dent2Layout
+                    cell.dent1Layout.image = nil
+                }else if cell.dent1Layout.image == nil{
+                    imageView = cell.dent1Layout
+                    cell.dent8Layout.image = nil
                 }else{
                     imageView = nil
                 }
@@ -114,50 +130,46 @@ class Chart :  NSObject, APIControllerProtocol{
                         cell.dent1Layout.image = nil
                         cell.dentLayout.image = nil
                         
-                    } else {
+                    } else if(lay != "arx"){
                         self.imageFromIndexPath(indexPath, layer: lay, imageView: img)
+                    }
+                    if lay == "tfm-or" || lay == "tfm-metal" || lay == "tfm-fibre" || lay == "imp_xlocator" || lay == "imp_pilier"{
+                        cell.dentLayout.image = nil
                     }
                 }
                 cpt++
             }
         } else {
-            cell.dentLayout.alpha = 0.7
             self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dent8Layout)
         }
+        return cell
     }
     
     func imageFromIndexPath(var indexPath:Int, var layer:String, imageView:UIImageView){
         if layer != "" {
             layer = "-\(layer)"
         }
+        imageView.transform = CGAffineTransformMakeScale(1, 1)
         if indexPath <= 7 {
             indexPath = 18 - indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
                 imageView.image = image
-            } else {
-                imageView.image = UIImage(named: "\(indexPath)")
             }
         }else if indexPath > 7 && indexPath <= 15 {
             indexPath = 3 + indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
                 imageView.image = image
-            } else {
-                imageView.image = UIImage(named: "\(indexPath)")
             }
             imageView.transform = CGAffineTransformMakeScale(-1, 1)
         }else if indexPath > 15 && indexPath <= 23 {
             indexPath = 64 - indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
                 imageView.image = image
-            } else {
-                imageView.image = UIImage(named: "\(indexPath)")
             }
         }else if indexPath > 23  {
             indexPath = 17 + indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
                 imageView.image = image
-            } else {
-                imageView.image = UIImage(named: "\(indexPath)")
             }
             imageView.transform = CGAffineTransformMakeScale(-1, 1)
         }
@@ -190,6 +202,13 @@ class Chart :  NSObject, APIControllerProtocol{
             if chart.localisation == self.localisationFromIndexPath(indexPath){
                 chart.layer = layers
             }
+        }
+    }
+    
+    func addLayersFromPrestation(prestations : [PrestationActe]){
+        for p in prestations {
+            let chart = Chart(idpatient: self.idpatient, date: p.dateActe, localisation: p.numDent, layer: p.image)
+            self.chart.append(chart)
         }
     }
     

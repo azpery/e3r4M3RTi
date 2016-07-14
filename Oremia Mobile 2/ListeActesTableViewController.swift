@@ -9,12 +9,15 @@
 import UIKit
 
 class ListeActesTableViewController: UITableViewController, APIControllerProtocol {
-    var prestation = NSArray()
+    var prestation = [Prestation]()
     lazy var api:APIController = APIController(delegate: self)
     var patient:patients?
     var actesController:ActesViewController?
     let searchController = UISearchController(searchResultsController: nil)
     var filteredPrestations = [Prestation]()
+    var favorisPlus:[String:[Prestation]] = [String:[Prestation]]()
+    var favorisViewController:FavorisTableViewController?
+
     
     
     override func viewDidLoad() {
@@ -30,10 +33,10 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
         filteredPrestations = prestation.filter { pres in
-            let p = pres as! Prestation
+            let p = pres
             let dexcr = p.description
             return dexcr.lowercaseString.containsString(searchText.lowercaseString)
-            } as! [Prestation]
+            }
         
         tableView.reloadData()
     }
@@ -62,9 +65,9 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         let cell = tableView.dequeueReusableCellWithIdentifier("prestationCell", forIndexPath: indexPath) as! ListeActesTableViewCell
         var pres:Prestation?
         if searchController.active && searchController.searchBar.text != "" {
-            pres = self.filteredPrestations[indexPath.row] as? Prestation
+            pres = self.filteredPrestations[indexPath.row]
         } else {
-            pres = self.prestation[indexPath.row] as? Prestation
+            pres = self.prestation[indexPath.row]
         }
         var description = pres?.description ?? "Aucune description disponible"
         var index = 1
@@ -99,6 +102,7 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let schema = actesController?.schemaDentController{
+            
             self.addActeForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema)
             addAllActesForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema)
             
@@ -106,17 +110,32 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         }
     }
     
-    func addAllActesForCell(indexPath:Int, selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil){
+    func addAllActesForCell(indexPath:Int, selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil, section: Int? = nil){
         var i = indexPath + 1
         var index = 0
-        if searchController.active && searchController.searchBar.text != "" && filteredPrestations.count > i || prestation.count > i {
+        var array = []
+        if let s = section{
+            let key = Array(favorisPlus.keys)[s]
+            array = favorisPlus[key]!
+        }
+        if !searchController.active && prestation.count > i && section == nil || !self.favorisViewController!.searchController.active && section != nil && array.count > i {
             while index == 0 {
                 index = 1
                 var pres:Prestation
-                if searchController.active && searchController.searchBar.text != "" {
-                    pres = filteredPrestations[i]
+                if let s = section{
+                    if self.favorisViewController!.searchController.active && self.favorisViewController!.searchController.searchBar.text != "" {
+                        pres = self.favorisViewController!.filteredFavoris![i]
+                    }else{
+                        let key = Array(favorisPlus.keys)[s]
+                        let array = favorisPlus[key]
+                        pres = array![i]
+                    }
                 }else{
-                    pres = prestation[i] as! Prestation
+                    if searchController.active && searchController.searchBar.text != "" {
+                        pres = filteredPrestations[i]
+                    }else{
+                        pres = prestation[i] 
+                    }
                 }
                 let description = pres.description ?? "Aucune description disponible"
                 if description.rangeOfString("+") != nil {
@@ -134,13 +153,22 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     }
     
     
-    func addActeForCell(indexPath:Int, var selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil){
-        let index = indexPath
+    func addActeForCell(indexPath:Int, var selectedCell:[Int]? = nil, schema:SchemaDentaireCollectionViewController? = nil, section: Int? = nil){
         var presta:Prestation
-        if searchController.active && searchController.searchBar.text != "" {
-            presta = filteredPrestations[index]
+        if let s = section{
+            if self.favorisViewController!.searchController.active && self.favorisViewController!.searchController.searchBar.text != "" {
+                presta = self.favorisViewController!.filteredFavoris![indexPath]
+            }else{
+                let key = Array(favorisPlus.keys)[s]
+                let array = favorisPlus[key]
+                presta = array![indexPath]
+            }
         }else{
-            presta = prestation[index] as! Prestation
+            if searchController.active && searchController.searchBar.text != "" {
+                presta = filteredPrestations[indexPath]
+            }else{
+                presta = prestation[indexPath]
+            }
         }
         let date = ToolBox.getFormatedDateWithSlash(NSDate())
         let cotation = presta.coefficient
@@ -155,20 +183,28 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
                 selectedCell = [0]
             }
             if schema != nil && selectedCell != nil{
-                var query = ""
                 for cell in selectedCell! {
                     let localisation = schema?.chart?.localisationFromIndexPath(cell)
-                    let newPresta = PrestationActe(nom: numPresta + 1, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: cell, dateActe: date)
+                    let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: cell, dateActe: date)
                     acte.prestation.append(newPresta)
                     if image != ""{
                         api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(localisation)', '\(image)');")
                     }
                     
                 }
+                if(selectedCell?.count == 0){
+                    let localisation = 0
+                    let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
+                    acte.prestation.append(newPresta)
+                }
                 if image != ""{
                     schema!.addImageToSelectedCell(image)
                 }
                 
+            }else{
+                let localisation = 0
+                let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
+                acte.prestation.append(newPresta)
             }
             schema?.reloadSelectedCell()
             acte.tableView.reloadData()
@@ -181,7 +217,8 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         if let resultsArr: NSArray = results["results"] as? NSArray {
             dispatch_async(dispatch_get_main_queue(), {
                 let prestation = Prestation.prestationWithJSON(resultsArr)
-                self.prestation = prestation.sort({$0.nom < $1.nom})
+                self.prestation = prestation.favoris
+                self.favorisPlus = prestation.favorisPlus
                 self.tableView.reloadData()
                 if self.actesController?.finished > 1 {
                     self.actesController?.activityIndicator.stopActivity(true)

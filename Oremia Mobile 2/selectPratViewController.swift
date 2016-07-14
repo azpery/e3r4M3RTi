@@ -77,7 +77,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     }
     func displayLoad(){
         self.praticiens.removeAll(keepCapacity: false)
-        self.praticiens.append(Praticien(id: 0, nom:"Recherche du Serveur...", prenom: ""))
+        self.praticiens.append(Praticien(id: 0, nom:"Recherche du Serveur...", prenom: "", licence: 0))
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         self.initScroll()
         self.loadVisiblePages()
@@ -137,14 +137,9 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         }
     }
     func loadVisiblePages() {
-        // First, determine which page is currently visible
         let pageWidth = scrollView.frame.size.width
         let page = Int(floor((scrollView.contentOffset.x * 2.0 + pageWidth) / (pageWidth * 2.0)))
-        
-        // Update the page control
         pageControl.currentPage = page
-        
-        // Work out which pages you want to load
         let firstPage = page - 1
         let lastPage = page + 1
         
@@ -171,7 +166,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         }
         let pagesScrollViewSize = scrollView.frame.size
         scrollView.contentSize = CGSize(width: pagesScrollViewSize.width * CGFloat(self.praticiens.count),
-            height: pagesScrollViewSize.height)
+                                        height: pagesScrollViewSize.height)
     }
     
     func showActivityLoader(){
@@ -202,10 +197,23 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     preference.idUser = self.selectedPrat!.id
                     preference.nomUser = self.selectedPrat!.nom
                     preference.prenomUser = self.selectedPrat!.prenom
+                    preference.licence = self.selectedPrat!.licence
                     preference.password = self.mdp!
                     connexionString.login = "zm\(self.selectedPrat!.id)"
                     connexionString.pw=self.mdp!
-                    self.performSegueWithIdentifier("connectionGranted", sender:self)
+                    api?.checkLicence({result->Void in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            if result{
+                                
+                                self.performSegueWithIdentifier("connectionGranted", sender:self)
+                                
+                            }else{
+                                let alert = SCLAlertView()
+                                alert.showError("Licence invalide", subTitle: "Vous n'avez pas la licence requise pour utiliser cette application.\n Veuillez contacter le service commercial de Zumatec.", closeButtonTitle:"Fermer")
+                                self.api!.selectpraticien()
+                            }
+                        })
+                    })
                 }
                 if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
                     type = 2
@@ -282,7 +290,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                 
                 //            SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer", duration: 800)
                 self.praticiens.removeAll(keepCapacity: false)
-                self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: ""))
+                self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: "", licence: 0))
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 let alert = SCLAlertView()
                 let txt = alert.addTextField(preference.ipServer)
@@ -293,7 +301,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     preference.ipServer=txt.text!
                     self.api!.updateServerAdress(txt.text!)
                     self.api!.pingServer()
-//                    self.api!.selectpraticien()
+                    //                    self.api!.selectpraticien()
                 }
                 alert.addButton("Lancer la démonstration"){
                     preference.ipServer = "77.153.245.34"
@@ -304,7 +312,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                 self.loadVisiblePages()
             case 2 :
                 self.praticiens.removeAll(keepCapacity: false)
-                self.praticiens.append(Praticien(id: 0, nom:"Fichier(s) manquant(s)", prenom: ""))
+                self.praticiens.append(Praticien(id: 0, nom:"Fichier(s) manquant(s)", prenom: "", licence: 0))
                 UIApplication.sharedApplication().networkActivityIndicatorVisible = false
                 self.initScroll()
                 self.loadVisiblePages()

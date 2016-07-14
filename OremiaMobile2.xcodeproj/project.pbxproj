@@ -185,6 +185,8 @@
 		12E453471C6BE2A30075251A /* CalendrierDefautTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E453461C6BE2A30075251A /* CalendrierDefautTableViewCell.swift */; };
 		12F75D311C14E751000E7259 /* HelpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F75D301C14E751000E7259 /* HelpButton.swift */; };
 		12F75D331C14EEC9000E7259 /* ToolBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F75D321C14EEC9000E7259 /* ToolBox.swift */; };
+		12F782ED1D367B45005B2BF7 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F782EC1D367B45005B2BF7 /* Overlay.swift */; };
+		12F782EF1D36F60F005B2BF7 /* FavorisTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12F782EE1D36F60F005B2BF7 /* FavorisTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -442,6 +444,8 @@
 		12E453461C6BE2A30075251A /* CalendrierDefautTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendrierDefautTableViewCell.swift; sourceTree = "<group>"; };
 		12F75D301C14E751000E7259 /* HelpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpButton.swift; sourceTree = "<group>"; };
 		12F75D321C14EEC9000E7259 /* ToolBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolBox.swift; sourceTree = "<group>"; };
+		12F782EC1D367B45005B2BF7 /* Overlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
+		12F782EE1D36F60F005B2BF7 /* FavorisTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavorisTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -721,19 +725,12 @@
 				12B347BE1B10B0AD00A8AC3D /* Track.swift */,
 				1274F9231B1B6F52002FCF43 /* date.swift */,
 				12C39E611C19ED62002422E7 /* Evenement.swift */,
-				12F75D321C14EEC9000E7259 /* ToolBox.swift */,
 				124A21151C1A422200991A55 /* TypeRDV.swift */,
-				128FCFCA1C6AC0FC00FABB77 /* imageColor.swift */,
 				1229E0E61C9B664B00173F83 /* Chart.swift */,
 				1234FF611D32CECB000F57C6 /* ChartForChildren.swift */,
-				12A6BC961CC3FB1D00A1FB33 /* Window.swift */,
 				12A6BC9F1CD228FE00A1FB33 /* Prestation.swift */,
 				12A6BCA71CD28C4200A1FB33 /* PrestationActe.swift */,
-				126448A51D1C5EB70037062B /* ImageExtension.swift */,
-				126FC4141D23EAB90002173E /* SplitViewExtension.swift */,
 				126FC4161D23F6410002173E /* TypeModeleDocument.swift */,
-				12067C291D2C219F00757DD4 /* StringExtension.swift */,
-				12A678801D32AD1C00B5FBE7 /* ExtensionSearchDisplayController.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -812,6 +809,7 @@
 				12750CB81C3EA4D0002999F5 /* SchemaDentaireCollectionViewController.swift */,
 				12A6BC9B1CD1357F00A1FB33 /* SaisieActesTableViewController.swift */,
 				12A6BC9D1CD1359E00A1FB33 /* ListeActesTableViewController.swift */,
+				12F782EE1D36F60F005B2BF7 /* FavorisTableViewController.swift */,
 				12750CBA1C3EA4E5002999F5 /* DentCollectionViewCell.swift */,
 				12A6BCA11CD2760000A1FB33 /* SaisieActesTableViewCell.swift */,
 				12A6BCA31CD2761D00A1FB33 /* ListeActesTableViewCell.swift */,
@@ -847,9 +845,11 @@
 				124727C11BB5A692002741C8 /* Demo */,
 				12C40F371B9B0FE4007E98BD /* FIle */,
 				1286599F1B1475F100C2EEDF /* Model */,
+				12F782EB1D367A79005B2BF7 /* Tools */,
 				1286599D1B1475A100C2EEDF /* Classes */,
 				1286599E1B1475CA00C2EEDF /* Third part */,
 				12B347F01B10B6E100A8AC3D /* ViewControllers */,
+				12172F031C14C59C00A99F49 /* HelpViewController.swift */,
 				12B3479E1B10B0AD00A8AC3D /* AppDelegate.swift */,
 				12B347991B10B0AB00A8AC3D /* OremiaMobile2-Bridging-Header.h */,
 				12B347AC1B10B0AD00A8AC3D /* Info.plist */,
@@ -908,9 +908,6 @@
 				12A6BC9A1CD1352A00A1FB33 /* Gestion des actes */,
 				12B347F21B10B72E00A8AC3D /* Controllers */,
 				12B347F11B10B70A00A8AC3D /* Dynamic content */,
-				12F75D301C14E751000E7259 /* HelpButton.swift */,
-				12172F031C14C59C00A99F49 /* HelpViewController.swift */,
-				127B727B1BF369760055FB3A /* LoadingOverlay.swift */,
 				122E54D81BBE93F000861367 /* valio */,
 			);
 			name = ViewControllers;
@@ -1002,6 +999,23 @@
 				12CF39DA1B1789D100883192 /* UIImageView+WebCache.m */,
 			);
 			name = SDWebImage;
+			sourceTree = "<group>";
+		};
+		12F782EB1D367A79005B2BF7 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				12F75D321C14EEC9000E7259 /* ToolBox.swift */,
+				12F75D301C14E751000E7259 /* HelpButton.swift */,
+				127B727B1BF369760055FB3A /* LoadingOverlay.swift */,
+				128FCFCA1C6AC0FC00FABB77 /* imageColor.swift */,
+				12A6BC961CC3FB1D00A1FB33 /* Window.swift */,
+				126448A51D1C5EB70037062B /* ImageExtension.swift */,
+				126FC4141D23EAB90002173E /* SplitViewExtension.swift */,
+				12067C291D2C219F00757DD4 /* StringExtension.swift */,
+				12A678801D32AD1C00B5FBE7 /* ExtensionSearchDisplayController.swift */,
+				12F782EC1D367B45005B2BF7 /* Overlay.swift */,
+			);
+			name = Tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1126,6 +1140,7 @@
 				12AE86611C05D3CB0031C5A3 /* ModeleDocument.swift in Sources */,
 				127B729E1BF383D70055FB3A /* UIImage+GIF.m in Sources */,
 				120A1DA21C164D01007E98C3 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				12F782ED1D367B45005B2BF7 /* Overlay.swift in Sources */,
 				120A1D751C164B13007E98C3 /* MSCalendarViewController.m in Sources */,
 				12B347C41B10B0AD00A8AC3D /* APIController.swift in Sources */,
 				127B72911BF36B900055FB3A /* SDWebImageManager.m in Sources */,
@@ -1204,6 +1219,7 @@
 				125A5F1B1BC2CA2100EFC56B /* EventController.swift in Sources */,
 				122E70751BD0FFAF0053E980 /* DalleAccueilCollectionViewController.swift in Sources */,
 				12553E971C17228B0051F30E /* UIImage+FontAwesome.m in Sources */,
+				12F782EF1D36F60F005B2BF7 /* FavorisTableViewController.swift in Sources */,
 				12B347CE1B10B0AD00A8AC3D /* FullScreenDocumentViewController.swift in Sources */,
 				120A1DA01C164D01007E98C3 /* MASViewConstraint.m in Sources */,
 				127B727C1BF369770055FB3A /* LoadingOverlay.swift in Sources */,

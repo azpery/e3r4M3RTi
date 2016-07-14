@@ -25,12 +25,12 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("saisieActesCell", forIndexPath: indexPath) as! SaisieActesTableViewCell
-        let pres = self.prestation[indexPath.row] as? PrestationActe
-        cell.descriptif.text = pres?.description ?? "Aucune description disponible"
-        cell.date.text = pres?.dateActe ?? ToolBox.getFormatedDateWithSlash(NSDate())
-        cell.localisation.text = "\(pres?.numDent ?? 0)"
-        cell.cotation.text = "\(pres?.coefficient ?? 0)"
-        cell.montant.text = "\(pres?.montant ?? "0")E"
+        let pres = self.prestation[indexPath.row]
+        cell.descriptif.text = pres.description
+        cell.date.text = pres.dateActe
+        cell.localisation.text = "\(pres.numDent )"
+        cell.cotation.text = "\(pres.coefficient)"
+        cell.montant.text = "\(pres.montant)E"
         return cell
     }
     
@@ -65,9 +65,11 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
     func didReceiveAPIResults(results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
         dispatch_async(dispatch_get_main_queue(), {
-            if let dict = resultsArr as? NSArray {
-                let prestation = PrestationActe.prestationActesWithJSON(dict)
-                self.prestation = prestation.sort({$0.nom < $1.nom})
+                let prestation = PrestationActe.prestationActesWithJSON(resultsArr)
+                self.prestation = prestation.sort({$0.nom > $1.nom})
+                self.actesController?.schemaDentController?.chart?.addLayersFromPrestation(self.prestation)
+                self.actesController?.schemaDentController?.collectionView?.reloadData()
+                self.actesController?.listeActesController?.prestation.sortInPlace({$0.nom < $1.nom})
                 self.tableView.reloadData()
                 if self.actesController?.finished > 1 {
                     self.actesController?.activityIndicator.stopActivity(true)
@@ -75,7 +77,6 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
                 } else {
                     self.actesController?.finished++
                 }
-            }
         })
     }
     func handleError(results: Int) {

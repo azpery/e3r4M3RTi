@@ -24,6 +24,11 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     var chartLayouts:[Int:[Int:String]] = [0:[0:""]]
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
+        
+    }
+    
+    func loadData(){
         if ToolBox.calcAge(patient?.dateNaissance ?? "03/04/1993") <= 10 {
             self.chart = ChartForChildren(idpatient: patient!.id, callback: self.didReceiveData)
         }else{
@@ -34,7 +39,6 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         self.view.layoutIfNeeded()
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
-        
     }
     
     
@@ -55,7 +59,14 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
     }
-    
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation:UIInterfaceOrientation){
+        self.loadData()
+    }
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if(toInterfaceOrientation.isLandscape){
+            self.loadData()
+        }
+    }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -66,21 +77,15 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
+        var cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
         let i = indexPath.row
         cell.dentLayout.contentMode = .ScaleAspectFit
         cell.dentLayout.clipsToBounds = true
         let layer = self.chart?.layerFromIndexPath(i) ?? [""]
-        cell.dent8Layout.image = nil
-        cell.dent7Layout.image = nil
-        cell.dent6Layout.image = nil
-        cell.dent5Layout.image = nil
-        cell.dent4Layout.image = nil
-        cell.dent3Layout.image = nil
-        cell.dent2Layout.image = nil
-        cell.dent1Layout.image = nil
-        cell.dentLayout.image = UIImage(named: "\(self.chart?.localisationFromIndexPath(i))")
-        self.chart?.imagesFromIndexPath(i, layer: layer, cell: cell)
+
+        cell.dent8Layout.image = UIImage(named: "\(self.chart?.localisationFromIndexPath(i))")
+        
+        cell = (self.chart?.imagesFromIndexPath(i, layer: layer, cell: cell))!
         
         if(self.isSelected(indexPath.row) != -1){
             cell.layer.borderWidth = 2.0
@@ -88,8 +93,6 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         }else{
             cell.layer.borderWidth = 0.0
         }
-        cell.setNeedsLayout()
-        cell.setNeedsDisplay()
         return cell
     }
     func collectionView(collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -113,20 +116,9 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     }
     
     
-    override func collectionView(collectionView: UICollectionView!, didSelectItemAtIndexPath indexPath: NSIndexPath!) {
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
-        
         self.toggleSelectedCell(indexPath.row, cell: cell, indexPath: indexPath)
-        cell.dent8Layout.image = nil
-        cell.dent7Layout.image = nil
-        cell.dent6Layout.image = nil
-        cell.dent5Layout.image = nil
-        cell.dent4Layout.image = nil
-        cell.dent3Layout.image = nil
-        cell.dent2Layout.image = nil
-        cell.dent1Layout.image = nil
-        cell.dentLayout.image = nil
-        self.collectionView?.setNeedsLayout()
         self.collectionView?.reloadItemsAtIndexPaths([indexPath])
     }
     
@@ -170,17 +162,15 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     }
     func toggleSelectedCell(index:Int, cell: DentCollectionViewCell, indexPath:NSIndexPath){
         let found = self.isSelected(index)
-        let previous = self.indexPath
         if found == -1{
-            self.cell = [cell]
-            self.indexPath = [indexPath]
-            self.selectedCell = [index]
+            self.cell.append(cell)
+            self.indexPath.append(indexPath)
+            self.selectedCell.append(index)
         }else{
             self.selectedCell.removeAtIndex(found)
             self.cell.removeAtIndex(found)
             self.indexPath.removeAtIndex(found)
         }
-        self.collectionView?.reloadItemsAtIndexPaths(previous)
     }
     
     func isSelected(index:Int)->Int{

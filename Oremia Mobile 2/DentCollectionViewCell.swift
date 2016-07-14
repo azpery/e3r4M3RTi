@@ -14,8 +14,6 @@ class DentCollectionViewCell: UICollectionViewCell {
     var layers = [String]()
     var chart:Chart?
     var indexPath:Int?
-
-    
     @IBOutlet var dent2Layout: UIImageView!
     @IBOutlet var dent3Layout: UIImageView!
     @IBOutlet var dent4Layout: UIImageView!
@@ -23,33 +21,5 @@ class DentCollectionViewCell: UICollectionViewCell {
     @IBOutlet var dent6Layout: UIImageView!
     @IBOutlet var dent7Layout: UIImageView!
     @IBOutlet var dent8Layout: UIImageView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        for layer in layers {
-            let recipe = UIImageView(frame: self.dentLayout.frame)
-            recipe.contentMode = .ScaleAspectFit
-            self.clipsToBounds = true
-            self.addSubview(recipe)
-            self.dentLayout.contentMode = .ScaleAspectFit
-            self.dentLayout.clipsToBounds = true
-            
-            chart?.imageFromIndexPath(indexPath!, layer: layer, imageView: recipe)
-        }
-    }
-    
-    override func prepareForReuse() {
-        
-        self.dent8Layout.image =  nil
-        self.dent6Layout.image = nil
-        self.dent5Layout.image = nil
-        self.dent4Layout.image = nil
-        self.dent3Layout.image = nil
-        self.dent2Layout.image = nil
-        self.dent1Layout.image = nil
-        self.dentLayout.image = nil
-        
-        super.prepareForReuse()
-    }
 
 }

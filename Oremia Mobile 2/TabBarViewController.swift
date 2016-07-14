@@ -17,7 +17,6 @@ class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // set red as selected background color
-        let numberOfItems = CGFloat(tabBar.items!.count)
         let tabBarItemSize = CGSize(width: tabBar.frame.width , height: tabBar.frame.height)
         tabBar.selectionIndicatorImage = UIImage.imageWithColor(ToolBox.UIColorFromRGB(0xE86A0E), size: tabBarItemSize).resizableImageWithCapInsets(UIEdgeInsetsZero)
         

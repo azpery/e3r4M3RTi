@@ -24,6 +24,7 @@ class ActesViewController: UIViewController {
     @IBOutlet var closeButton: UIBarButtonItem!
     @IBOutlet var trashButton: UIBarButtonItem!
     @IBOutlet var refreshButton: UIBarButtonItem!
+    @IBOutlet var favorisButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
@@ -35,8 +36,16 @@ class ActesViewController: UIViewController {
         trashButton.setFAIcon(FAType.FATrash, iconSize: 24)
         refreshButton.setFAIcon(FAType.FARefresh, iconSize: 24)
         closeButton.setFAIcon(FAType.FATimes, iconSize: 24)
+        favorisButton.setFAIcon(FAType.FAPlus, iconSize: 24)
         let title = self.navigationController!.navigationBar.topItem!
         title.title = "Saisie des actes -  Dr \(preference.nomUser) - \(schemaDentController!.patient!.nom) \(schemaDentController!.patient!.prenom.capitalizedString)"
+        if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Pad){
+            Overlay.shared.showOverlay(self.view, text: "Cet onglet n'est disponible que sur iPad.")
+        }
+        if (self.interfaceOrientation.isPortrait)
+        {
+            Overlay.shared.showOverlay(self.view, text: "Veuillez tourner votre iPad en mode paysage.")
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -67,17 +76,26 @@ class ActesViewController: UIViewController {
         }
     }
     
-    @IBAction func dismiss(sender: AnyObject) {
-        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if(toInterfaceOrientation.isLandscape){
+            Overlay.shared.hideOverlayView()
+        }else{
+            Overlay.shared.showOverlay(self.view, text: "Veuillez tourner votre iPad en mode paysage.")
+        }
     }
     
-    @IBAction func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
-        if gestureRecognizer.state == UIGestureRecognizerState.Began || gestureRecognizer.state == UIGestureRecognizerState.Changed {
-            if gestureRecognizer.locationInView(self.view).x >= 0 && gestureRecognizer.locationInView(self.view).x < 50{
-                let translation = gestureRecognizer.translationInView(self.view)
-                self.rightPanel.frame =  CGRect(x: self.rightPanel.frame.origin.x, y: self.rightPanel.frame.origin.y, width: ((self.rightPanel.frame.width) + translation.x), height: (self.rightPanel.frame.height))
-            }
-        }
+//    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation:UIInterfaceOrientation){
+//        if (!UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
+//        {
+//            Overlay.shared.showOverlay(self.view, text: "Veuillez tourner votre iPad en mode paysage.")
+//        }else{
+//            Overlay.shared.hideOverlayView()
+//        }
+//    }
+    
+    
+    @IBAction func dismiss(sender: AnyObject) {
+        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func emptyFses(sender: AnyObject) {
@@ -95,10 +113,22 @@ class ActesViewController: UIViewController {
             alert.showInfo("Voulez-vous vider la FSE?", subTitle: "Confirmer la suppression de la feuille de soin.")
         })
     }
+    @IBAction func showFavoris(sender: AnyObject) {
+        let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("FavorisViewController") as! UINavigationController
+        let viewControllers = VC1.viewControllers
+        VC1.modalPresentationStyle = UIModalPresentationStyle.PageSheet
+        let favorisView: FavorisTableViewController = viewControllers.first as! FavorisTableViewController
+        favorisView.favorisPlus = self.listeActesController?.favorisPlus
+        favorisView.listeController = self.listeActesController
+        self.listeActesController?.favorisViewController = favorisView
+        self.listeActesController?.presentViewController(VC1, animated: true, completion: nil)
+    }
     
     @IBAction func resfreshViews(sender: AnyObject) {
         saisieActesController!.refresh()
+        schemaDentController?.loadData()
     }
+
     
     
 }

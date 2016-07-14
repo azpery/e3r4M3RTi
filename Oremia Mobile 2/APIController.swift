@@ -78,9 +78,32 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=0"
         get(urlPath, searchString: "dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
     }
+    func checkLicence(success: Bool->Void? = {defaut->Void in}){
+        let urlPath = "http://licences.oremia.com/licences/checkSetup2.php?id=\(preference.licence)"
+        get(urlPath, searchString: "",success: {defaut->Bool in
+            let licence = defaut["licences"] as? NSDictionary
+            if let l = licence {
+                if let date = l["3"] as? String{
+                    if let d = ToolBox.getDateFromString(date){
+                        if ToolBox.isDateGreaterThanToday(d){
+                            success(true)
+                        }else{
+                            success(false)
+                        }
+                    }else{
+                        success(false)
+                    }
+                }else{
+                    success(false)
+                }
+            }else{
+                success(false)
+            }
+        return true})
+    }
     func selectpraticien() {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=2"
-        get(urlPath, searchString: "query=select id,nom,prenom  from praticiens order by id&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
+        get(urlPath, searchString: "query=select id,nom,prenom,licence  from praticiens order by id&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
     }
     func sendInsert(searchString: String) {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"

@@ -12,6 +12,7 @@ class selectedUser {
      var idUser=0
      var nomUser=""
      var prenomUser=""
+     var licence=0
      var password="zuma"
      var ipServer="localhost"
 }

@@ -57,6 +57,22 @@ import Foundation
         return "\(day)/\(month)/\(year)"
     }
     
+    static func isDateGreaterThanToday(date: NSDate)->Bool{
+        var vretour = false
+        let dateToday = NSDate()
+        if date.compare(dateToday) == NSComparisonResult.OrderedDescending {
+            vretour = true
+        }
+        return vretour
+    }
+    
+    static func getDateFromString(dateStr:String)->NSDate?{
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.dateFromString(dateStr)
+        return date
+    }
+    
     static func setDefaultBackgroundMessage(tableView:UITableView, elements:Int, message:String){
         let messageLbl = UILabel( frame:CGRectMake(0, 0,
             tableView.bounds.size.width,
@@ -83,19 +99,15 @@ import Foundation
             tableView.bounds.size.width,
             tableView.bounds.size.height))
         if (elements == 0) {
-            //set the message
             messageLbl.text = message
         }else{
             messageLbl.text = ""
         }
         messageLbl.font = UIFont(name: "Avenir Next", size: 30)
         messageLbl.textColor = ToolBox.UIColorFromRGB(0x878787)
-        //center the text
         messageLbl.textAlignment = NSTextAlignment.Center
-        //auto size the text
         messageLbl.sizeToFit()
         tableView.backgroundView = messageLbl
-        //no separator
     }
     
     static func startActivity(view: UIView) -> DTIActivityIndicatorView{
