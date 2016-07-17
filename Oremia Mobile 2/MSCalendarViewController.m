@@ -152,25 +152,25 @@ UIPopoverPresentationController *popover;
                                   target:self
                                   action:@selector(showToday)];
     UIBarButtonItem *buttonLeft = [[UIBarButtonItem alloc]
-                                      initWithTitle:@"Your Button"
-                                      style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(showLeft)];
-    [buttonLeft setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-                                           [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
-                                           [UIColor whiteColor], NSForegroundColorAttributeName,
-                                           nil]forState:UIControlStateNormal];
-    buttonLeft.title = [NSString fontAwesomeIconStringForEnum:FAChevronLeft];
-    buttonLeft.tintColor = [UIColor whiteColor];
-    UIBarButtonItem *buttonRight = [[UIBarButtonItem alloc]
                                    initWithTitle:@"Your Button"
                                    style:UIBarButtonItemStylePlain
                                    target:self
-                                   action:@selector(showRight)];
-    [buttonRight setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                   action:@selector(showLeft)];
+    [buttonLeft setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                         [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
                                         [UIColor whiteColor], NSForegroundColorAttributeName,
                                         nil]forState:UIControlStateNormal];
+    buttonLeft.title = [NSString fontAwesomeIconStringForEnum:FAChevronLeft];
+    buttonLeft.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *buttonRight = [[UIBarButtonItem alloc]
+                                    initWithTitle:@"Your Button"
+                                    style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(showRight)];
+    [buttonRight setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+                                         [UIFont fontWithName:kFontAwesomeFamilyName size:24], NSFontAttributeName,
+                                         [UIColor whiteColor], NSForegroundColorAttributeName,
+                                         nil]forState:UIControlStateNormal];
     buttonRight.title = [NSString fontAwesomeIconStringForEnum:FAChevronRight];
     buttonRight.tintColor = [UIColor whiteColor];
     buttonSetting.tintColor = [UIColor whiteColor];
@@ -206,7 +206,7 @@ UIPopoverPresentationController *popover;
         destinationView.caller = self;
         destinationView.eventManager = self.fetchedResultsController;
         
-
+        
         self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendar]];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView.collectionViewLayout invalidateLayout];
@@ -333,26 +333,28 @@ UIPopoverPresentationController *popover;
 }
 -(void)moveToDate:(NSDate *)date
 {
-    self.selectedDate = date;
-    NSMutableArray *cals = [@[@""] mutableCopy];
-    for (EKCalendar *cal in [self.fetchedResultsController calendars]) {
-        [cals addObject:[cal title]];
-    }
-    [self.fetchedResultsController.api getCalDavRessources:date calendars:cals];
-    self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:date]];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.collectionView.collectionViewLayout invalidateLayout];
-            [self.collectionViewCalendarLayout invalidateLayoutCache];
-            self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
-            [self.collectionView reloadData];
-            self.isLoading = false;
-            [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:date andAnimated:YES];
-            
+    if(!self.isLoading){
+        self.isLoading = true;
+        self.selectedDate = date;
+        NSMutableArray *cals = [@[@""] mutableCopy];
+        for (EKCalendar *cal in [self.fetchedResultsController calendars]) {
+            [cals addObject:[cal title]];
+        }
+        [self.fetchedResultsController.api getCalDavRessources:date calendars:cals];
+        self.uniqueEventsArray = [self.fetchedResultsController sortEventsByDay:[self.fetchedResultsController getEventsOfSelectedCalendarForCertainDate:date]];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.collectionView.collectionViewLayout invalidateLayout];
+                [self.collectionViewCalendarLayout invalidateLayoutCache];
+                self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
+                [self.collectionView reloadData];
+                [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:date andAnimated:YES];
+                self.isLoading = false;
+                
+            });
             
         });
-        
-    });
+    }
 }
 - (void)datePickerCancelPressed:(THDatePickerViewController *)picker {
     [self dismissSemiModalView];
@@ -385,7 +387,7 @@ UIPopoverPresentationController *popover;
     destinationView.cell = cell;
     popover.sourceRect = cell.frame;
     [self presentViewController:controller animated:YES completion:^{
-        [destinationView loadMe];
+//        [destinationView loadMe];
         [destinationView loadEvent];
     }];
 }
@@ -602,21 +604,27 @@ UIPopoverPresentationController *popover;
 
 - (NSDate *)collectionView:(UICollectionView *)collectionView layout:(MSCollectionViewCalendarLayout *)collectionViewCalendarLayout startTimeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    EKEvent *event = self.uniqueEventsArray[indexPath.section][@"lesDates"][indexPath.row];
-    return  event.startDate;
+    if(self.uniqueEventsArray.count >= indexPath.section && [self.uniqueEventsArray[indexPath.section][@"lesDates"] count] - 1 >= indexPath.row){
+        EKEvent *event = self.uniqueEventsArray[indexPath.section][@"lesDates"][indexPath.row];
+        return  event.startDate;
+    }
+    return [NSDate dateWithTimeIntervalSinceNow:0];
 }
 
 - (NSDate *)collectionView:(UICollectionView *)collectionView layout:(MSCollectionViewCalendarLayout *)collectionViewCalendarLayout endTimeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDate *vretour;
-    EKEvent *event = self.uniqueEventsArray[indexPath.section][@"lesDates"][indexPath.row];
-    NSTimeInterval timeInterval = [event.startDate timeIntervalSinceDate:event.endDate];
-    if(timeInterval == -86399){
-        vretour = [event.startDate dateByAddingTimeInterval:(60 * 60)];
-    } else {
-        vretour = event.endDate;
+    if(self.uniqueEventsArray.count >= indexPath.section && [self.uniqueEventsArray[indexPath.section][@"lesDates"] count] - 1 >= indexPath.row){
+        EKEvent *event = self.uniqueEventsArray[indexPath.section][@"lesDates"][indexPath.row];
+        NSTimeInterval timeInterval = [event.startDate timeIntervalSinceDate:event.endDate];
+        if(timeInterval == -86399){
+            vretour = [event.startDate dateByAddingTimeInterval:(60 * 60)];
+        } else {
+            vretour = event.endDate;
+        }
+        return vretour;
     }
-    return vretour;
+    return [NSDate dateWithTimeIntervalSinceNow:0];
 }
 
 - (NSDate *)currentTimeComponentsForCollectionView:(UICollectionView *)collectionView layout:(MSCollectionViewCalendarLayout *)collectionViewCalendarLayout

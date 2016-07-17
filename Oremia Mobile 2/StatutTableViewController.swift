@@ -40,8 +40,12 @@ class StatutTableViewController: UITableViewController {
             label!.text = "Annulé avant 48 heures"
             break
         case 4 :
+            label!.text = "Absence"
+            break
+        case 5 :
             label!.text = "Annulé"
             break
+        
         default:
             label!.text = "À l'heure"
             break

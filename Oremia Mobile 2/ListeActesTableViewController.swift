@@ -36,13 +36,25 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
     func filterContentForSearchText(searchText: String, scope: String = "All") {
         filteredFavoris = []
         var cpt = 0
-        for favoris in favorisPlus {
+        for _ in favorisPlus {
             let key = Array(favorisPlus[cpt].keys)[0]
             let array = favorisPlus[cpt][key]
+            var i = 0
             filteredFavoris?.appendContentsOf(array!.filter { pres in
                 let p = pres
                 let dexcr = p.description
-                return dexcr.lowercaseString.containsString(searchText.lowercaseString)
+                let previous = i > 0 ? array?[i-1] : nil
+                var prevMatch = false
+                if let p = previous{
+                    if dexcr.rangeOfString("+") != nil {
+                        let index = dexcr.startIndex.distanceTo((dexcr.rangeOfString("+")?.startIndex)!)
+                        if index == 0 && p.description.lowercaseString.containsString(searchText.lowercaseString){
+                            prevMatch = true
+                        }
+                    }
+                }
+                i++
+                return dexcr.lowercaseString.containsString(searchText.lowercaseString) || prevMatch
                 })
             cpt++
         }
@@ -188,24 +200,26 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
         var array = []
         if let s = section{
             let key = Array(favorisPlus[s].keys)[0]
-            array = favorisPlus[s][key]!
-            if !searchController.active && section != nil && array.count > i {
-                while index == 0 {
-                    index = 1
-                    var pres:Prestation
-                    pres = array[i] as! Prestation
-                    let description = pres.description ?? "Aucune description disponible"
-                    if description.rangeOfString("+") != nil {
-                        index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
-                    }
-                    if index == 0{
-                        addActeForCell(i, selectedCell: selectedCell, schema: schema)
-                        
-                        i++
-                    }
-                }
-                api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
+            array = favorisPlus[s][key] ?? []
+            if searchController.active && searchController.searchBar.text != "" {
+                array = self.filteredFavoris!
             }
+            
+            while index == 0 {
+                index = 1
+                var pres:Prestation
+                pres = array[i] as! Prestation
+                let description = pres.description ?? "Aucune description disponible"
+                if description.rangeOfString("+") != nil {
+                    index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+                }
+                if index == 0{
+                    addActeForCell(i, selectedCell: selectedCell, schema: schema, section:section)
+                    
+                    i++
+                }
+            }
+            api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )
         }
     }
     

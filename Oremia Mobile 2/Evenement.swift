@@ -148,6 +148,33 @@ import EventKit
             api.sendRequest("INSERT INTO calendar_events( idevent, idpatient, statut, modele, ressources) VALUES ('\(mabite[1])', \(idPatient), \(statut), \(modele), '\(ressources)');")
         }
     }
+    func getLibelleStatut()->String{
+        var vretour=""
+        switch self.statut % 10{
+        case 1 :
+            vretour = "À l'heure"
+            break
+        case 2 :
+            vretour = "En retard"
+            break
+        case 3 :
+            vretour = "Retard important"
+            break
+        case 4 :
+            vretour = "Annulé avant 48 heures"
+            break
+        case 5 :
+            vretour = "Absence"
+            break
+        case 6 :
+            vretour = "Annulé"
+            break
+        default:
+            vretour = "Présence non renseignée"
+            break
+        }
+        return vretour
+    }
     func updateStatut() {
         dispatch_async(dispatch_get_main_queue(), {
             switch self.statut % 10{

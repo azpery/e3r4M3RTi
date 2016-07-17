@@ -49,6 +49,7 @@ class NewEventTableViewController: UITableViewController  {
             self.initialDate = eventManager.editEvent?.startDate
             dateFin.date = (eventManager.editEvent?.endDate)!
             notes.text = eventManager.editEvent?.notes
+            
             self.navigationItem.title = "Modifier l'évennement"
             self.navigationItem.rightBarButtonItem?.title = "Modifier"
             self.navigationItem.rightBarButtonItem?.target = self
@@ -56,6 +57,7 @@ class NewEventTableViewController: UITableViewController  {
             dateDebutLabel.text = dateFormatter.stringFromDate((eventManager.editEvent?.startDate)!)
             dateFinLabel.text = dateFormatter.stringFromDate((eventManager.editEvent?.endDate)!)
             typeRDV.text = eventManager.internalEvent.descriptionModele == "" ? "Modifier le type de rendez-vous" : eventManager.internalEvent.descriptionModele
+            statutLabel.text = eventManager.internalEvent.getLibelleStatut()
             self.tableView.reloadData()
         } else {
             delete.removeFromSuperview()
@@ -66,7 +68,6 @@ class NewEventTableViewController: UITableViewController  {
         consulterDossier.hidden = true
         eventManager.selectedCalendarIdentifier = eventManager.defaultCalendar?.title
         calendrier.text = eventManager.defaultCalendar?.title
-        
         rightArrow.setFAIcon(FAType.FAArrowRight, iconSize: 17)
         rightArrow.tintColor = UIColor.whiteColor()
         rightArrowBis.setFAIcon(FAType.FAArrowRight, iconSize: 17)
@@ -76,6 +77,7 @@ class NewEventTableViewController: UITableViewController  {
             consulterDossier.hidden = false
             consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
             loadPhoto()
+            self.tableView.reloadData()
         } else {
             if(!tryed){
                 self.tryed = true
@@ -111,13 +113,15 @@ class NewEventTableViewController: UITableViewController  {
         })
     }
     override func viewDidAppear(animated: Bool) {
-        loadMe()
-        if self.eventManager.internalEvent.patient != nil{
-            consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
-            loadPhoto()
-        } else {
-            consulterDossier.titleLabel?.text = ""
-        }
+        dispatch_async(dispatch_get_main_queue(), {
+            self.loadMe()
+//        if self.eventManager.internalEvent.patient != nil{
+//            self.consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
+//            self.loadPhoto()
+//        } else {
+//            self.consulterDossier.titleLabel?.text = ""
+//        }
+        })
     }
     override func viewDidDisappear(animated: Bool) {
         self.tryed = false
