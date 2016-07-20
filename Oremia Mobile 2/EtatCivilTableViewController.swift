@@ -8,7 +8,9 @@
 
 import UIKit
 
-class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate, APIControllerProtocol {
+class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate, APIControllerProtocol, UIImagePickerControllerDelegate, UIAlertViewDelegate, UINavigationControllerDelegate {
+
+    var patient = patients?()
     var p:patients?
     var api = APIController?()
     var hazards = ["", "Monsieur","Madame", "Mademoiselle", "Enfant"]
@@ -30,21 +32,103 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
     @IBOutlet weak var sms: AIFlatSwitch!
     @IBOutlet weak var em: UITextField!
     @IBOutlet weak var pr: UITextField!
-    @IBOutlet weak var s: KaedeTextField!
-    @IBOutlet weak var ids: KaedeTextField!
-    @IBOutlet weak var dc: KaedeTextField!
-    @IBOutlet weak var nss: KaedeTextField!
+    @IBOutlet weak var s: UITextField!
+    @IBOutlet weak var ids: UITextField!
+    @IBOutlet weak var dc: UITextField!
+    @IBOutlet weak var nss: UITextField!
     @IBOutlet weak var i: UITextView!
+    @IBOutlet weak var photoButton: UIButton!
+    @IBOutlet weak var chooseButton: UIButton!
+    @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var quitButton: UIBarButtonItem!
+    @IBOutlet weak var validButton: UIBarButtonItem!
+    var cameraUI:UIImagePickerController = UIImagePickerController()
+    @IBOutlet weak var profilePicture: UIImageView!
+    @IBOutlet weak var buttonValider: UIBarButtonItem!
+
     override func viewDidLoad() {
-        initValue()
+        
         self.tableView.scrollsToTop = true
         super.viewDidLoad()
         api = APIController(delegate: self)
-        
+        let tb : TabBarViewController = self.tabBarController as! TabBarViewController
+        patient = tb.patient!
+        p = patient
+        initValue()
+        let title = self.navigationController!.navigationBar.topItem!
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
+        if profilePicture != nil {
+            
+            profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;
+            profilePicture.clipsToBounds = true
+            profilePicture.layer.borderWidth = 0.5
+            profilePicture.layer.borderColor = UIColor.whiteColor().CGColor
+            profilePicture.contentMode = .ScaleAspectFill
+            let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
+            progressIndicatorView.frame = self.profilePicture.bounds
+            progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            self.profilePicture.addSubview(progressIndicatorView)
+            var alreadyLoad = true
+            let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(patient!.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
+            dispatch_async(dispatch_get_main_queue(), {
+                self.profilePicture.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+                    (receivedSize, expectedSize) -> Void in
+                    alreadyLoad = false
+                    progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
+                }) {
+                    (image, error, _, _) -> Void in
+                    if !alreadyLoad {
+                        progressIndicatorView.reveal()
+                    } else {
+                        progressIndicatorView.removeFromSuperview()
+                    }
+                    
+                }
+            })
+            photoButton.setFAIcon(FAType.FACamera, forState: .Normal)
+            chooseButton.setFAIcon(FAType.FAPictureO, forState: .Normal)
+            menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
+            quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
+            validButton.setFAIcon(FAType.FACheck, iconSize: 24)
+
+        }
         
     }
     override func viewDidAppear(animated: Bool) {
+        if ( patient!.info != ""){
+            
+            JLToastView.setDefaultValue(
+                UIColor.redColor(),
+                forAttributeName: JLToastViewBackgroundColorAttributeName,
+                userInterfaceIdiom: .Phone
+            )
+            JLToastView.setDefaultValue(
+                UIColor.whiteColor(),
+                forAttributeName: JLToastViewTextColorAttributeName,
+                userInterfaceIdiom: .Phone
+            )
+            var info = patient!.info.componentsSeparatedByString("!")
+            var infoParsed = ""
+            for(var i = 1; i<info.count; i++){
+                infoParsed += info[i]
+                if i<info.count - 1 {infoParsed += "\n"}
+            }
+            JLToast.makeText(infoParsed).show()
+        }
         
+    }
+    @IBAction func Valider(sender: AnyObject) {
+        let alert = SCLAlertView()
+        alert.addButton("Valider", action:{
+            self.editPatient()
+        })
+        alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir modifier \(patient!.prenom)", closeButtonTitle:"Annuler")
+    }
+    @IBAction func prendrePhoto(sender: AnyObject) {
+        self.presentCamera()
+    }
+    @IBAction func choisirPhoto(sender: AnyObject) {
+        self.presentGallery()
     }
     override func viewDidDisappear(animated: Bool){
         
@@ -211,12 +295,72 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
         
     }
     func handleError(results: Int) {
-        if results == 1{
+        if results != 0{
             dispatch_async(dispatch_get_main_queue(), {
-            SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer")
+                let alert = SCLAlertView()
+                alert.showCloseButton = false
+                alert.addButton("Ok", action:{})
+                alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalizedString) a été modifié avec succès.")
+                self.patient!.idPhoto = results
+            })
+        } else {
+            dispatch_async(dispatch_get_main_queue(), {
+                let alert = SCLAlertView()
+                alert.showCloseButton = false
+                alert.addButton("Ok", action:{})
+                alert.showError("Erreur", subTitle: "Une erreur inconnue est survenue lors du téléversement de la photo")
             })
         }
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
     }
+    @IBAction func dismiss(sender: AnyObject) {
+        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
+        
+    }
+    func presentCamera()
+    {
+        cameraUI = UIImagePickerController()
+        cameraUI.delegate = self
+        cameraUI.sourceType = UIImagePickerControllerSourceType.Camera
+        //cameraUI.mediaTypes = [kUTTypeImage] as! String
+        cameraUI.allowsEditing = true
+        cameraUI.navigationItem.title = "kikou"
+        self.presentViewController(cameraUI, animated: true, completion: nil)
+    }
+    func presentGallery()
+    {
+        cameraUI = UIImagePickerController()
+        cameraUI.delegate = self
+        cameraUI.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        //cameraUI.mediaTypes = [kUTTypeImage] as! String
+        cameraUI.allowsEditing = true
+        cameraUI.navigationItem.title = "kikou"
+        self.presentViewController(cameraUI, animated: true, completion: nil)
+    }
+    
+    
+    //pragma mark- Image
+    
+    func imagePickerControllerDidCancel(picker:UIImagePickerController)
+    {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        var imageToSave:UIImage
+        imageToSave = image
+        self.dismissViewControllerAnimated(true, completion: nil)
+        self.profilePicture.image = imageToSave
+        self.patient!.photo = image
+        api?.insertImage(image, idPatient: self.patient!.id)
+    }
+    
+    
+    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int)
+    {
+        NSLog("Did dismiss button: %d", buttonIndex)
+        //self.presentCamera()
+    }
+
 }

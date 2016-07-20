@@ -40,7 +40,7 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
             profilePicture.clipsToBounds = true
             profilePicture.layer.borderWidth = 0.5
             profilePicture.layer.borderColor = UIColor.whiteColor().CGColor
-            profilePicture.contentMode = .ScaleAspectFit
+            profilePicture.contentMode = .ScaleAspectFill
             let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
             progressIndicatorView.frame = self.profilePicture.bounds
             progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
@@ -70,11 +70,6 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
             validButton.layer.cornerRadius = validButton.frame.size.width / 2;
             validButton.clipsToBounds = true
         }
-
-//        buttonRetablir.setType(Type.Danger)
-//        buttonRetablir.buttonStyle = Style.V3
-//        buttonValider.setType(Type.Success)
-//        buttonValider.buttonStyle = Style.V3
         
 
         // Do any additional setup after loading the view.

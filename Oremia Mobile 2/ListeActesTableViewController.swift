@@ -249,7 +249,7 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
                 if schema != nil && selectedCell != nil{
                     for cell in selectedCell! {
                         let localisation = schema?.chart?.localisationFromIndexPath(cell) ?? 0
-                        let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: cell, dateActe: date)
+                        let newPresta = PrestationActe(nom: numPresta + 2, coefficient: cotation, description: descriptif, lettreCle: lettreCle, qualificatif:qualificatif, coefficientEnft: 0, image: image, montant: montant, numDent: localisation, dateActe: date)
                         acte.prestation.append(newPresta)
                         if image != ""{
                             self.actesController?.schemaDentController?.chart?.sql += "('\(self.patient!.id)', '\(ToolBox.getFormatedDate(NSDate()))', '\(localisation)', '\(image)'),"

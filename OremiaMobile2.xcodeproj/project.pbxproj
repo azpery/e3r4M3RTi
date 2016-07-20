@@ -625,6 +625,7 @@
 			isa = PBXGroup;
 			children = (
 				12B347A21B10B0AD00A8AC3D /* DetailsViewController.swift */,
+				1223CBB81B187D0300A42C80 /* EtatCivilTableViewController.swift */,
 				12B347A61B10B0AD00A8AC3D /* EtatCivilViewController.swift */,
 				12DD69471BBD4C5C00A337B7 /* NewPatientTableViewController.swift */,
 				126448A31D1B3DC90037062B /* NewPatientNavigationController.swift */,
@@ -935,7 +936,6 @@
 			children = (
 				12B347A11B10B0AD00A8AC3D /* DetailNavigationController.swift */,
 				127FE9081B2045D80009B2E7 /* EtatCivilNavigationViewController.swift */,
-				1223CBB81B187D0300A42C80 /* EtatCivilTableViewController.swift */,
 				127FE9061B1E03610009B2E7 /* ImageViewController.swift */,
 				128CA4D41C165D4900738FB9 /* MSCalendarNavigationViewController.swift */,
 				1223CBBA1B1884BC00A42C80 /* PickerViewController.swift */,

@@ -466,7 +466,7 @@ UIPopoverPresentationController *popover;
     _lastContentOffset = scrollView.contentOffset;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (!self.isInitialLoading) {
+    if (!self.isInitialLoading && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if (scrollView.contentOffset.y < 0) {
             scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, 0);
         }
@@ -503,11 +503,16 @@ UIPopoverPresentationController *popover;
 
 - (void)scrollViewWillEndDecelerating:(UIScrollView *)scrollView
 {
-    [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:YES];
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:YES];
+
+    }
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
     [self.collectionViewCalendarLayout scrollCollectionViewToClosestSectionAfterScroll:self.collectionView.contentOffset andanimated:YES];
+    }
 }
 -(void)showEditEventFromEvent:(UITapGestureRecognizer*) sender
 {

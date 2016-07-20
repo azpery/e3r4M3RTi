@@ -11,14 +11,19 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="sprite" translatesAutoresizingMaskIntoConstraints="NO" id="Wrv-ym-YEQ">
-                    <rect key="frame" x="61" y="92" width="358" height="97"/>
+                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="logo oremia flat" translatesAutoresizingMaskIntoConstraints="NO" id="Wrv-ym-YEQ">
+                    <rect key="frame" x="61" y="79" width="358" height="125"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="125" id="xLb-yB-csB"/>
+                    </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="Wrv-ym-YEQ" secondAttribute="centerY" constant="99.5" id="Aim-T7-6cl"/>
                 <constraint firstAttribute="centerX" secondItem="Wrv-ym-YEQ" secondAttribute="centerX" id="Fgo-J5-ylF"/>
+                <constraint firstItem="Wrv-ym-YEQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="61" id="P5m-9I-TOy"/>
+                <constraint firstAttribute="trailing" secondItem="Wrv-ym-YEQ" secondAttribute="trailing" constant="61" id="vya-CS-Vz3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -26,6 +31,6 @@
         </view>
     </objects>
     <resources>
-        <image name="sprite" width="358" height="97"/>
+        <image name="logo oremia flat" width="2551" height="630"/>
     </resources>
 </document>

@@ -117,7 +117,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.avatar.clipsToBounds = true
         cell.avatar.layer.borderWidth = 0.5
         cell.avatar.layer.borderColor = UIColor.whiteColor().CGColor
-        cell.avatar.contentMode = .ScaleAspectFit
+        cell.avatar.contentMode = .ScaleAspectFill
         let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images_preview+where+id=\(track.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
         dispatch_async(dispatch_get_main_queue(), {
             cell.avatar.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
