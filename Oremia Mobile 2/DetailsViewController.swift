@@ -51,12 +51,12 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         loading = true
         if self.revealViewController() != nil && !self.isSelectingPatient {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         } else {
             let barbuttonFont = UIFont(name: "Avenir Next", size: 15) ?? UIFont.systemFontOfSize(15)
             menuButton.title = "annuler"
-            menuButton.action = "hideMe"
+            menuButton.action = #selector(DetailsViewController.hideMe)
             menuButton.target = self
             menuButton.setTitleTextAttributes([NSFontAttributeName: barbuttonFont], forState: UIControlState.Normal)
         }
@@ -173,7 +173,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != ""  && searchText.characters.count >= 2{
-            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercaseString)percent' OR prenom LIKE '\(searchText.uppercaseString)percent' OR nom LIKE 'percent\( searchText.lowercaseString)percent' ORDER BY prenom LIMIT 30")
+            api.sendRequest("select * from patients where nom LIKE '\( searchText.uppercaseString)percent' OR prenom LIKE '\(searchText.uppercaseString)percent' OR nom LIKE '\( searchText.lowercaseString)percent' ORDER BY prenom LIMIT 30")
             
         }
         if(filtredpatients.count == 0){

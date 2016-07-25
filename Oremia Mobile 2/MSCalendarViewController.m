@@ -32,6 +32,8 @@ UIStoryboard *mainStoryboard ;
 UINavigationController *controller ;
 NewEventTableViewController *destinationView ;
 UIPopoverPresentationController *popover;
+UIButton *buttonRight;
+UIButton *buttonLeft;
 
 @interface MSCalendarViewController () <MSCollectionViewDelegateCalendarLayout>
 {
@@ -48,6 +50,7 @@ UIPopoverPresentationController *popover;
 @property (nonatomic, retain) NSDate *selectedDate;
 @property (nonatomic, retain) NSDateFormatter *formatter;
 @property (nonatomic, retain) APIController *api;
+
 
 @end
 
@@ -193,6 +196,7 @@ UIPopoverPresentationController *popover;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [LoadingOverlay.shared showOverlay:self.collectionView];
+        
     });
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.fetchedResultsController = [[EventManager alloc]init];
@@ -218,6 +222,7 @@ UIPopoverPresentationController *popover;
                 [LoadingOverlay.shared hideOverlayView];
                 self.isInitialLoading = NO;
             });
+            [self loadButtons];
         });
         
     });
@@ -247,24 +252,6 @@ UIPopoverPresentationController *popover;
     [self.collectionViewCalendarLayout registerClass:MSTimeRowHeaderBackground.class forDecorationViewOfKind:MSCollectionElementKindTimeRowHeaderBackground];
     [self.collectionViewCalendarLayout registerClass:MSDayColumnHeaderBackground.class forDecorationViewOfKind:MSCollectionElementKindDayColumnHeaderBackground];
 }
-//- (void)eventStoreChangedNotification:(NSNotification *)notification {
-//    [self.handlerTimer invalidate];
-//    self.handlerTimer = [NSTimer timerWithTimeInterval:8.0
-//                                                target:self
-//                                              selector:@selector(respond)
-//                                              userInfo:nil
-//                                               repeats:NO];
-//    [[NSRunLoop mainRunLoop] addTimer:self.handlerTimer
-//                              forMode:NSDefaultRunLoopMode];
-//
-//}
-//- (void)respond {
-//    [self.handlerTimer invalidate];
-//    [self.eventStore refreshSourcesIfNecessary];
-//    [self.fetchedResultsController loadCalendars];
-//    NSLog(@"Event store changed");
-////    [self reloadItMotherFucker];
-//}
 
 -(void) reloadItMotherFucker
 {
@@ -298,6 +285,70 @@ UIPopoverPresentationController *popover;
     } else {
         [self.fetchedResultsController.api getCalDavRessources:self.selectedDate calendars:cals];
     }
+}
+
+-(void)loadButtons{
+    
+    buttonLeft = [[UIButton alloc] initWithFrame:CGRectMake(- 1500 ,  0, 150, 200)];
+    
+    buttonLeft.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:100];
+    
+    [buttonLeft setTitle:[NSString fontAwesomeIconStringForEnum:FAChevronLeft] forState:UIControlStateNormal];
+    
+    [buttonLeft addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
+
+    [buttonLeft setTitleColor:[ToolBox UIColorFromRGB:0xE86A0E] forState:UIControlStateNormal];
+    
+    [self.collectionView addSubview:buttonLeft];
+    
+    buttonRight = [[UIButton alloc] initWithFrame:CGRectMake(  9500 ,  0, 150, 200)];
+    
+    buttonRight.titleLabel.font = [UIFont fontWithName:kFontAwesomeFamilyName size:100];
+    
+    [buttonRight setTitle:[NSString fontAwesomeIconStringForEnum:FAChevronRight] forState:UIControlStateNormal];
+    
+    [buttonRight addTarget:self action:@selector(showRight) forControlEvents:UIControlEventTouchUpInside];
+    
+    [buttonRight setTitleColor:[ToolBox UIColorFromRGB:0xE86A0E] forState:UIControlStateNormal];
+    
+    [self.collectionView addSubview:buttonRight];
+    
+}
+
+-(void)moveButtonLeft:(CGFloat) offsety  {
+    
+    [UIView animateWithDuration:0.25 animations:^{
+    
+        buttonLeft.frame = CGRectMake(self.collectionViewCalendarLayout.sectionWidth, offsety + (self.collectionView.frame.size.height- self.collectionViewCalendarLayout.dayColumnHeaderHeight)/2 , 150, 200);
+        
+    }];
+}
+
+-(void)hideButtonLeft:(CGFloat) offsety  {
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        buttonLeft.frame = CGRectMake(self.collectionViewCalendarLayout.sectionWidth - 150 , offsety + (self.collectionView.frame.size.height- self.collectionViewCalendarLayout.dayColumnHeaderHeight)/2, 150, 200);
+        
+    }];
+}
+
+-(void)moveButtonRight:(CGFloat) offsety maxWidth:(CGFloat) maxWidth {
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        buttonRight.frame = CGRectMake(maxWidth - 120 , offsety + (self.collectionView.frame.size.height- self.collectionViewCalendarLayout.dayColumnHeaderHeight)/2, 150, 200);
+        
+    }];
+}
+
+-(void)hideButtonRight:(CGFloat) offsety maxWidth:(CGFloat) maxWidth {
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        
+        buttonRight.frame = CGRectMake(maxWidth , offsety + (self.collectionView.frame.size.height- self.collectionViewCalendarLayout.dayColumnHeaderHeight)/2, 150, 200);
+        
+    }];
 }
 
 -(void)showToday{
@@ -471,7 +522,24 @@ UIPopoverPresentationController *popover;
             scrollView.contentOffset = CGPointMake(self.collectionView.contentOffset.x, 0);
         }
         
+        if (scrollView.contentOffset.x <= 0 + self.collectionViewCalendarLayout.sectionWidth) {
+            [self moveButtonLeft: scrollView.contentOffset.y];
+        }else if(scrollView.contentOffset.x > 0 + self.collectionViewCalendarLayout.sectionWidth){
+            [self hideButtonLeft: scrollView.contentOffset.y];
+        }
+        
+        CGFloat maxWidth = scrollView.contentSize.width ;
+        
+        CGFloat offset = maxWidth - (scrollView.contentOffset.x + self.collectionView.frame.size.width + self.collectionViewCalendarLayout.timeRowHeaderWidth);
+        
+        if (offset <= 0) {
+            [self moveButtonRight: scrollView.contentOffset.y maxWidth:maxWidth];
+        }else if(offset > 0 ){
+            [self hideButtonRight: scrollView.contentOffset.y maxWidth:maxWidth];
+        }
+        
         if (scrollView.contentOffset.x < 0 + self.collectionViewCalendarLayout.sectionWidth) {
+            
             scrollView.contentOffset = CGPointMake(self.collectionViewCalendarLayout.sectionWidth, self.collectionView.contentOffset.y);
         }
         

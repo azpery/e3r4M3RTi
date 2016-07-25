@@ -1146,6 +1146,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="btnConnexion" destination="g7R-dc-5JP" id="7h4-cs-9p9"/>
+                        <outlet property="logo" destination="QoS-lA-KiB" id="BIN-Nm-Hsm"/>
                         <outlet property="pageControl" destination="WU1-Hs-V4l" id="Jap-JS-djA"/>
                         <outlet property="password" destination="kQ4-kt-lDU" id="0EA-Tl-F4h"/>
                         <outlet property="scrollView" destination="6D9-bL-j1q" id="eRD-bE-RpE"/>
@@ -1287,7 +1288,7 @@
             <objects>
                 <tableViewController modalTransitionStyle="flipHorizontal" modalPresentationStyle="currentContext" id="gUE-UT-1bo" customClass="NewPatientTableViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bAy-3t-gPX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.93725490199999995" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1295,13 +1296,13 @@
                             <tableViewSection id="9WA-bn-AyW">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="42" id="Kmu-rb-b6e">
-                                        <rect key="frame" x="0.0" y="64" width="320" height="42"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kmu-rb-b6e" id="8c0-5f-8dv">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="42"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Civilité" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="C9H-Cf-rQJ" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Civilité" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="C9H-Cf-rQJ" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="42"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1326,13 +1327,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yqt-eH-t8L">
-                                        <rect key="frame" x="0.0" y="106" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="42" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yqt-eH-t8L" id="Swb-IM-WUL">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Prénom" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aXd-cY-ltu" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Prénom" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aXd-cY-ltu" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1357,13 +1358,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="46" id="0iN-WV-58s">
-                                        <rect key="frame" x="0.0" y="150" width="320" height="46"/>
+                                        <rect key="frame" x="0.0" y="86" width="600" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0iN-WV-58s" id="ygI-WE-idT">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nom" adjustsFontSizeToFit="NO" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="0zg-lO-jWw" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nom" adjustsFontSizeToFit="NO" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="0zg-lO-jWw" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1388,13 +1389,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="JCg-Rg-ZGG">
-                                        <rect key="frame" x="0.0" y="196" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="132" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JCg-Rg-ZGG" id="HTA-WA-IeN">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date de naissance" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rw2-hl-xLy" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date de naissance" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Rw2-hl-xLy" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1419,13 +1420,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="TLE-CD-ZSV">
-                                        <rect key="frame" x="0.0" y="240" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="176" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TLE-CD-ZSV" id="qVR-CL-dnh">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Téléphone" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="96G-Vx-Oyl" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Téléphone" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="96G-Vx-Oyl" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1450,13 +1451,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="WvP-6H-qqp">
-                                        <rect key="frame" x="0.0" y="284" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="220" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WvP-6H-qqp" id="tUz-7K-VNZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Adresse" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VyX-fI-Jw2" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Adresse" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VyX-fI-Jw2" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1481,13 +1482,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eI5-mh-T1N">
-                                        <rect key="frame" x="0.0" y="328" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="264" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eI5-mh-T1N" id="ycM-J0-FHj">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ville" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="buH-Ik-shz" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ville" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="buH-Ik-shz" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1512,13 +1513,13 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="g1P-HL-w6c">
-                                        <rect key="frame" x="0.0" y="372" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="308" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="g1P-HL-w6c" id="dXh-vw-MmU">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Code Postal" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1sR-kN-cQb" customClass="KaedeTextField" customModule="OremiaMobile2">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Code Postal" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1sR-kN-cQb" customClass="KaedeTextField" customModule="OremiaMobile2">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                                     <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="textColor" red="0.41568627450000001" green="0.47450980390000003" blue="0.53725490200000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1543,10 +1544,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="w05-xj-n9g">
-                                        <rect key="frame" x="0.0" y="416" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="352" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w05-xj-n9g" id="7KS-lK-7Qs">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uf8-9c-IAS">
@@ -2571,7 +2572,7 @@
             <objects>
                 <collectionViewController id="nQs-QA-00P" customClass="RadioCollectionViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="2RX-s9-Gl6">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SJ2-bv-XkS">
@@ -2582,7 +2583,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="1yn-B3-nGa" customClass="RadioCollectionViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="220" height="232"/>
+                                <rect key="frame" x="0.0" y="0.0" width="220" height="232"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="220" height="232"/>
@@ -2708,27 +2709,27 @@
             <objects>
                 <tableViewController id="Wya-85-8zX" customClass="EtatCivilTableViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="NZl-rh-a3R">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
                             <tableViewSection id="BPz-Ef-e3J">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="292" id="L1b-Zr-XSG">
-                                        <rect key="frame" x="0.0" y="64" width="768" height="292"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="292"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L1b-Zr-XSG" id="AzC-TY-ApX">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="292"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="292"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" misplaced="YES" image="photo" translatesAutoresizingMaskIntoConstraints="NO" id="4C5-dV-jvd">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="photo" translatesAutoresizingMaskIntoConstraints="NO" id="4C5-dV-jvd">
                                                     <rect key="frame" x="200" y="8" width="200" height="200"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="200" id="eLr-sb-b5J"/>
                                                         <constraint firstAttribute="width" constant="200" id="vXt-PC-9wD"/>
                                                     </constraints>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FnH-Hf-FSw">
+                                                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FnH-Hf-FSw">
                                                     <rect key="frame" x="213" y="254" width="175" height="30"/>
                                                     <color key="backgroundColor" red="0.8980392157" green="0.38823529410000002" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -2744,7 +2745,7 @@
                                                         <action selector="choisirPhoto:" destination="Wya-85-8zX" eventType="touchUpInside" id="xcc-Ni-OW2"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q05-ie-ezs">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q05-ie-ezs">
                                                     <rect key="frame" x="213" y="216" width="175" height="30"/>
                                                     <color key="backgroundColor" red="0.8980392157" green="0.38823529410000002" blue="0.062745098040000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -2778,10 +2779,10 @@
                             <tableViewSection headerTitle="Etat civil - Coordonnées" id="WUp-97-Dcz">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="42" id="SeS-De-jPT">
-                                        <rect key="frame" x="0.0" y="378" width="768" height="42"/>
+                                        <rect key="frame" x="0.0" y="314" width="600" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SeS-De-jPT" id="Gej-vz-as9">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="42"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="42"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Civilité" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eiN-l1-9wc">
@@ -2811,10 +2812,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="46" id="VLm-MD-tlU">
-                                        <rect key="frame" x="0.0" y="420" width="768" height="46"/>
+                                        <rect key="frame" x="0.0" y="356" width="600" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VLm-MD-tlU" id="v8d-aV-3bI">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="46"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Nom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hMF-j4-C2Q">
@@ -2844,10 +2845,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="31L-9s-GKi">
-                                        <rect key="frame" x="0.0" y="466" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="402" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="31L-9s-GKi" id="2fK-c5-BGx">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Prénom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YwU-L2-GiN">
@@ -2877,10 +2878,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="4TJ-UL-28o">
-                                        <rect key="frame" x="0.0" y="510" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="446" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4TJ-UL-28o" id="67g-PL-8Kw">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Date de naissance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWs-LN-FxQ">
@@ -2910,10 +2911,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Pnz-SV-d6I">
-                                        <rect key="frame" x="0.0" y="554" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="490" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pnz-SV-d6I" id="rJ8-JC-AgM">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Adresse n°1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvU-b1-k6a">
@@ -2943,10 +2944,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="R37-tK-zo3">
-                                        <rect key="frame" x="0.0" y="598" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="534" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R37-tK-zo3" id="Z06-LS-aIJ">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Adresse n°2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1mL-bu-mIM">
@@ -2976,10 +2977,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ilR-7k-SOT">
-                                        <rect key="frame" x="0.0" y="642" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="578" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ilR-7k-SOT" id="fkW-an-xVg">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Code postal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MZc-zk-Ypc">
@@ -3009,10 +3010,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ufY-qC-t0o">
-                                        <rect key="frame" x="0.0" y="686" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="622" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ufY-qC-t0o" id="eRT-yV-AmS">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ville" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9e-j2-4sr">
@@ -3042,10 +3043,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Iah-U9-4Rv">
-                                        <rect key="frame" x="0.0" y="730" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="666" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Iah-U9-4Rv" id="A6r-EX-ntj">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tél. fixe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Or2-is-Tu6">
@@ -3075,10 +3076,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="RRg-wH-UXc">
-                                        <rect key="frame" x="0.0" y="774" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="710" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RRg-wH-UXc" id="d7l-hs-NwI">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tél. mobile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MpQ-8g-Pas">
@@ -3108,10 +3109,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="TEl-0Y-Wnu">
-                                        <rect key="frame" x="0.0" y="818" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="754" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TEl-0Y-Wnu" id="h3O-tg-z4u">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Le patient accepte de recevoir des sms" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cz4-wa-wEj">
@@ -3148,10 +3149,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Ne3-9z-WmI">
-                                        <rect key="frame" x="0.0" y="862" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="798" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ne3-9z-WmI" id="uVL-AP-oUN">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Profession" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klQ-cN-afY">
@@ -3181,10 +3182,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="agT-Wg-F78">
-                                        <rect key="frame" x="0.0" y="906" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="842" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="agT-Wg-F78" id="pcJ-Nf-wze">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="E-mail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgZ-i0-MU8">
@@ -3218,10 +3219,10 @@
                             <tableViewSection headerTitle="Gestion - Assurrances" id="XmY-Li-2n6">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="42" id="DiF-pD-xrv">
-                                        <rect key="frame" x="0.0" y="972" width="768" height="42"/>
+                                        <rect key="frame" x="0.0" y="908" width="600" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DiF-pD-xrv" id="5Ac-4Y-NRB">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="42"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="42"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Dossier actif" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GYh-if-Dbf">
@@ -3251,10 +3252,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="46" id="Pb7-lA-B4x">
-                                        <rect key="frame" x="0.0" y="1014" width="768" height="46"/>
+                                        <rect key="frame" x="0.0" y="950" width="600" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pb7-lA-B4x" id="ADw-qr-L2j">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="46"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Identifiant secondaire" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B4I-cb-eag">
@@ -3284,10 +3285,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="eEA-td-rua">
-                                        <rect key="frame" x="0.0" y="1060" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="996" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eEA-td-rua" id="VVh-rM-nuh">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Date de création" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qI3-Dj-Sne">
@@ -3317,10 +3318,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jGu-Ov-SeU">
-                                        <rect key="frame" x="0.0" y="1104" width="768" height="44"/>
+                                        <rect key="frame" x="0.0" y="1040" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jGu-Ov-SeU" id="rwq-nf-iax">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="N° de sécurité social" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeJ-7m-9JN">
@@ -3354,13 +3355,13 @@
                             <tableViewSection headerTitle="Informations complémentaires - Antécédents médicaux" id="xVe-B9-SGZ">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="125" id="yfO-4N-wcX">
-                                        <rect key="frame" x="0.0" y="1170" width="768" height="125"/>
+                                        <rect key="frame" x="0.0" y="1106" width="600" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yfO-4N-wcX" id="xwf-Bw-BxE">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="125"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="Commencer une ligne par&quot;!&quot; pour marquer une contre indication ou une précaution particuliere" translatesAutoresizingMaskIntoConstraints="NO" id="11y-It-27O">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Commencer une ligne par&quot;!&quot; pour marquer une contre indication ou une précaution particuliere" translatesAutoresizingMaskIntoConstraints="NO" id="11y-It-27O">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="125"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -3484,7 +3485,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="6" indentationWidth="10" reuseIdentifier="actesCell" id="3px-6M-iGp" customClass="ActesTableViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" tableViewCell="3px-6M-iGp" id="0js-h5-IzN">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
@@ -3591,16 +3592,16 @@
             <objects>
                 <tableViewController id="hoE-IB-TWr" customClass="DocumentPatientTableViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="28w-LU-iIZ">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.96862745100000003" green="0.96078431369999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="documentCell" id="Liu-O1-iuD" customClass="DocumentTableViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="86" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Liu-O1-iuD" id="QqI-l8-4gE">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="acl-4r-p5K">
@@ -3751,7 +3752,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Aro-Ab-1hH"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Tni-gB-fF3">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qEX-oM-Do8">
@@ -3916,15 +3917,15 @@
             <objects>
                 <tableViewController id="7Mh-Lt-FPC" customClass="FavorisTableViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="UQn-lt-mgo">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="6" indentationWidth="10" reuseIdentifier="favorisCell" id="NcT-B5-auE" customClass="ListeActesTableViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="1024" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" tableViewCell="NcT-B5-auE" id="WNd-TR-iJY">
-                                    <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Descriptif" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XlU-5d-4Xh">
@@ -4028,7 +4029,7 @@
                         <viewControllerLayoutGuide type="bottom" id="0GZ-Fv-g5A"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="oky-uf-x3C">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -4124,7 +4125,7 @@
             <objects>
                 <collectionViewController id="WKR-X8-RBw" customClass="ImageCollectionViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="p18-ua-pJw">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="TYb-5e-bUQ">
@@ -4135,7 +4136,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="eCo-1F-lAH" customClass="RadioCollectionViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="220" height="232"/>
+                                <rect key="frame" x="0.0" y="0.0" width="220" height="232"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="220" height="232"/>
@@ -4358,15 +4359,15 @@
             <objects>
                 <tableViewController id="dd1-5s-Dyu" customClass="ListeActesTableViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Q4Q-r5-Rfb">
-                        <rect key="frame" x="0.0" y="0.0" width="432" height="427"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="6" indentationWidth="10" reuseIdentifier="prestationCell" id="o81-aL-UwM" customClass="ListeActesTableViewCell" customModule="OremiaMobile2" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="432" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="center" tableViewCell="o81-aL-UwM" id="vcj-R6-YXW">
-                                    <rect key="frame" x="0.0" y="0.0" width="432" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Descriptif" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czX-P6-tiX">
@@ -4408,7 +4409,7 @@
             <objects>
                 <collectionViewController automaticallyAdjustsScrollViewInsets="NO" id="7TV-JF-b3R" customClass="SchemaDentaireCollectionViewController" customModule="OremiaMobile2" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" directionalLockEnabled="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="Wud-QD-66K">
-                        <rect key="frame" x="0.0" y="0.0" width="590" height="427"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KZ5-7s-Tgi">
@@ -4765,14 +4766,14 @@
         <segue reference="HQT-J8-Wm9"/>
         <segue reference="9Fg-hP-Hxv"/>
         <segue reference="JO0-vF-g9O"/>
+        <segue reference="JbV-gC-jsQ"/>
         <segue reference="Zbw-5P-lGo"/>
-        <segue reference="S9w-Xb-Wct"/>
-        <segue reference="4Kc-MI-nSg"/>
         <segue reference="EL4-AY-v9O"/>
+        <segue reference="4Kc-MI-nSg"/>
         <segue reference="OwY-50-vF7"/>
         <segue reference="Z3m-s3-r4a"/>
-        <segue reference="Zdl-Va-N9p"/>
         <segue reference="UJT-p9-mw4"/>
+        <segue reference="Zdl-Va-N9p"/>
         <segue reference="oMe-Bn-8zd"/>
     </inferredMetricsTieBreakers>
 </document>

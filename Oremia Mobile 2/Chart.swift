@@ -232,11 +232,11 @@ class Chart :  NSObject, APIControllerProtocol{
             if resultsArr.count > 0 {
                 self.chartWithJSON(resultsArr)
                 if let cb = self.callback{
-                    self.callback!()
+                    cb()
                 }
             } else {
                 if let cb = self.callback{
-                    self.callback!()
+                    cb()
                 }
             }
         })

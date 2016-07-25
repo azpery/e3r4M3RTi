@@ -41,7 +41,7 @@ class PrestationActe:Prestation{
         do{
             var vretour = [String:[String:AnyObject]]()
             vretour["Entete"] = ["Naissance":patient.dateNaissance,"Nom":patient.nom,"Prenom":patient.prenom,"TiersComplementaire":"0","TiersPrincipal":"0"]
-            var i = 0
+            var i = 1
             for presta  in prestations {
                 vretour["Prestation_\(i)"] = ["Coefficient":presta.coefficient,"Description":presta.description,"LettreCle":presta.lettreCle,"Montant":presta.montant,"dateActe":presta.dateActe,"Image":presta.image,"NumDent":presta.numDent, "Qualificatif":presta.qualificatif]
                 i += 1

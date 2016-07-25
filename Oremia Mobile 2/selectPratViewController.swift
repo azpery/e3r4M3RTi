@@ -21,6 +21,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     var mdp:String?
     var selectedPrat:Praticien?
     var timer = NSTimer()
+    @IBOutlet var logo: UIImageView!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -38,7 +39,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         
         api!.pingServer()
         timer.invalidate() // just in case this button is tapped multiple times
-        
+        logo.layer.minificationFilter = kCAFilterTrilinear
         // start the timer
         
         
