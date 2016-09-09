@@ -7,3 +7,4 @@
 #import "MSCalendarViewController.h"
 #import "MSEventCell.h"
 #import "SimplePingHelper.h"
+#include <ifaddrs.h>

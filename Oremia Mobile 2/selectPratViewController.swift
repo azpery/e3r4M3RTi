@@ -22,6 +22,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     var selectedPrat:Praticien?
     var timer = NSTimer()
     @IBOutlet var logo: UIImageView!
+    let autoDetect = AutoDetect()
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -284,15 +285,12 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     }
     func handleError(results: Int) {
         dispatch_async(dispatch_get_main_queue(), {
-            SwiftSpinner.hide()
             self.timer.invalidate()
             switch results {
             case 1 :
                 
                 //            SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer", duration: 800)
-                self.praticiens.removeAll(keepCapacity: false)
-                self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: "", licence: 0))
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                
                 let alert = SCLAlertView()
                 let txt = alert.addTextField(preference.ipServer)
                 alert.showCloseButton = false
@@ -308,7 +306,28 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     preference.ipServer = "77.153.245.34"
                     self.api!.selectpraticien()
                 }
-                alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
+                //alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
+                self.praticiens.removeAll(keepCapacity: false)
+                self.praticiens.append(Praticien(id: 0, nom:"Recherche du serveur", prenom: "", licence: 0))
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                dispatch_async(dispatch_get_main_queue(), {
+                SwiftSpinner.show("Recherche du serveur sur votre réseau...")
+                SwiftSpinner.showWithDelay(15.0, title: "Cette opération peut prendre quelques secondes.")
+                    })
+                self.autoDetect.getServerIpAdress({ip->Void in
+                        self.praticiens.removeAll(keepCapacity: false)
+                        self.praticiens.append(Praticien(id: 0, nom:"Serveur trouvé, chargement...", prenom: "", licence: 0))
+                        preference.ipServer = ip
+                        self.api!.checkFileUpdate()
+                        SwiftSpinner.hide()
+                    },
+                    failure: {defaut->Void in
+                        alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir l'adresse ip de votre poste serveur")
+                        SwiftSpinner.hide()
+                        self.praticiens.removeAll(keepCapacity: false)
+                        self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: "", licence: 0))
+                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    })
                 self.initScroll()
                 self.loadVisiblePages()
             case 2 :

@@ -36,6 +36,8 @@
 		122313041D2DA681006FD9BB /* SignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122313031D2DA680006FD9BB /* SignatureViewController.swift */; };
 		1223CBB91B187D0300A42C80 /* EtatCivilTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1223CBB81B187D0300A42C80 /* EtatCivilTableViewController.swift */; };
 		1223CBBB1B1884BC00A42C80 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1223CBBA1B1884BC00A42C80 /* PickerViewController.swift */; };
+		122688BA1D4A9F0C0097B489 /* TypeDocumentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122688B91D4A9F0C0097B489 /* TypeDocumentTableViewController.swift */; };
+		122688BC1D5909A10097B489 /* AutoDetect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122688BB1D5909A00097B489 /* AutoDetect.swift */; };
 		1229E0E71C9B664C00173F83 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1229E0E61C9B664B00173F83 /* Chart.swift */; };
 		122E54D51BBE93EA00861367 /* ScheduleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E54D21BBE93EA00861367 /* ScheduleTableViewController.swift */; };
 		122E54D61BBE93EA00861367 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122E54D31BBE93EA00861367 /* ItemTableViewCell.swift */; };
@@ -257,6 +259,8 @@
 		122313031D2DA680006FD9BB /* SignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignatureViewController.swift; sourceTree = "<group>"; };
 		1223CBB81B187D0300A42C80 /* EtatCivilTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EtatCivilTableViewController.swift; sourceTree = "<group>"; };
 		1223CBBA1B1884BC00A42C80 /* PickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
+		122688B91D4A9F0C0097B489 /* TypeDocumentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeDocumentTableViewController.swift; sourceTree = "<group>"; };
+		122688BB1D5909A00097B489 /* AutoDetect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDetect.swift; sourceTree = "<group>"; };
 		1229E0E61C9B664B00173F83 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		122E54D21BBE93EA00861367 /* ScheduleTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewController.swift; sourceTree = "<group>"; };
 		122E54D31BBE93EA00861367 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -559,6 +563,7 @@
 				12B347A31B10B0AD00A8AC3D /* DocumentPatientTableViewController.swift */,
 				1232DF631CE918EF000038FC /* DrawingView.swift */,
 				122313031D2DA680006FD9BB /* SignatureViewController.swift */,
+				122688B91D4A9F0C0097B489 /* TypeDocumentTableViewController.swift */,
 			);
 			name = "Gestion des documents";
 			sourceTree = "<group>";
@@ -768,6 +773,7 @@
 			children = (
 				12B3479D1B10B0AD00A8AC3D /* APIController.swift */,
 				125A5F1A1BC2CA2100EFC56B /* EventController.swift */,
+				122688BB1D5909A00097B489 /* AutoDetect.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1170,6 +1176,7 @@
 				120A1D9D1C164D01007E98C3 /* MASConstraintMaker.m in Sources */,
 				124243E21BC575840067E6A1 /* MenuTableViewController.swift in Sources */,
 				126448A61D1C5EB70037062B /* ImageExtension.swift in Sources */,
+				122688BC1D5909A10097B489 /* AutoDetect.swift in Sources */,
 				124A21181C1A441C00991A55 /* TypeRDVTableViewCell.swift in Sources */,
 				120A1D9F1C164D01007E98C3 /* MASViewAttribute.m in Sources */,
 				127B72BF1BF38BC30055FB3A /* DTIAnimPulse.swift in Sources */,
@@ -1231,6 +1238,7 @@
 				12CF39EC1B178A0900883192 /* CircularLoaderView.swift in Sources */,
 				124243DD1BC574320067E6A1 /* FAIcon.swift in Sources */,
 				12756EA21C594A070019F1FB /* NSDate+Difference.m in Sources */,
+				122688BA1D4A9F0C0097B489 /* TypeDocumentTableViewController.swift in Sources */,
 				12553E941C17228B0051F30E /* NSString+FontAwesome.m in Sources */,
 				127FE9091B2045D80009B2E7 /* EtatCivilNavigationViewController.swift in Sources */,
 				127B72C51BF38BC30055FB3A /* DTIIndicatorStyle.swift in Sources */,

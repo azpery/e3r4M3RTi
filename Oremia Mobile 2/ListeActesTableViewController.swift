@@ -181,8 +181,7 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
                 self.favorisPlus = prestation.favorisPlus
                 self.tableView.reloadData()
                 if self.actesController?.finished > 1 {
-                    self.actesController?.activityIndicator.stopActivity(true)
-                    self.actesController?.activityIndicator.removeFromSuperview()
+                    LoadingOverlay.shared.hideOverlayView()
                 } else {
                     self.actesController?.finished++
                 }
@@ -207,16 +206,18 @@ class ListeActesTableViewController: UITableViewController, APIControllerProtoco
             
             while index == 0 {
                 index = 1
-                var pres:Prestation
-                pres = array[i] as! Prestation
-                let description = pres.description ?? "Aucune description disponible"
-                if description.rangeOfString("+") != nil {
-                    index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
-                }
-                if index == 0{
-                    addActeForCell(i, selectedCell: selectedCell, schema: schema, section:section)
-                    
-                    i++
+                if array.count > i {
+                    if let pres = array[i] as? Prestation{
+                        let description = pres.description ?? "Aucune description disponible"
+                        if description.rangeOfString("+") != nil {
+                            index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+                        }
+                        if index == 0{
+                            addActeForCell(i, selectedCell: selectedCell, schema: schema, section:section)
+                            
+                            i++
+                        }
+                    }
                 }
             }
             api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation )

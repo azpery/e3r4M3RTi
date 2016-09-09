@@ -24,9 +24,9 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=14"
         get(urlPath, searchString: "query=\(type)")
     }
-    func checkFileUpdate() {
+    func checkFileUpdate(success: AnyObject->Bool = {defaut->Bool in return false}, failure: AnyObject->Bool = {defaut->Bool in return false}) {
         let urlPath = "http://\(preference.ipServer)/scripts/updater.php"
-        get(urlPath, searchString: "query='')")
+        get(urlPath, searchString: "query='')", success: success, failure: failure)
     }
     func sendRequest(searchString: String, success: NSDictionary->Bool = {defaut->Bool in return false}){
         self.itunesSearchTerm = searchString.stringByReplacingOccurrencesOfString(" ", withString: "+", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
@@ -113,8 +113,8 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/?type=7&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)&&isNewPp=\(isNewPp ? 1 : 0)"
         sendImage(image, path: urlPath)
     }
-    func signDocument(sPrat:String, sPatient:String, idDoc:Int, idPatient:Int, success: Int->Bool = {defaut->Bool in return false}){
-        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/documentSigner.php?idDocument=\(idDoc)&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)"
+    func signDocument(sPrat:String, sPatient:String, idDoc:Int, idPatient:Int, selectedRow: Int, success: Int->Bool = {defaut->Bool in return false}){
+        let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/documentSigner.php?idDocument=\(idDoc)&&idType=\(selectedRow)&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)"
         let query = "sPrat=\(percentEscapeString(sPrat))&sPatient=\(percentEscapeString(sPatient))"
         insert(urlPath, searchString:query,  success: success)
     }
@@ -126,7 +126,8 @@ import Foundation
         SimplePingHelper.ping(url, target: self.delegate, sel: "pingResult:")
     }
     
-    func get(path: String, searchString:String, success: NSDictionary->Bool? = {defaut->Bool in return false}) {
+    func get(path: String, searchString:String, success: NSDictionary->Bool = {defaut->Bool in return false}, failure: AnyObject->Bool = {defaut->Bool in return false}) {
+        print(path)
         if let url = NSURL(string: path ) {
             
             let request = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData, timeoutInterval: 3600)
@@ -145,7 +146,9 @@ import Foundation
                     if httpResponse.statusCode == 200 {
                         if(error != nil) {
                             print(error!.localizedDescription)
-                            self.delegate?.handleError(1)
+                            if(!failure(1)){
+                                self.delegate?.handleError(1)
+                            }
                         }else {
                             print(response)
                             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
@@ -158,16 +161,22 @@ import Foundation
                                         self.delegate?.didReceiveAPIResults(jsonResult!)
                                     }
                                 } else {
-                                    self.delegate?.handleError(1)
+                                    if(!failure(1)){
+                                        self.delegate?.handleError(1)
+                                    }
                                 }
                             } catch {
                                 self.delegate?.handleError(1)
                             }
                         }
                     } else if httpResponse.statusCode == 404{
-                        self.delegate?.handleError(1)
+                        if(!failure(1)){
+                            self.delegate?.handleError(1)
+                        }
                     }else if httpResponse.statusCode == 406{
-                        self.delegate?.handleError(2)
+                        if(!failure(1)){
+                            self.delegate?.handleError(2)
+                        }
                     }else if httpResponse.statusCode == 502{
                         self.delegate?.didReceiveAPIResults(["results":"Success"])
                     }else {
@@ -182,12 +191,17 @@ import Foundation
                         })
                     }
                 }else  {
-                    self.delegate?.handleError(1)
+                    if(!failure(1)){
+                        self.delegate?.handleError(1)
+                    }
                 }
             })
             task.resume()
         } else {
-            delegate?.handleError(1)
+            print(path)
+            if(!failure(1)){
+                self.delegate?.handleError(1)
+            }
         }
     }
     

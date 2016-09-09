@@ -152,8 +152,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
             self.collectionView!.reloadData()
             
             if self.actesController?.finished > 1 {
-                self.actesController?.activityIndicator.stopActivity(true)
-                self.actesController?.activityIndicator.removeFromSuperview()
+                LoadingOverlay.shared.hideOverlayView()
             } else {
                 self.actesController?.finished++
             }

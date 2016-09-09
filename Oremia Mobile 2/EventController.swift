@@ -22,6 +22,7 @@ import EventKit
     static var allEvents:[EKEvent]?
     var editEvent:EKEvent?
     var agenda:MSCalendarViewController?
+    var version = "1"
     
     override init(){
         super.init()
@@ -352,7 +353,7 @@ import EventKit
                         self.internalEvent.event = editEvent
                         vretour = true
                         let ressources = CalDavRessource?[mabite[1]] as? String
-                        if ressources != nil || editEvent?.calendar.source.title != "iCloud"{
+                        if ressources != nil || self.version == "2"{
                             try eventStore.saveEvent(editEvent!, span: EKSpan.ThisEvent, commit: true)
                             internalEvent.updateCalDavEvent(mabite[1], initialDate: initialDate)
                         } else {

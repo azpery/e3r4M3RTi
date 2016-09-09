@@ -14,22 +14,22 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
     var patientb64:String?
     var pratb64:String?
     
+    var selectedRow = 1
     
-    var success:((sPrat:String,sPatient:String)->Void)?
+    
+    var success:((sPrat:String,sPatient:String, selectedRow:Int)->Void)?
     
     @IBOutlet var signatureView: DrawableView!
 
+    @IBOutlet var cancelButton: UIBarButtonItem!
+    @IBOutlet var skipButton: UIBarButtonItem!
+    @IBOutlet var validButton: UIBarButtonItem!
     @IBOutlet var libelle: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        var rect = self.navigationController!.view.superview!.bounds;
-        rect.size.width = 605;
-        rect.size.height = 350;
-        self.navigationController!.view.superview!.bounds = rect;
-        self.navigationController!.preferredContentSize = CGSizeMake(605, 350);
-        self.signatureView.updateConstraints()
-        self.view.setNeedsLayout()
-        self.view.setNeedsDisplay()
+        cancelButton.setFAIcon(FAType.FAClose, iconSize: 22)
+        skipButton.setFAIcon(FAType.FAStepForward, iconSize: 22)
+        validButton.setFAIcon(FAType.FACheck, iconSize: 22)
         self.view.backgroundColor = UIColor.whiteColor()
         if patientb64 == nil && pratb64 != nil{
             self.libelle.text = "Signature du patient"
@@ -63,7 +63,7 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
             
         }
         if success != nil && pratb64 != nil && patientb64 != nil{
-            success!(sPrat: pratb64!, sPatient: patientb64!)
+            success!(sPrat: pratb64!, sPatient: patientb64!, selectedRow: self.selectedRow)
             self.dismissViewControllerAnimated(true, completion: {})
         }else if !signatureView.containsSignature && patientb64 == nil && pratb64 != nil || !signatureView.containsSignature && patientb64 == nil && pratb64 == nil{
             ToolBox.shakeIt(self.view)
@@ -94,7 +94,7 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
         if pratb64 != nil && patientb64 != nil
         {
             if pratb64 != "" || patientb64 != ""{
-                success!(sPrat: pratb64!, sPatient: patientb64!)
+                success!(sPrat: pratb64!, sPatient: patientb64!, selectedRow: self.selectedRow)
             }
             self.dismissViewControllerAnimated(true, completion: {})
         }

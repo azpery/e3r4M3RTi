@@ -156,7 +156,6 @@
 }
 -(void)updateLocation:(NSString*)text{
     if (![text  isEqual: @""]) {
-        
             NSString *dateDebFin = [NSString stringWithFormat:@"%@ : %@",text, self.location.text];
             self.location.attributedText = [[NSAttributedString alloc] initWithString:dateDebFin attributes:[self subtitleAttributesHighlighted:self.selected]];
         

@@ -28,11 +28,7 @@ class ActesViewController: UIViewController {
     @IBOutlet var saveButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicator = DTIActivityIndicatorView(frame: view.frame)
-        view.addSubview(activityIndicator)
-        activityIndicator.indicatorColor = UIColor.blackColor()
-        activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
-        activityIndicator.startActivity()
+        LoadingOverlay.shared.showOverlay(self.view)
         searchButton.setFAIcon(FAType.FASearch, iconSize: 24)
         trashButton.setFAIcon(FAType.FATrash, iconSize: 24)
         refreshButton.setFAIcon(FAType.FARefresh, iconSize: 24)

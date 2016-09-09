@@ -27,6 +27,7 @@
 NSString * const MSEventCellReuseIdentifier = @"MSEventCellReuseIdentifier";
 NSString * const MSDayColumnHeaderReuseIdentifier = @"MSDayColumnHeaderReuseIdentifier";
 NSString * const MSTimeRowHeaderReuseIdentifier = @"MSTimeRowHeaderReuseIdentifier";
+
 CGPoint _lastContentOffset;
 UIStoryboard *mainStoryboard ;
 UINavigationController *controller ;
@@ -71,7 +72,23 @@ UIButton *buttonLeft;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self iSaidReloadit];
+    self.api = [[APIController alloc] initWithDelegate:self];
+    self.version = @"1";
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [LoadingOverlay.shared showOverlay:self.view];
+        
+    });
+    [self.api sendRequest:@"SELECT inifile FROM config WHERE titre = 'agendaVersion' LIMIT 1" success:^BOOL(NSDictionary * _Nonnull success) {
+        NSArray * result = success[@"results"];
+        if (result.count > 0) {
+            self.version = result[0][@"inifile"];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self iSaidReloadit];
+        });
+        return true;
+    }];
+    
     
     
     
@@ -179,7 +196,7 @@ UIButton *buttonLeft;
     buttonSetting.tintColor = [UIColor whiteColor];
     [self.navigationItem setRightBarButtonItems:@[rightButton,buttonCalendarPicker, buttonSetting, buttonRefresh]];
     [self.navigationItem setLeftBarButtonItems:@[tamere, buttonLeft, buttonAuj, buttonRight]];
-    self.api = [[APIController alloc] initWithDelegate:self];
+    
     NSString* time = [NSString stringWithFormat:@"time%i", self.api.getIduser];
     NSArray *pref = [_api getPref:time];
     if ([pref count] != 0) {
@@ -194,13 +211,11 @@ UIButton *buttonLeft;
         [self.collectionViewCalendarLayout setEndHour:18];
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [LoadingOverlay.shared showOverlay:self.collectionView];
-        
-    });
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.fetchedResultsController = [[EventManager alloc]init];
         [self.fetchedResultsController setAgenda:self];
+        [self.fetchedResultsController setVersion:self.version];
         [self.fetchedResultsController loadCalendars];
         
         mainStoryboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -385,6 +400,8 @@ UIButton *buttonLeft;
 -(void)moveToDate:(NSDate *)date
 {
     if(!self.isLoading){
+
+        [LoadingOverlay.shared showOverlay:self.view];
         self.isLoading = true;
         self.selectedDate = date;
         NSMutableArray *cals = [@[@""] mutableCopy];
@@ -399,8 +416,9 @@ UIButton *buttonLeft;
                 [self.collectionViewCalendarLayout invalidateLayoutCache];
                 self.collectionViewCalendarLayout.sectionWidth = self.layoutSectionWidth;
                 [self.collectionView reloadData];
-                [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:date andAnimated:YES];
+                [self.collectionViewCalendarLayout scrollCollectionViewToClosestSection:date andAnimated:NO];
                 self.isLoading = false;
+                [LoadingOverlay.shared hideOverlayView];
                 
             });
             

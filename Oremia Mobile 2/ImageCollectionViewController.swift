@@ -162,45 +162,55 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         return cell
     }
     func didReceiveAPIResults(results: NSDictionary) {
-        let resultsArr: NSArray = results["results"] as! NSArray
-        var type = 1
-        for value in resultsArr{
-            if value.count == 0 {
-                type = 3
-            } else
-            if value.objectForKey("id") !=  nil{
-                type = 0
-                idRadio=resultsArr
-                nb = idRadio!.count
-            } else
-            if value.objectForKey("date") !=  nil{
-                type = 0
-                dateCrea=resultsArr
-            } else
-            if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
-                type = 2
-            }
-            
-        }
-        dispatch_async(dispatch_get_main_queue(), {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            if(self.dateCrea?.count ?? 0 != self.nb){
-                self.api!.sendRequest("select date from images where idpatient=\(self.patient!.id)")
-            } else {
-                self.activityIndicator.stopActivity()
-                self.activityIndicator.removeFromSuperview()
-                self.collectionView?.reloadData()
-                if let a = self.refreshControl {
-                    if a.refreshing {
-                        a.endRefreshing()
-                    }
+        
+        if let resultsArr = results["results"] as? NSArray{
+            var type = 1
+            for value in resultsArr{
+                if value.count == 0 {
+                    type = 3
+                } else
+                    if value.objectForKey("id") !=  nil{
+                        type = 0
+                        idRadio=resultsArr
+                        nb = idRadio!.count
+                    } else
+                        if value.objectForKey("date") !=  nil{
+                            type = 0
+                            dateCrea=resultsArr
+                        } else
+                            if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
+                                type = 2
                 }
                 
             }
-            if(type == 3){
-                SCLAlertView().showSuccess("Photo mis à jour", subTitle: "La modification de la photo du patient a été effectué avec succes", closeButtonTitle: "Fermer")
-            }
-        })
+            dispatch_async(dispatch_get_main_queue(), {
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                if(self.dateCrea?.count ?? 0 != self.nb){
+                    self.api!.sendRequest("select date from images where idpatient=\(self.patient!.id)")
+                } else {
+                    self.activityIndicator.stopActivity()
+                    self.activityIndicator.removeFromSuperview()
+                    self.collectionView?.reloadData()
+                    if let a = self.refreshControl {
+                        if a.refreshing {
+                            a.endRefreshing()
+                        }
+                    }
+                    
+                }
+                if(type == 3){
+                    SCLAlertView().showSuccess("Photo mis à jour", subTitle: "La modification de la photo du patient a été effectué avec succes", closeButtonTitle: "Fermer")
+                }
+            })
+            
+        }else{
+            dispatch_async(dispatch_get_main_queue(), {
+                
+                self.api!.sendRequest("select id from images where idpatient=\(self.patient!.id)")
+                
+            })
+        }
+        
     }
     func handleError(results: Int) {
         if results != 0{

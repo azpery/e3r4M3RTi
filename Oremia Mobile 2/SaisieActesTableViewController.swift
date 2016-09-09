@@ -74,8 +74,7 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
                 self.actesController?.listeActesController?.prestation.sortInPlace({$0.nom < $1.nom})
                 self.tableView.reloadData()
                 if self.actesController?.finished > 1 {
-                    self.actesController?.activityIndicator.stopActivity(true)
-                    self.actesController?.activityIndicator.removeFromSuperview()
+                    LoadingOverlay.shared.hideOverlayView()
                 } else {
                     self.actesController?.finished++
                 }

@@ -41,7 +41,7 @@ import EventKit
                 self.statutView?.hidden = false
                 if ressources != nil {
                     self.findRessources(ressources!)
-                } else if(event.calendar.source.title == "iCloud"){
+                } else if(self.eventManager!.version != "2"){
                     self.api.sendRequest("select e.statut as statutrdv,m.description, e.idPatient,e.modele, p.id, p.nir, p.genre, p.nom, p.prenom, p.adresse, p.codepostal, p.ville, p.telephone1,p.telephone2, p.email,p.statut, p.naissance, p.creation, p.idpraticien, p.idphoto,p.info, p.autorise_sms, p.correspondant, p.ipp2, p.adresse2, p.patient_par,amc, p.amc_prefs, p.profession, p.correspondants,p.famille,p.tel1_info, p.tel2_info FROM calendar_events e FULL OUTER JOIN calendar_events_modeles m ON e.modele = m.id INNER JOIN patients p ON p.id = e.idPatient WHERE e.idevent = '\(mabite[1])'")
                 }
             })
@@ -122,7 +122,7 @@ import EventKit
     }
     func updateEvent() {
         let mabite = event!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
-        if mabite.count>0 && event?.calendar.source.title == "iCloud"{
+        if mabite.count>0 && self.eventManager!.version != "2"{
             api.sendRequest("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
             //            print("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
         }

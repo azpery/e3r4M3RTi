@@ -228,8 +228,8 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
                 let navigationController: UINavigationController = segue.destinationViewController as! UINavigationController
                 let viewControllers = navigationController.viewControllers
                 
-                let signatureView: SignatureViewController = viewControllers.first as! SignatureViewController
-                signatureView.preferredContentSize = CGSizeMake(540.0, 620.0)
+                let signatureView: TypeDocumentTableViewController = viewControllers.first as! TypeDocumentTableViewController
+                signatureView.preferredContentSize = CGSizeMake(605, 350)
                 signatureView.patient = self.patient
                 signatureView.success = self.insertSignature
         }
@@ -239,12 +239,12 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         self.performSegueWithIdentifier("addNewDocument", sender: self)
     }
     
-    func insertSignature(sPrat:String, sPatient:String) -> Void{
+    func insertSignature(sPrat:String, sPatient:String, selectedRow: Int) -> Void{
         var activityIndicator = DTIActivityIndicatorView()
         dispatch_async(dispatch_get_main_queue(), {
             activityIndicator = ToolBox.startActivity(self.view)
         })
-        api?.signDocument(sPrat, sPatient: sPatient, idDoc: self.selectedDoc, idPatient: self.patient!.id , success: {id -> Bool in
+        api?.signDocument(sPrat, sPatient: sPatient, idDoc: self.selectedDoc, idPatient: self.patient!.id,selectedRow: selectedRow, success: {id -> Bool in
             
             let previewQL = QLPreviewController()
             previewQL.dataSource = self

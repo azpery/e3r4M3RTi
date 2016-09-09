@@ -25,4 +25,5 @@
 @property (nonatomic, assign) Boolean *isLoading;
 @property (nonatomic, assign) Boolean *isInitialLoading;
 @property (nonatomic, assign) CGFloat offsetView;
+@property (nonatomic, assign) NSString * version;
 @end
