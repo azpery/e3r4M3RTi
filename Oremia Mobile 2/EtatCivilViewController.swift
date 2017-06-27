@@ -15,8 +15,8 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
     @IBOutlet weak var buttonRetablir: UIButton!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var buttonValider: UIButton!
-    var api = APIController?()
-    var patient = patients?()
+    var api:APIController?
+    var patient:patients?
     var cameraUI:UIImagePickerController = UIImagePickerController()
     @IBOutlet weak var photoButton: UIButton!
     @IBOutlet weak var chooseButton: UIButton!
@@ -33,22 +33,22 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
         let tb : TabBarViewController = self.tabBarController as! TabBarViewController
         patient = tb.patient!
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalized)"
         if profilePicture != nil {
             
             profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;
             profilePicture.clipsToBounds = true
             profilePicture.layer.borderWidth = 0.5
-            profilePicture.layer.borderColor = UIColor.whiteColor().CGColor
-            profilePicture.contentMode = .ScaleAspectFill
-            let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
+            profilePicture.layer.borderColor = UIColor.white.cgColor
+            profilePicture.contentMode = .scaleAspectFill
+            let progressIndicatorView = CircularLoaderView(frame: CGRect.zero)
             progressIndicatorView.frame = self.profilePicture.bounds
-            progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            progressIndicatorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.profilePicture.addSubview(progressIndicatorView)
             var alreadyLoad = true
-            let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(patient!.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
-            dispatch_async(dispatch_get_main_queue(), {
-                self.profilePicture.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+            let urlString = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(patient!.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
+            DispatchQueue.main.async(execute: {
+                self.profilePicture.sd_setImage(with: urlString, placeholderImage: nil, options: .cacheMemoryOnly, progress: {
                     (receivedSize, expectedSize) -> Void in
                     alreadyLoad = false
                     progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
@@ -62,11 +62,11 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
                         
                 }
             })
-            photoButton.setFAIcon(FAType.FACamera, forState: .Normal)
-            chooseButton.setFAIcon(FAType.FAPictureO, forState: .Normal)
-            menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
-            quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
-            validButton.setFAIcon(FAType.FACheck, forState: .Normal)
+            photoButton.setFAIcon(FAType.faCamera, forState: UIControlState())
+            chooseButton.setFAIcon(FAType.faPictureO, forState: UIControlState())
+            menuButton.setFAIcon(FAType.faSearch, iconSize: 24)
+            quitButton.setFAIcon(FAType.faTimes, iconSize: 24)
+            validButton.setFAIcon(FAType.faCheck, forState: UIControlState())
             validButton.layer.cornerRadius = validButton.frame.size.width / 2;
             validButton.clipsToBounds = true
         }
@@ -74,26 +74,19 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
 
         // Do any additional setup after loading the view.
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         if ( patient!.info != ""){
             
-            JLToastView.setDefaultValue(
-                UIColor.redColor(),
-                forAttributeName: JLToastViewBackgroundColorAttributeName,
-                userInterfaceIdiom: .Phone
-            )
-            JLToastView.setDefaultValue(
-                UIColor.whiteColor(),
-                forAttributeName: JLToastViewTextColorAttributeName,
-                userInterfaceIdiom: .Phone
-            )
-            var info = patient!.info.componentsSeparatedByString("!")
+            var info = patient!.info.components(separatedBy: "!")
             var infoParsed = ""
-            for(var i = 1; i<info.count; i++){
+            for i in (1 ..< info.count){
                 infoParsed += info[i]
                 if i<info.count - 1 {infoParsed += "\n"}
             }
-            JLToast.makeText(infoParsed).show()
+            
+            let banner = Banner(title: "Informations patient", subtitle: infoParsed, image: UIImage(named: "glyphicons_078_warning_sign"), backgroundColor: UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+            banner.dismissesOnTap = true
+            banner.show(duration: 3.0)
         }
         
     }
@@ -101,14 +94,14 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func Valider(sender: AnyObject) {
+    @IBAction func Valider(_ sender: AnyObject) {
         let alert = SCLAlertView()
         alert.addButton("Valider", action:{
             self.detailsViewController!.editPatient()
         })
         alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir modifier \(patient!.prenom)", closeButtonTitle:"Annuler")
     }
-    @IBAction func Retablir(sender: AnyObject) {
+    @IBAction func Retablir(_ sender: AnyObject) {
         let alert = SCLAlertView()
         alert.addButton("Oui", action:{
             self.detailsViewController!.initValue()
@@ -116,107 +109,107 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
         alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir annuler les modifications?", closeButtonTitle:"Annuler")
         
     }
-    @IBAction func prendrePhoto(sender: AnyObject) {
+    @IBAction func prendrePhoto(_ sender: AnyObject) {
         self.presentCamera()
     }
-    @IBAction func choisirPhoto(sender: AnyObject) {
+    @IBAction func choisirPhoto(_ sender: AnyObject) {
          self.presentGallery()
     }
 
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             if resultsArr[0] as! String == "" {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
-                alert.showSuccess("Patient modifé", subTitle: "\(self.patient!.prenom.capitalizedString) a bien été modifié avec succès.")
+                alert.showSuccess("Patient modifé", subTitle: "\(self.patient!.prenom.capitalized) a bien été modifié avec succès.")
             } else {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
-                alert.showSuccess("Erreur", subTitle: "Une erreur a survenu lors de la modification de \(self.patient!.prenom.capitalizedString). \n Veuillez vérifié les champs rentrés")
+                alert.showSuccess("Erreur", subTitle: "Une erreur a survenu lors de la modification de \(self.patient!.prenom.capitalized). \n Veuillez vérifié les champs rentrés")
             }
         })
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results != 0{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
-                alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalizedString) a été modifié avec succès.")
+                alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalized) a été modifié avec succès.")
                 self.patient!.idPhoto = results
             })
         } else {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
             let alert = SCLAlertView()
             alert.showCloseButton = false
             alert.addButton("Ok", action:{})
             alert.showError("Erreur", subTitle: "Une erreur inconnue est survenue lors du téléversement de la photo")
             })
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier=="embedTable"){
-            self.detailsViewController = segue.destinationViewController as? EtatCivilTableViewController
+            self.detailsViewController = segue.destination as? EtatCivilTableViewController
             let tb : TabBarViewController = self.tabBarController as! TabBarViewController
             patient = tb.patient!
             self.detailsViewController!.p = patient!
         }
         if(segue.identifier=="selectImage"){
-            let ImageCollection: ImageViewController = segue.destinationViewController as! ImageViewController
+            let ImageCollection: ImageViewController = segue.destination as! ImageViewController
             let tb : TabBarViewController = self.tabBarController as! TabBarViewController
             patient = tb.patient!
             ImageCollection.patient = patient!
         }
     }
-    @IBAction func dismiss(sender: AnyObject) {
-        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismiss(_ sender: AnyObject) {
+        self.tabBarController?.dismiss(animated: true, completion: nil)
 
     }
     func presentCamera()
     {
         cameraUI = UIImagePickerController()
         cameraUI.delegate = self
-        cameraUI.sourceType = UIImagePickerControllerSourceType.Camera
+        cameraUI.sourceType = UIImagePickerControllerSourceType.camera
         //cameraUI.mediaTypes = [kUTTypeImage] as! String
-        cameraUI.allowsEditing = true
-        cameraUI.navigationItem.title = "kikou"
-        self.presentViewController(cameraUI, animated: true, completion: nil)
+        cameraUI.allowsEditing = false
+        cameraUI.navigationItem.title = "Photo"
+        self.present(cameraUI, animated: true, completion: nil)
     }
     func presentGallery()
     {
         cameraUI = UIImagePickerController()
         cameraUI.delegate = self
-        cameraUI.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        cameraUI.sourceType = UIImagePickerControllerSourceType.photoLibrary
         //cameraUI.mediaTypes = [kUTTypeImage] as! String
-        cameraUI.allowsEditing = true
-        cameraUI.navigationItem.title = "kikou"
-        self.presentViewController(cameraUI, animated: true, completion: nil)
+        cameraUI.allowsEditing = false
+        cameraUI.navigationItem.title = "Photo"
+        self.present(cameraUI, animated: true, completion: nil)
     }
     
 
     //pragma mark- Image
     
-    func imagePickerControllerDidCancel(picker:UIImagePickerController)
+    func imagePickerControllerDidCancel(_ picker:UIImagePickerController)
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
         var imageToSave:UIImage
         imageToSave = image
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         self.profilePicture.image = imageToSave
         self.patient!.photo = image
         api?.insertImage(image, idPatient: self.patient!.id)
     }
     
     
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int)
+    func alertView(_ alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int)
     {
         NSLog("Did dismiss button: %d", buttonIndex)
         //self.presentCamera()

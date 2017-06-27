@@ -27,7 +27,7 @@ class TypeModeleDocument {
         self.nomFichier=nomFichier
         
     }
-    class func convertSpecialChar(string: String!) -> String{
+    class func convertSpecialChar(_ string: String!) -> String{
         var newString = string
         let char_dictionary = [
             "&amp;": "&",
@@ -38,18 +38,19 @@ class TypeModeleDocument {
             "&#233;":"é"
         ];
         for (escaped_char, unescaped_char) in char_dictionary {
-            newString = newString.stringByReplacingOccurrencesOfString(escaped_char, withString: unescaped_char, options: NSStringCompareOptions.RegularExpressionSearch, range: nil)
+            newString = newString?.replacingOccurrences(of: escaped_char, with: unescaped_char, options: NSString.CompareOptions.regularExpression, range: nil)
         }
-        return newString
+        return newString!
         
     }
-    class func typeDocumentWithJSON(allResults: NSArray) -> [TypeModeleDocument] {
+    class func typeDocumentWithJSON(_ allResults: NSArray) -> [TypeModeleDocument] {
         var document = [TypeModeleDocument]()
         if allResults.count>0 {
             for result in allResults {
-                let idType = result["idtype"] as? Int ?? 0
-                let nomType = self.convertSpecialChar(result["nomtype"] as? String) ?? ""
-                let nomFichier = result["nomfichier"] as? String ?? ""
+                let r = result as! NSDictionary
+                let idType = r["idtype"] as? Int ?? 0
+                let nomType = self.convertSpecialChar(r["nomtype"] as? String) ?? ""
+                let nomFichier = r["nomfichier"] as? String ?? ""
                 
                 let newAlbum = TypeModeleDocument(idType: idType, nomType: nomType , nomFichier: nomFichier)
                 document.append(newAlbum)

@@ -7,15 +7,15 @@
 //
 
 import Foundation
-extension NSDate {
-    func dateFromString(date: String, format: String) -> NSDate {
-        let formatter = NSDateFormatter()
-        let locale = NSLocale(localeIdentifier: "en_US_POSIX")
+extension Date {
+    func dateFromString(_ date: String, format: String) -> Date {
+        let formatter = DateFormatter()
+        let locale = Locale(identifier: "en_US_POSIX")
         
         formatter.locale = locale
         formatter.dateFormat = format
         
-        return formatter.dateFromString(date)!
+        return formatter.date(from: date)!
     }
     
 }

@@ -7,6 +7,52 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 class SchemaDentaireCollectionViewController:  UICollectionViewController{
@@ -20,7 +66,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     var actesController:ActesViewController?
     var selectedCell:[Int] = []
     var cell:[DentCollectionViewCell] = []
-    var indexPath:[NSIndexPath] = []
+    var indexPath:[IndexPath] = []
     var chartLayouts:[Int:[Int:String]] = [0:[0:""]]
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +88,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.view.layoutIfNeeded()
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
@@ -53,33 +99,33 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         // Dispose of any resources that can be recreated.
     }
     override func viewDidLayoutSubviews() {
-        let bottomOffset = CGPointMake(0, self.collectionView!.contentSize.height - self.collectionView!.bounds.size.height);
+        let bottomOffset = CGPoint(x: 0, y: self.collectionView!.contentSize.height - self.collectionView!.bounds.size.height);
         self.collectionView!.contentOffset = bottomOffset
         self.view.layoutIfNeeded()
         cellWidth = self.view.bounds.size.width/16
         cellHeight = (self.view.bounds.size.height )/2
     }
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation:UIInterfaceOrientation){
+    override func didRotate(from fromInterfaceOrientation:UIInterfaceOrientation){
         self.loadData()
     }
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+    override func willRotate(to toInterfaceOrientation: UIInterfaceOrientation, duration: TimeInterval) {
         if(toInterfaceOrientation.isLandscape){
             self.loadData()
         }
     }
     
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 32
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
+        var cell:DentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! DentCollectionViewCell
         let i = indexPath.row
-        cell.dentLayout.contentMode = .ScaleAspectFit
+        cell.dentLayout.contentMode = .scaleAspectFit
         cell.dentLayout.clipsToBounds = true
         let layer = self.chart?.layerFromIndexPath(i) ?? [""]
 
@@ -89,13 +135,13 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         
         if(self.isSelected(indexPath.row) != -1){
             cell.layer.borderWidth = 2.0
-            cell.layer.borderColor = UIColor.grayColor().CGColor
+            cell.layer.borderColor = UIColor.gray.cgColor
         }else{
             cell.layer.borderWidth = 0.0
         }
         return cell
     }
-    func collectionView(collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,layout collectionViewLayout: UICollectionViewLayout,sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         let row  = chart?.localisationFromIndexPath(indexPath.row)
         if( row >= 16 && row <= 18 || row >= 26 && row <= 28 || row >= 46 && row <= 48 || row >= 36 && row <= 38 ){
             return CGSize(width: cellWidth*(6.7/6), height: cellHeight)
@@ -105,30 +151,30 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 0
     }
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 0
     }
     
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let cell:DentCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! DentCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell:DentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! DentCollectionViewCell
         self.toggleSelectedCell(indexPath.row, cell: cell, indexPath: indexPath)
-        self.collectionView?.reloadItemsAtIndexPaths([indexPath])
+        self.collectionView?.reloadItems(at: [indexPath])
     }
     
     func reloadSelectedCell(){
         
-        self.collectionView?.reloadItemsAtIndexPaths(self.indexPath)
+        self.collectionView?.reloadItems(at: self.indexPath)
         
     }
     
-    func addImageToSelectedCell(image:String){
+    func addImageToSelectedCell(_ image:String){
         var i = 0
         for index in self.selectedCell{
             let localisation = self.chart?.localisationFromIndexPath(index) ?? index
@@ -138,7 +184,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
                 layers.append(image)
                 self.chart?.setLayerFromIndexPath(self.indexPath[i].row, layers: layers)
             }else {
-                self.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(NSDate()), localisation: localisation, layer: image))
+                self.chart?.chart.append(Chart(idpatient: (self.patient?.id)!, date: ToolBox.getFormatedDateWithSlash(Date()), localisation: localisation, layer: image))
             }
             i += 1
         }
@@ -147,32 +193,32 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         
     }
     func didReceiveData(){
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             
             self.collectionView!.reloadData()
             
             if self.actesController?.finished > 1 {
                 LoadingOverlay.shared.hideOverlayView()
             } else {
-                self.actesController?.finished++
+                self.actesController?.finished = (self.actesController?.finished)! + 1
             }
             
         })
     }
-    func toggleSelectedCell(index:Int, cell: DentCollectionViewCell, indexPath:NSIndexPath){
+    func toggleSelectedCell(_ index:Int, cell: DentCollectionViewCell, indexPath:IndexPath){
         let found = self.isSelected(index)
         if found == -1{
             self.cell.append(cell)
             self.indexPath.append(indexPath)
             self.selectedCell.append(index)
         }else{
-            self.selectedCell.removeAtIndex(found)
-            self.cell.removeAtIndex(found)
-            self.indexPath.removeAtIndex(found)
+            self.selectedCell.remove(at: found)
+            self.cell.remove(at: found)
+            self.indexPath.remove(at: found)
         }
     }
     
-    func isSelected(index:Int)->Int{
+    func isSelected(_ index:Int)->Int{
         var found = -1
         var cpt = 0
         for i in selectedCell {

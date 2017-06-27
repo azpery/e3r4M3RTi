@@ -26,43 +26,43 @@ class HelpButton: UIViewController {
         
     }
     override func viewDidLoad(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(HelpButton.rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         self.updateView()
         
     }
     internal func updateView(){
-        xPosition = UIScreen.mainScreen().bounds.width - width - 10
-        yPosition = UIScreen.mainScreen().bounds.height - height - 10
+        xPosition = UIScreen.main.bounds.width - width - 10
+        yPosition = UIScreen.main.bounds.height - height - 10
         view.frame = CGRect(x: xPosition, y:yPosition , width: width, height: height)
         view.backgroundColor = ToolBox.UIColorFromRGB(0xe5793b)
         view.layer.cornerRadius = view.frame.size.height / 2
-        view.layer.shadowColor = UIColor.blackColor().CGColor
+        view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOffset = CGSize(width: 0, height: 10)
         view.layer.shadowOpacity = 0.8
         view.layer.shadowRadius = view.frame.size.height / 2
         base.frame = CGRect(x: 0.0, y: 0.0, width: view.frame.width, height: view.frame.height)
     }
-    internal func showButton(caller:UIViewController){
+    internal func showButton(_ caller:UIViewController){
         //let rv = UIApplication.sharedApplication().keyWindow! as UIWindow
         caller.view.addSubview(view)
         base.target = self
-        base.selector = Selector("triggerPopOver")
+        base.selector = #selector(HelpButton.triggerPopOver)
         self.caller = caller
         
         //        base.layer.masksToBounds = true
-        base.addTarget(self, action: Selector("triggerPopOver"), forControlEvents: UIControlEvents.TouchUpInside)
-        base.setFAIcon(FAType.FAMedkit,  forState: UIControlState.Normal)
+        base.addTarget(self, action: #selector(HelpButton.triggerPopOver), for: UIControlEvents.touchUpInside)
+        base.setFAIcon(FAType.faMedkit,  forState: UIControlState())
 //        base.tintColor = UIColor.whiteColor()
-        base.enabled = true
-        base.userInteractionEnabled = true
+        base.isEnabled = true
+        base.isUserInteractionEnabled = true
         base.layer.masksToBounds = true
         view.addSubview(base)
     }
     func triggerPopOver(){
-        let popoverContent = (caller!.storyboard?.instantiateViewControllerWithIdentifier("Help"))! as UIViewController
+        let popoverContent = (caller!.storyboard?.instantiateViewController(withIdentifier: "Help"))! as UIViewController
         let nav = UINavigationController(rootViewController: popoverContent)
-        nav.modalPresentationStyle = UIModalPresentationStyle.PageSheet
-        caller!.presentViewController(nav, animated: true, completion: nil)
+        nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+        caller!.present(nav, animated: true, completion: nil)
     }
     func rotated(){
         self.updateView()

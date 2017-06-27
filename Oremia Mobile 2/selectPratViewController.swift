@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class selectPratViewController: UIViewController, UIScrollViewDelegate, APIControllerProtocol{
     
@@ -16,11 +40,11 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     @IBOutlet weak var btnConnexion: UIButton!
     @IBOutlet weak var password: UITextField!
     var pageViews: [UIButton?] = []
-    var api = APIController?()
+    var api:APIController?
     var praticiens = [Praticien]()
     var mdp:String?
     var selectedPrat:Praticien?
-    var timer = NSTimer()
+    var timer = Timer()
     @IBOutlet var logo: UIImageView!
     let autoDetect = AutoDetect()
     required init?(coder aDecoder: NSCoder) {
@@ -30,13 +54,13 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         super.viewDidLoad()
         api = APIController(delegate: self)
         self.displayLoad()
-        btnConnexion.hidden = true
+        btnConnexion.isHidden = true
         let test = HelpButton()
         test.showButton(self)
-        UIApplication.sharedApplication().statusBarStyle = .Default
+        UIApplication.shared.statusBarStyle = .default
         
-        UINavigationBar.appearance().barTintColor = UIColor.whiteColor()
-        UINavigationBar.appearance().tintColor = UIColor.blackColor()
+        UINavigationBar.appearance().barTintColor = UIColor.white
+        UINavigationBar.appearance().tintColor = UIColor.black
         
         api!.pingServer()
         timer.invalidate() // just in case this button is tapped multiple times
@@ -46,47 +70,47 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         
         
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         
         //api!.sendRequest("select id,nom,prenom from praticiens")
-        btnConnexion.addTarget(self, action: "clicked", forControlEvents: UIControlEvents.TouchUpInside)
+        btnConnexion.addTarget(self, action: #selector(selectPratViewController.clicked), for: UIControlEvents.touchUpInside)
         
         
         
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        UIApplication.sharedApplication().statusBarStyle = UIStatusBarStyle.LightContent
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         UINavigationBar.appearance().barTintColor = ToolBox.UIColorFromRGB(0x34495E)
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().tintColor = UIColor.white
         
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func unwindToMainMenu(segue: UIStoryboardSegue) {
+    @IBAction func unwindToMainMenu(_ segue: UIStoryboardSegue) {
         displayLoad()
         //        api!.selectpraticien()
         api?.pingServer()
         
         //api!.sendRequest("select id,nom,prenom from praticiens")
     }
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         
         return true
     }
     func displayLoad(){
-        self.praticiens.removeAll(keepCapacity: false)
+        self.praticiens.removeAll(keepingCapacity: false)
         self.praticiens.append(Praticien(id: 0, nom:"Recherche du Serveur...", prenom: "", licence: 0))
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         self.initScroll()
         self.loadVisiblePages()
         self.scrollView.reloadInputViews()
         preference.ipServer = api!.readServerAdress()
-        btnConnexion.hidden = true
-        self.password.hidden = true
+        btnConnexion.isHidden = true
+        self.password.isHidden = true
     }
     func clicked(){
         mdp="zuma"
@@ -94,40 +118,40 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
             mdp = password.text
         }
         selectedPrat=praticiens[pageControl.currentPage]
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         connexionString.login = "zm\(self.selectedPrat!.id)"
         connexionString.pw = self.mdp!
         self.api!.setConnexion()
         //api!.sendRequest("select COUNT(*) as correct from praticiens")
         
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Load the pages that are now on screen
-        if(!UIApplication.sharedApplication().networkActivityIndicatorVisible){
+        if(!UIApplication.shared.isNetworkActivityIndicatorVisible){
             loadVisiblePages()
         }
     }
-    func loadPage(page: Int) {
+    func loadPage(_ page: Int) {
         if page < 0 || page >= self.praticiens.count {
             return
         }
         var frame = scrollView.bounds
         frame.origin.x = frame.size.width * CGFloat(page)
         frame.origin.y = 0.0
-        let newPageView = UIButton(frame: CGRectMake(100, 100, 100, 50))
-        newPageView.backgroundColor=UIColor.orangeColor()
+        let newPageView = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
+        newPageView.backgroundColor=UIColor.orange
         if (self.praticiens[0].id != 0) {
-            newPageView.setTitle("Dr "+self.praticiens[page].prenom+" "+self.praticiens[page].nom, forState: UIControlState.Normal)
+            newPageView.setTitle("Dr "+self.praticiens[page].prenom+" "+self.praticiens[page].nom, for: UIControlState())
         } else {
-            newPageView.setTitle(self.praticiens[page].nom, forState: UIControlState.Normal)
+            newPageView.setTitle(self.praticiens[page].nom, for: UIControlState())
         }
-        newPageView.contentMode = .ScaleAspectFit
+        newPageView.contentMode = .scaleAspectFit
         newPageView.frame = frame
         scrollView.addSubview(newPageView)
         
         pageViews[page] = newPageView
     }
-    func purgePage(page: Int) {
+    func purgePage(_ page: Int) {
         if page < 0 || page >= self.praticiens.count{
             // If it's outside the range of what you have to display, then do nothing
             return
@@ -142,11 +166,15 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         let pageWidth = scrollView.frame.size.width
         let page = Int(floor((scrollView.contentOffset.x * 2.0 + pageWidth) / (pageWidth * 2.0)))
         pageControl.currentPage = page
-        let firstPage = page - 1
+        var firstPage = 0
+        if page > 0  {
+            firstPage = page - 1
+        }
+        
         let lastPage = page + 1
         
         // Purge anything before the first page
-        for var index = 0; index < firstPage; ++index {
+        for index in (0 ..< firstPage) {
             purgePage(index)
         }
         
@@ -156,7 +184,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         }
         
         // Purge anything after the last page
-        for var index = lastPage+1; index < self.praticiens.count; ++index {
+        for index in (lastPage ..< self.praticiens.count) {
             purgePage(index)
         }
     }
@@ -176,26 +204,27 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
         SwiftSpinner.show("Mise à jour des fichiers...")
         SwiftSpinner.showWithDelay(15.0, title: "Nous mettons à jour les fichiers sur le poste serveur.")
     }
-    func pingResult(success:NSNumber){
+    func pingResult(_ success:NSNumber){
         if(success.boolValue){
             api!.checkFileUpdate()
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: "showActivityLoader", userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(selectPratViewController.showActivityLoader), userInfo: nil, repeats: true)
         }else {
             self.handleError(1)
         }
     }
     
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         self.timer.invalidate()
         if let resultsArr: NSArray = results["results"] as? NSArray {
             var type = 1
             var nb:Int?
             for value in resultsArr{
-                if value.objectForKey("correct") !=  nil{
+                if (value as AnyObject).object(forKey: "correct") !=  nil{
                     type = 0
-                    nb = value["correct"] as? Int
+                    let v = value as! NSDictionary
+                    nb = v["correct"] as? Int
                 }
-                if value.objectForKey("connexionBegin") !=  nil{
+                if (value as AnyObject).object(forKey: "connexionBegin") !=  nil{
                     preference.idUser = self.selectedPrat!.id
                     preference.nomUser = self.selectedPrat!.nom
                     preference.prenomUser = self.selectedPrat!.prenom
@@ -204,10 +233,10 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     connexionString.login = "zm\(self.selectedPrat!.id)"
                     connexionString.pw=self.mdp!
                     api?.checkLicence({result->Void in
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             if result{
                                 
-                                self.performSegueWithIdentifier("connectionGranted", sender:self)
+                                self.performSegue(withIdentifier: "connectionGranted", sender:self)
                                 
                             }else{
                                 let alert = SCLAlertView()
@@ -217,13 +246,14 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                         })
                     })
                 }
-                if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
+                let u = value as? NSDictionary
+                if (value as AnyObject).object(forKey: "error") !=  nil && u?["error"] as? Int == 7{
                     type = 2
                 }
             }
             if type == 0{
                 if nb > 0{
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         preference.idUser = self.selectedPrat!.id
                         preference.nomUser = self.selectedPrat!.nom
                         preference.prenomUser = self.selectedPrat!.prenom
@@ -231,29 +261,29 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                         connexionString.login = "zm\(self.selectedPrat!.id)"
                         connexionString.pw=self.mdp!
                         self.api!.setConnexion()
-                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     })
                 }
             }else if type == 2{
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     let alert = SCLAlertView()
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     
                     alert.showError("Mot de passe incorrect", subTitle: "Mot de passe incorrect ou inexistant, veuillez resaisir vos identifiants", closeButtonTitle:"Fermer")
                 })
                 
             } else {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.praticiens = Praticien.praticienWithJSON(resultsArr)
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     self.initScroll()
                     self.loadVisiblePages()
-                    self.btnConnexion.hidden = false
-                    self.password.hidden = false
+                    self.btnConnexion.isHidden = false
+                    self.password.isHidden = false
                 })
             }
         } else if let resultsArr: String = results["results"] as? String {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.timer.invalidate()
                 if resultsArr == "AJ" {
                     SwiftSpinner.hide()
@@ -263,7 +293,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     let alert = SCLAlertView()
                     alert.showCloseButton = false
                     alert.addButton("Lancer la démonstration"){
-                        preference.ipServer = "77.153.245.34"
+                        preference.ipServer = "109.10.173.81"
                         self.api!.selectpraticien()
                     }
                     alert.addButton("Besoin d'aide?") {
@@ -283,8 +313,8 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
             })
         }
     }
-    func handleError(results: Int) {
-        dispatch_async(dispatch_get_main_queue(), {
+    func handleError(_ results: Int) {
+        DispatchQueue.main.async(execute: {
             self.timer.invalidate()
             switch results {
             case 1 :
@@ -302,38 +332,44 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     self.api!.pingServer()
                     //                    self.api!.selectpraticien()
                 }
-                alert.addButton("Lancer la démonstration"){
-                    preference.ipServer = "77.153.245.34"
-                    self.api!.selectpraticien()
-                }
-                //alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
-                self.praticiens.removeAll(keepCapacity: false)
-                self.praticiens.append(Praticien(id: 0, nom:"Recherche du serveur", prenom: "", licence: 0))
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                dispatch_async(dispatch_get_main_queue(), {
-                SwiftSpinner.show("Recherche du serveur sur votre réseau...")
-                SwiftSpinner.showWithDelay(15.0, title: "Cette opération peut prendre quelques secondes.")
+                alert.addButton("Trouver mon serveur"){
+                    self.praticiens.removeAll(keepingCapacity: false)
+                    self.praticiens.append(Praticien(id: 0, nom:"Recherche du serveur", prenom: "", licence: 0))
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                    DispatchQueue.main.async(execute: {
+                        SwiftSpinner.show("Recherche du serveur sur votre réseau...")
                     })
-                self.autoDetect.getServerIpAdress({ip->Void in
-                        self.praticiens.removeAll(keepCapacity: false)
+                    self.autoDetect.getServerIpAdress({ip->Void in
+                        self.praticiens.removeAll(keepingCapacity: false)
                         self.praticiens.append(Praticien(id: 0, nom:"Serveur trouvé, chargement...", prenom: "", licence: 0))
                         preference.ipServer = ip
                         self.api!.checkFileUpdate()
                         SwiftSpinner.hide()
-                    },
-                    failure: {defaut->Void in
-                        alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir l'adresse ip de votre poste serveur")
-                        SwiftSpinner.hide()
-                        self.praticiens.removeAll(keepCapacity: false)
-                        self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: "", licence: 0))
-                        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                        },
+                        failure: {defaut->Void in
+                            
+                            SwiftSpinner.hide()
+                            self.praticiens.removeAll(keepingCapacity: false)
+                            self.praticiens.append(Praticien(id: 0, nom:"Serveur introuvable", prenom: "", licence: 0))
+                            UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     })
-                self.initScroll()
-                self.loadVisiblePages()
+                    self.initScroll()
+                    self.loadVisiblePages()
+                }
+                alert.addButton("Lancer la démonstration"){
+                    preference.ipServer = "109.10.173.81"
+                    self.api!.selectpraticien()
+                }
+                alert.addButton("Réessayer"){
+                    self.api!.pingServer()
+                }
+                
+                alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
+                
             case 2 :
-                self.praticiens.removeAll(keepCapacity: false)
+                self.praticiens.removeAll(keepingCapacity: false)
                 self.praticiens.append(Praticien(id: 0, nom:"Fichier(s) manquant(s)", prenom: "", licence: 0))
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 self.initScroll()
                 self.loadVisiblePages()
                 self.scrollView.reloadInputViews()
@@ -343,10 +379,10 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
             }
         })
     }
-    func delay(seconds seconds: Double, completion:()->()) {
-        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64( Double(NSEC_PER_SEC) * seconds ))
+    func delay(seconds: Double, completion:@escaping ()->()) {
+        let popTime = DispatchTime.now() + Double(Int64( Double(NSEC_PER_SEC) * seconds )) / Double(NSEC_PER_SEC)
         
-        dispatch_after(popTime, dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: popTime) {
             completion()
         }
     }

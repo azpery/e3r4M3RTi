@@ -10,7 +10,7 @@ import Foundation
 
 
 class MySearchDisplayController : UISearchDisplayController {
-    override func setActive(visible:Bool, animated:Bool)
+    override func setActive(_ visible:Bool, animated:Bool)
     {
         super.setActive(visible, animated: animated);
     

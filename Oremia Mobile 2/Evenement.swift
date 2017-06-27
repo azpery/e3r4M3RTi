@@ -37,45 +37,48 @@ import EventKit
         let mabite = event.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
         if mabite.count>0{
             let ressources = eventManager.CalDavRessource?[mabite[1]] as? String
-            dispatch_async(dispatch_get_main_queue(), {
-                self.statutView?.hidden = false
+            DispatchQueue.main.async(execute: {
+                self.statutView?.isHidden = false
                 if ressources != nil {
                     self.findRessources(ressources!)
                 } else if(self.eventManager!.version != "2"){
                     self.api.sendRequest("select e.statut as statutrdv,m.description, e.idPatient,e.modele, p.id, p.nir, p.genre, p.nom, p.prenom, p.adresse, p.codepostal, p.ville, p.telephone1,p.telephone2, p.email,p.statut, p.naissance, p.creation, p.idpraticien, p.idphoto,p.info, p.autorise_sms, p.correspondant, p.ipp2, p.adresse2, p.patient_par,amc, p.amc_prefs, p.profession, p.correspondants,p.famille,p.tel1_info, p.tel2_info FROM calendar_events e FULL OUTER JOIN calendar_events_modeles m ON e.modele = m.id INNER JOIN patients p ON p.id = e.idPatient WHERE e.idevent = '\(mabite[1])'")
                 }
             })
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.updateStatut()
             })
         } else {
-            statutView?.hidden = true
+            statutView?.isHidden = true
         }
         
     }
-    func loadPatient(callback:()->()){
+    func loadPatient(_ callback:@escaping ()->()){
         if(idPatient != 0){
             self.api.sendRequest("select * FROM patients  WHERE id = '\(idPatient)'")
             self.callback = callback
         }
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             if resultsArr.count > 0 {
-                self.idPatient = resultsArr[0]["id"] as? Int ?? self.idPatient
-                self.statut = resultsArr[0]["statutrdv"] as? Int ?? self.statut
-                self.modele = resultsArr[0]["modele"] as? Int ?? self.modele
-                self.descriptionModele = resultsArr[0]["description"] as? String ?? self.descriptionModele
+                let r = resultsArr[0] as? NSDictionary
+                if r != nil {
+                self.idPatient = r!["id"] as? Int ?? self.idPatient
+                self.statut = r!["statutrdv"] as? Int ?? self.statut
+                self.modele = r!["modele"] as? Int ?? self.modele
+                self.descriptionModele = r!["description"] as? String ?? self.descriptionModele
                 self.cell?.updateLocation(self.descriptionModele)
-                self.dureeModele = resultsArr[0]["duree"] as? Int ?? 0
-                self.ressources = resultsArr[0]["ressources"] as? String ?? ""
+                self.dureeModele = r!["duree"] as? Int ?? 0
+                self.ressources = r!["ressources"] as? String ?? ""
                 self.updateStatut()
                 self.patient = patients.patientWithJSON(resultsArr)[0]
                 if let callback = self.callback {
                     callback()
                 }
-                if ((resultsArr[0]["nom"] as? String ) == nil){
+                }
+                if ((r?["nom"] as? String ) == nil){
                     self.eventManager?.agenda?.reloadCalendars()
                 }
             }
@@ -83,19 +86,19 @@ import EventKit
             
         })
     }
-    func findRessources(ressources:String){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+    func findRessources(_ ressources:String){
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
             
-            let a = ressources.componentsSeparatedByString(";")
+            let a = ressources.components(separatedBy: ";")
             var d:[String]
             var e:[String]
             var val:String
             for b in a {
-                d = b.componentsSeparatedByString("X-ORE-")
+                d = b.components(separatedBy: "X-ORE-")
                 for c in d {
-                    e = c.componentsSeparatedByString("=")
+                    e = c.components(separatedBy: "=")
                     if e.count > 1 {
-                        val = e[1].stringByReplacingOccurrencesOfString("%", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                        val = e[1].replacingOccurrences(of: "%", with: "", options: NSString.CompareOptions.literal, range: nil)
                         switch e[0]{
                         case "IPP":
                             self.idPatient = Int(val)!
@@ -114,7 +117,7 @@ import EventKit
                 }
                 
             }
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 self.updateStatut()
                 self.cell?.updateLocation(self.descriptionModele)
             })
@@ -127,11 +130,11 @@ import EventKit
             //            print("UPDATE calendar_events SET idpatient=\(idPatient), statut=\(statut), modele=\(modele), ressources='\(ressources)' WHERE idevent='\(mabite[1])';")
         }
     }
-    func updateCalDavEvent(uid:String, initialDate:NSDate?) {
-        let dateFormatter = NSDateFormatter()
+    func updateCalDavEvent(_ uid:String, initialDate:Date?) {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd'T'HHmmss"
-        let dtstart = dateFormatter.stringFromDate((event?.startDate)!)
-        let dtend = dateFormatter.stringFromDate((event?.endDate)!)
+        let dtstart = dateFormatter.string(from: (event?.startDate)!)
+        let dtend = dateFormatter.string(from: (event?.endDate)!)
         let summary = event?.title
         self.updateStatut()
         api.setCalDavRessources(uid, ipp: idPatient, statut: statut, dtstart: dtstart, dtend: dtend, summary: summary!, title: event!.calendar.title, type: self.modele, date: initialDate)
@@ -176,7 +179,7 @@ import EventKit
         return vretour
     }
     func updateStatut() {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             switch self.statut % 10{
             case 1 :
                 self.statutView?.backgroundColor = ToolBox.UIColorFromRGB(0x26A65B)
@@ -202,13 +205,13 @@ import EventKit
             }
         })
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
             let mabite = event!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
             if mabite.count>0{
                 let ressources = eventManager!.CalDavRessource?[mabite[1]] as? String
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.statutView?.hidden = false
+                DispatchQueue.main.async(execute: {
+                    self.statutView?.isHidden = false
                     if ressources != nil {
                         self.findRessources(ressources!)
                     } else {
@@ -217,7 +220,7 @@ import EventKit
                 })
             }
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
 }

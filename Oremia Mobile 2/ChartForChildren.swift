@@ -8,7 +8,8 @@
 
 import Foundation
 class ChartForChildren : Chart{
-    override func localisationFromIndexPath(var indexPath:Int)->Int{
+    override func localisationFromIndexPath(_ indexPath:Int)->Int{
+        var indexPath = indexPath
 
         if indexPath <= 7 && indexPath > 2 {
             indexPath = 58 - indexPath
@@ -35,7 +36,8 @@ class ChartForChildren : Chart{
 //        return localisation
 //    }
     
-    override func imageFromIndexPath(var indexPath:Int, var layer:String, imageView:UIImageView){
+    override func imageFromIndexPath(_ indexPath:Int, layer:String, imageView:UIImageView){
+        var indexPath = indexPath, layer = layer
         if layer != "" {
             layer = "-\(layer)"
         }
@@ -53,7 +55,7 @@ class ChartForChildren : Chart{
             } else {
                 imageView.image = UIImage(named: "\(indexPath)")
             }
-            imageView.transform = CGAffineTransformMakeScale(-1, 1)
+            imageView.transform = CGAffineTransform(scaleX: -1, y: 1)
         }else if indexPath > 18 && indexPath <= 23 {
             indexPath = 104 - indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
@@ -68,7 +70,7 @@ class ChartForChildren : Chart{
             } else {
                 imageView.image = UIImage(named: "\(indexPath)")
             }
-            imageView.transform = CGAffineTransformMakeScale(-1, 1)
+            imageView.transform = CGAffineTransform(scaleX: -1, y: 1)
         }
         imageView.layer.minificationFilter = kCAFilterTrilinear
         

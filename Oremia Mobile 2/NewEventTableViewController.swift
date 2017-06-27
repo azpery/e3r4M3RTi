@@ -15,7 +15,7 @@ class NewEventTableViewController: UITableViewController  {
     var eventManager = EventManager()
     var caller:MSCalendarViewController?
     var cell:MSEventCell?
-    var initialDate:NSDate?
+    var initialDate:Date?
     @IBOutlet var rightArrow: UILabel!
     @IBOutlet var alerte: UISwitch!
     @IBOutlet var notes: UITextView!
@@ -24,7 +24,7 @@ class NewEventTableViewController: UITableViewController  {
     @IBOutlet var delete: UIButton!
     @IBOutlet var dateDebutLabel: UILabel!
     @IBOutlet var dateFinLabel: UILabel!
-    var dateFormatter = NSDateFormatter()
+    var dateFormatter = DateFormatter()
     var dateDebutPicker = false
     var dateFinPicker = false
     @IBOutlet var rightArrowBis: UILabel!
@@ -36,8 +36,8 @@ class NewEventTableViewController: UITableViewController  {
     var tryed = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+        dateFormatter.dateStyle = DateFormatter.Style.medium
+        dateFormatter.timeStyle = DateFormatter.Style.short
 
     }
     
@@ -53,9 +53,9 @@ class NewEventTableViewController: UITableViewController  {
             self.navigationItem.title = "Modifier l'évennement"
             self.navigationItem.rightBarButtonItem?.title = "Modifier"
             self.navigationItem.rightBarButtonItem?.target = self
-            self.navigationItem.rightBarButtonItem?.action = Selector("editEvent")
-            dateDebutLabel.text = dateFormatter.stringFromDate((eventManager.editEvent?.startDate)!)
-            dateFinLabel.text = dateFormatter.stringFromDate((eventManager.editEvent?.endDate)!)
+            self.navigationItem.rightBarButtonItem?.action = #selector(NewEventTableViewController.editEvent)
+            dateDebutLabel.text = dateFormatter.string(from: (eventManager.editEvent?.startDate)!)
+            dateFinLabel.text = dateFormatter.string(from: (eventManager.editEvent?.endDate)!)
             typeRDV.text = eventManager.internalEvent.descriptionModele == "" ? "Modifier le type de rendez-vous" : eventManager.internalEvent.descriptionModele
             statutLabel.text = eventManager.internalEvent.getLibelleStatut()
             self.tableView.reloadData()
@@ -65,43 +65,43 @@ class NewEventTableViewController: UITableViewController  {
     }
     
     func loadMe(){
-        consulterDossier.hidden = true
+        consulterDossier.isHidden = true
         eventManager.selectedCalendarIdentifier = eventManager.defaultCalendar?.title
         calendrier.text = eventManager.defaultCalendar?.title
-        rightArrow.setFAIcon(FAType.FAArrowRight, iconSize: 17)
-        rightArrow.tintColor = UIColor.whiteColor()
-        rightArrowBis.setFAIcon(FAType.FAArrowRight, iconSize: 17)
-        rightArrowBis.tintColor = UIColor.whiteColor()
-        addPatientButton.setFAIcon(FAType.FAPlusCircle, forState: UIControlState.Normal)
+        rightArrow.setFAIcon(FAType.faArrowRight, iconSize: 17)
+        rightArrow.tintColor = UIColor.white
+        rightArrowBis.setFAIcon(FAType.faArrowRight, iconSize: 17)
+        rightArrowBis.tintColor = UIColor.white
+        addPatientButton.setFAIcon(FAType.faPlusCircle, forState: UIControlState())
         if self.eventManager.internalEvent.patient != nil{
-            consulterDossier.hidden = false
-            consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
+            consulterDossier.isHidden = false
+            consulterDossier.setFAIcon(FAType.faFolder, forState: UIControlState())
             loadPhoto()
             self.tableView.reloadData()
         } else {
             if(!tryed){
                 self.tryed = true
                 self.eventManager.internalEvent.loadPatient(loadMe)
-                consulterDossier.hidden = true
+                consulterDossier.isHidden = true
                 consulterDossier.titleLabel?.text = ""
             }
         }
         
-        delete.addTarget(self, action: Selector("deleteEvent"), forControlEvents: UIControlEvents.TouchUpInside)
+        delete.addTarget(self, action: #selector(NewEventTableViewController.deleteEvent), for: UIControlEvents.touchUpInside)
     }
     func loadPhoto(){
         image.layer.cornerRadius = image.frame.size.width / 2;
         image.clipsToBounds = true
         image.layer.borderWidth = 0.5
-        image.layer.borderColor = UIColor.whiteColor().CGColor
-        image.contentMode = .ScaleAspectFit
-        let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
-        let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(self.eventManager.internalEvent.patient!.idPhoto)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
+        image.layer.borderColor = UIColor.white.cgColor
+        image.contentMode = .scaleAspectFit
+        let progressIndicatorView = CircularLoaderView(frame: CGRect.zero)
+        let urlString = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(self.eventManager.internalEvent.patient!.idPhoto)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
         progressIndicatorView.frame = image.bounds
-        progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        dispatch_async(dispatch_get_main_queue(), {
+        progressIndicatorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        DispatchQueue.main.async(execute: {
 //            self.image.addSubview(progressIndicatorView)
-            self.image.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+            self.image.sd_setImage(with: urlString, placeholderImage: nil, options: .cacheMemoryOnly, progress: {
                 (receivedSize, expectedSize) -> Void in
                     progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
                 }) {
@@ -112,8 +112,8 @@ class NewEventTableViewController: UITableViewController  {
             }
         })
     }
-    override func viewDidAppear(animated: Bool) {
-        dispatch_async(dispatch_get_main_queue(), {
+    override func viewDidAppear(_ animated: Bool) {
+        DispatchQueue.main.async(execute: {
             self.loadMe()
 //        if self.eventManager.internalEvent.patient != nil{
 //            self.consulterDossier.setFAIcon(FAType.FAFolder, forState: UIControlState.Normal)
@@ -123,56 +123,56 @@ class NewEventTableViewController: UITableViewController  {
 //        }
         })
     }
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         self.tryed = false
     }
-    @IBAction func dateDebutChanged(sender: UIDatePicker) {
-        dateDebutLabel.text = dateFormatter.stringFromDate(sender.date)
-        dateFin.date = sender.date.dateByAddingTimeInterval(60*30)
-        dateFinLabel.text = dateFormatter.stringFromDate(dateFin.date)
+    @IBAction func dateDebutChanged(_ sender: UIDatePicker) {
+        dateDebutLabel.text = dateFormatter.string(from: sender.date)
+        dateFin.date = sender.date.addingTimeInterval(60*30)
+        dateFinLabel.text = dateFormatter.string(from: dateFin.date)
     }
 
-    @IBAction func dateFinChanged(sender: UIDatePicker) {
-        dateFinLabel.text = dateFormatter.stringFromDate(sender.date)
+    @IBAction func dateFinChanged(_ sender: UIDatePicker) {
+        dateFinLabel.text = dateFormatter.string(from: sender.date)
 //        dateDebut.date = sender.date.dateByAddingTimeInterval(60*30)
 //        dateDebutLabel.text = dateFormatter.stringFromDate(dateDebut.date)
     }
-    func majDuree(duree:Double){
-        dateFin.date = dateDebut.date.dateByAddingTimeInterval(60*duree)
-        dateFinLabel.text = dateFormatter.stringFromDate(dateFin.date)
+    func majDuree(_ duree:Double){
+        dateFin.date = dateDebut.date.addingTimeInterval(60*duree)
+        dateFinLabel.text = dateFormatter.string(from: dateFin.date)
     }
-    @IBAction func cancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: ({}))
+    @IBAction func cancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: ({}))
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.destinationViewController.isKindOfClass(CalendarsTableViewController){
-            let destination = segue.destinationViewController as! CalendarsTableViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination.isKind(of: CalendarsTableViewController.self){
+            let destination = segue.destination as! CalendarsTableViewController
             destination.caller = self
             destination.eventManager = eventManager
         }
-        if segue.destinationViewController.isKindOfClass(StatutTableViewController){
-            let destination = segue.destinationViewController as! StatutTableViewController
+        if segue.destination.isKind(of: StatutTableViewController.self){
+            let destination = segue.destination as! StatutTableViewController
             destination.eventManager = eventManager
             destination.label = statutLabel
         }
-        if segue.destinationViewController.isKindOfClass(TypeRDVTableViewController){
-            let destination = segue.destinationViewController as! TypeRDVTableViewController
+        if segue.destination.isKind(of: TypeRDVTableViewController.self){
+            let destination = segue.destination as! TypeRDVTableViewController
             destination.eventManager = eventManager
             destination.label = typeRDV
             destination.caller = self
         }
-        if segue.destinationViewController.isKindOfClass(TabBarViewController){
-            let detailsViewController: TabBarViewController = segue.destinationViewController as! TabBarViewController
+        if segue.destination.isKind(of: TabBarViewController.self){
+            let detailsViewController: TabBarViewController = segue.destination as! TabBarViewController
             detailsViewController.patient = self.eventManager.internalEvent.patient
             detailsViewController.fromCal = true
         }
-        if segue.destinationViewController.isKindOfClass(NewPatientTableViewController){
-            let detailsViewController: NewPatientTableViewController = segue.destinationViewController as! NewPatientTableViewController
+        if segue.destination.isKind(of: NewPatientTableViewController.self){
+            let detailsViewController: NewPatientTableViewController = segue.destination as! NewPatientTableViewController
             detailsViewController.fromCal = true
             detailsViewController.cal = self
         }
@@ -185,7 +185,7 @@ class NewEventTableViewController: UITableViewController  {
             let alert = SCLAlertView()
             alert.showError("Erreur", subTitle: "Suppression impossible, cette évennement est en lecture seule", closeButtonTitle: "OK")
         }
-        self.dismissViewControllerAnimated(true, completion: ({
+        self.dismiss(animated: true, completion: ({
             self.caller?.reloadItMotherFucker()
         }))
     }
@@ -193,24 +193,24 @@ class NewEventTableViewController: UITableViewController  {
         let startDate = dateDebut.date
         let endDate = dateFin.date
         eventManager.selectedCalendarIdentifier = calendrier.text
-        if (startDate.compare(endDate) == .OrderedAscending && patientText.text! != "Cliquez pour séléctionner le patient" && eventManager.editEvent?.calendar != nil) {
-            if eventManager.editEvent(patientText.text!, startDate: startDate, endDate: endDate, notes: notes.text, reminder: alerte.on, initialDate:self.initialDate) {
-                let dateFormat = NSDateFormatter()
-                dateFormat.dateStyle = .FullStyle
-                dateFormat.timeStyle = .MediumStyle
-                SCLAlertView().showSuccess("Rendez-vous modifié", subTitle: "Le rendez vous a été modifié pour le \(dateFormat.stringFromDate(startDate).capitalizedString)", closeButtonTitle: "OK")
+        if (startDate.compare(endDate) == .orderedAscending && patientText.text! != "Cliquez pour séléctionner le patient" && eventManager.editEvent?.calendar != nil) {
+            if eventManager.editEvent(patientText.text!, startDate: startDate, endDate: endDate, notes: notes.text, reminder: alerte.isOn, initialDate:self.initialDate) {
+                let dateFormat = DateFormatter()
+                dateFormat.dateStyle = .full
+                dateFormat.timeStyle = .medium
+                SCLAlertView().showSuccess("Rendez-vous modifié", subTitle: "Le rendez vous a été modifié pour le \(dateFormat.string(from: startDate).capitalized)", closeButtonTitle: "OK")
             }else{
                 let alert = SCLAlertView()
                 alert.addButton("Besoin d'aide?") {
-                    let popoverContent = (self.storyboard?.instantiateViewControllerWithIdentifier("Help"))! as UIViewController
+                    let popoverContent = (self.storyboard?.instantiateViewController(withIdentifier: "Help"))! as UIViewController
                     let nav = UINavigationController(rootViewController: popoverContent)
-                    nav.modalPresentationStyle = UIModalPresentationStyle.PageSheet
-                    self.presentViewController(nav, animated: true, completion: nil)
+                    nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+                    self.present(nav, animated: true, completion: nil)
                 }
                 
                 alert.showError("Erreur", subTitle: "Il y a eu un probleme lors de l'enregistrement du rendez-vous, si le probleme persiste, contactez le support technique.", closeButtonTitle: "OK")
             }
-            self.dismissViewControllerAnimated(true, completion: ({
+            self.dismiss(animated: true, completion: ({
                 self.eventManager.agenda = self.caller
                 let mabite = self.eventManager.editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
 //                self.eventManager.CalDavRessource[mabite[1]] = "X-ORE-IPP=%\(eventManager.internalEvent.patient?.id)"
@@ -221,30 +221,30 @@ class NewEventTableViewController: UITableViewController  {
             ToolBox.shakeIt(self.view)
         }
     }
-    @IBAction func addNewpatient(sender: AnyObject) {
-        performSegueWithIdentifier("ajouterPatient", sender: self)
+    @IBAction func addNewpatient(_ sender: AnyObject) {
+        performSegue(withIdentifier: "ajouterPatient", sender: self)
     }
-    @IBAction func addNewEvent(sender: AnyObject) {
+    @IBAction func addNewEvent(_ sender: AnyObject) {
         let startDate = dateDebut.date
         let endDate = dateFin.date
-        if (startDate.compare(endDate) == .OrderedAscending && patientText.text! != "Cliquez pour séléctionner le patient" && eventManager.selectedCalendarIdentifier != nil) {
-            if eventManager.insertEvent(patientText.text!, startDate: startDate, endDate: endDate, notes: notes.text, reminder: alerte.on) {
-                let dateFormat = NSDateFormatter()
-                dateFormat.dateStyle = .FullStyle
-                dateFormat.timeStyle = .MediumStyle
-                SCLAlertView().showSuccess("Rendez-vous enregistré", subTitle: "Le rendez vous a été enregistré pour le \(dateFormat.stringFromDate(startDate).capitalizedString)", closeButtonTitle: "OK")
+        if (startDate.compare(endDate) == .orderedAscending && patientText.text! != "Cliquez pour séléctionner le patient" && eventManager.selectedCalendarIdentifier != nil) {
+            if eventManager.insertEvent(patientText.text!, startDate: startDate, endDate: endDate, notes: notes.text, reminder: alerte.isOn) {
+                let dateFormat = DateFormatter()
+                dateFormat.dateStyle = .full
+                dateFormat.timeStyle = .medium
+                SCLAlertView().showSuccess("Rendez-vous enregistré", subTitle: "Le rendez vous a été enregistré pour le \(dateFormat.string(from: startDate).capitalized)", closeButtonTitle: "OK")
             }else{
                 let alert = SCLAlertView()
                 alert.addButton("Besoin d'aide?") {
-                    let popoverContent = (self.storyboard?.instantiateViewControllerWithIdentifier("Help"))! as UIViewController
+                    let popoverContent = (self.storyboard?.instantiateViewController(withIdentifier: "Help"))! as UIViewController
                     let nav = UINavigationController(rootViewController: popoverContent)
-                    nav.modalPresentationStyle = UIModalPresentationStyle.PageSheet
-                    self.presentViewController(nav, animated: true, completion: nil)
+                    nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+                    self.present(nav, animated: true, completion: nil)
                 }
                 
                 alert.showError("Erreur", subTitle: "Il y a eu un probleme lors de l'enregistrement du rendez-vous, si le probleme persiste, contactez le support technique.", closeButtonTitle: "OK")
             }
-            self.dismissViewControllerAnimated(true, completion: ({
+            self.dismiss(animated: true, completion: ({
                 self.caller?.reloadItMotherFucker()
             }))
         } else {
@@ -253,15 +253,15 @@ class NewEventTableViewController: UITableViewController  {
     }
 
      func performSelectionPatient() {
-            let selectionPatient = self.storyboard!.instantiateViewControllerWithIdentifier("DetailsViewController") as! DetailsViewController
+            let selectionPatient = self.storyboard!.instantiateViewController(withIdentifier: "DetailsViewController") as! DetailsViewController
             selectionPatient.isSelectingPatient = true
             selectionPatient.patientText = patientText
             selectionPatient.eventManager = eventManager
-            self.showViewController(selectionPatient, sender: self)
+            self.show(selectionPatient, sender: self)
     }
 
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row{
         case 1 :
             
@@ -288,10 +288,10 @@ class NewEventTableViewController: UITableViewController  {
         default:
             break
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 && self.eventManager.internalEvent.patient == nil || self.eventManager.internalEvent.patient?.idPhoto == 0 && indexPath.row == 0{
             return 0.0
         }else if indexPath.row == 0{

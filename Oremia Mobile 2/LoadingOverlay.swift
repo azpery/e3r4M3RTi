@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-@objc public class LoadingOverlay:NSObject{
+@objc open class LoadingOverlay:NSObject{
     
     var overlayView = UIView()
     var activityIndicator = DTIActivityIndicatorView()
@@ -21,9 +21,9 @@ import Foundation
         return Static.instance
     }
     
-    public func showOverlay(view: UIView!) {
+    open func showOverlay(_ view: UIView!) {
         overlayView = UIView(frame: view.frame)
-        overlayView.backgroundColor = UIColor.whiteColor()
+        overlayView.backgroundColor = UIColor.white
         
 //        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
 //        activityIndicator.center = overlayView.center
@@ -33,20 +33,20 @@ import Foundation
         view.addSubview(overlayView)
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
-        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorColor = UIColor.black
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
     }
-    static func updateBlur(view: UIView!) {
+    static func updateBlur(_ view: UIView!) {
 
 
-        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.ExtraLight)
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
         // 2
         
         let blurView = UIVisualEffectView(effect: blurEffect)
         // 3
         blurView.translatesAutoresizingMaskIntoConstraints = false
-        let vibrancyEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
+        let vibrancyEffect = UIVibrancyEffect(blurEffect: blurEffect)
         // 2
         let vibrancyView = UIVisualEffectView(effect: vibrancyEffect)
         vibrancyView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,25 +54,25 @@ import Foundation
 //        vibrancyView.contentView.addSubview(superView)
         // 4
         blurView.contentView.addSubview(vibrancyView)
-        view.insertSubview(blurView, atIndex: 0)
+        view.insertSubview(blurView, at: 0)
         var constraints = [NSLayoutConstraint]()
         constraints.append(NSLayoutConstraint(item: blurView,
-            attribute: .Height, relatedBy: .Equal, toItem: view,
-            attribute: .Height, multiplier: 1, constant: 0))
+            attribute: .height, relatedBy: .equal, toItem: view,
+            attribute: .height, multiplier: 1, constant: 0))
         constraints.append(NSLayoutConstraint(item: blurView,
-            attribute: .Width, relatedBy: .Equal, toItem: view,
-            attribute: .Width, multiplier: 1, constant: 0))
+            attribute: .width, relatedBy: .equal, toItem: view,
+            attribute: .width, multiplier: 1, constant: 0))
         constraints.append(NSLayoutConstraint(item: vibrancyView,
-            attribute: .Height, relatedBy: .Equal,
-            toItem: view, attribute: .Height,
+            attribute: .height, relatedBy: .equal,
+            toItem: view, attribute: .height,
             multiplier: 1, constant: 0))
         constraints.append(NSLayoutConstraint(item: vibrancyView,
-            attribute: .Width, relatedBy: .Equal,
-            toItem: view, attribute: .Width,
+            attribute: .width, relatedBy: .equal,
+            toItem: view, attribute: .width,
             multiplier: 1, constant: 0))
         view.addConstraints(constraints)
     }
-    public func hideOverlayView() {
+    open func hideOverlayView() {
         activityIndicator.stopActivity()
         activityIndicator.removeFromSuperview()
         overlayView.removeFromSuperview()

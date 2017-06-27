@@ -12,21 +12,21 @@ class AutoDetect: NSObject {
     var ipAdress:[String] = []
     var subDomain = ""
     var cpt = 0
-    var success: String->Void = {defaut->Void in }
-    var failure: Bool->Void = {defaut->Void in }
+    var success: (String)->Void = {defaut->Void in }
+    var failure: (Bool)->Void = {defaut->Void in }
     
-    func getServerIpAdress(success: String->Void, failure: Bool->Void) {
+    func getServerIpAdress(_ success: @escaping (String)->Void, failure: @escaping (Bool)->Void) {
         self.success = success
         self.failure = failure
         self.ipAdress = getIFAddresses()
         getSubDomain()
         if self.ipAdress.count > 0 && subDomain != ""{
             self.cpt += 1
-            SimplePingHelper.ping("\(self.subDomain).\(cpt)", target: self, sel: "pingResult:")
+            SimplePingHelper.ping("\(self.subDomain).\(cpt)", target: self, sel: #selector(AutoDetect.pingResult(_:)))
         }
     }
     
-    func pingResult(success:NSNumber){
+    func pingResult(_ success:NSNumber){
         if cpt < 256 {
             if(success.boolValue){
                 preference.ipServer = "\(self.subDomain).\(self.cpt)"
@@ -35,11 +35,11 @@ class AutoDetect: NSObject {
                     self.success("\(self.subDomain).\(self.cpt)")
                 }else{
                     self.cpt += 1
-                    SimplePingHelper.ping("\(self.subDomain).\(self.cpt)", target: self, sel: "pingResult:")
+                    SimplePingHelper.ping("\(self.subDomain).\(self.cpt)", target: self, sel: #selector(AutoDetect.pingResult(_:)))
                 }
             }else {
                 cpt += 1
-                SimplePingHelper.ping("\(self.subDomain).\(cpt)", target: self, sel: "pingResult:")
+                SimplePingHelper.ping("\(self.subDomain).\(cpt)", target: self, sel: #selector(AutoDetect.pingResult(_:)))
             }
         }else{
             self.failure(false)
@@ -50,23 +50,23 @@ class AutoDetect: NSObject {
     func getIFAddresses() -> [String] {
         var addresses = [String]()
         
-        var ifaddr : UnsafeMutablePointer<ifaddrs> = nil
+        var ifaddr : UnsafeMutablePointer<ifaddrs>? = nil
         if getifaddrs(&ifaddr) == 0 {
             
             var ptr = ifaddr
             while ptr != nil {
-                defer { ptr = ptr.memory.ifa_next }
+                defer { ptr = ptr?.pointee.ifa_next }
                 
-                let flags = Int32(ptr.memory.ifa_flags)
-                var addr = ptr.memory.ifa_addr.memory
+                let flags = Int32((ptr?.pointee.ifa_flags)!)
+                var addr = ptr?.pointee.ifa_addr.pointee
                 
                 if (flags & (IFF_UP|IFF_RUNNING|IFF_LOOPBACK)) == (IFF_UP|IFF_RUNNING) {
-                    if addr.sa_family == UInt8(AF_INET) || addr.sa_family == UInt8(AF_INET6) {
+                    if addr?.sa_family == UInt8(AF_INET) || addr?.sa_family == UInt8(AF_INET6) {
                         
-                        var hostname = [CChar](count: Int(NI_MAXHOST), repeatedValue: 0)
-                        if (getnameinfo(&addr, socklen_t(addr.sa_len), &hostname, socklen_t(hostname.count),
+                        var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                        if (getnameinfo(&addr!, socklen_t((addr?.sa_len)!), &hostname, socklen_t(hostname.count),
                             nil, socklen_t(0), NI_NUMERICHOST) == 0) {
-                            if let address = String.fromCString(hostname) {
+                            if let address = String(validatingUTF8: hostname) {
                                 addresses.append(address)
                             }
                         }
@@ -88,11 +88,11 @@ class AutoDetect: NSObject {
     
     func checkFileupdate()->Bool{
         let urlPath = "http://\(preference.ipServer)/scripts/updater.php"
-        let url: NSURL = NSURL(string: urlPath)!
-        let request1: NSURLRequest = NSURLRequest(URL: url)
-        let response: AutoreleasingUnsafeMutablePointer<NSURLResponse?>=nil
+        let url: URL = URL(string: urlPath)!
+        let request1: URLRequest = URLRequest(url: url)
+        let response: AutoreleasingUnsafeMutablePointer<URLResponse?>?=nil
         do{
-            let dataVal = try NSURLConnection.sendSynchronousRequest(request1, returningResponse: response)
+            let dataVal = try NSURLConnection.sendSynchronousRequest(request1, returning: response)
             
             return true
             

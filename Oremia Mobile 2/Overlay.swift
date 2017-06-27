@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-@objc public class Overlay:NSObject{
+@objc open class Overlay:NSObject{
     
     var overlayView = UIView()
     var view = UIView()
@@ -22,36 +22,36 @@ import Foundation
         return Static.instance
     }
     
-    public func showOverlay(view: UIView!,text:String) {
-        overlayView = UIView(frame:CGRectMake(0, 0,
-            view.bounds.size.width,
-            view.bounds.size.height+500))
+    open func showOverlay(_ view: UIView!,text:String) {
+        overlayView = UIView(frame:CGRect(x: 0, y: 0,
+            width: view.bounds.size.width,
+            height: view.bounds.size.height+500))
         self.view = view
-        overlayView.backgroundColor = UIColor.whiteColor()
+        overlayView.backgroundColor = UIColor.white
         displayText(text)
         overlayView.translatesAutoresizingMaskIntoConstraints = true
         view.addSubview(overlayView)
         overlayView.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        overlayView.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleTopMargin, UIViewAutoresizing.FlexibleBottomMargin]
+        overlayView.autoresizingMask = [UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin, UIViewAutoresizing.flexibleTopMargin, UIViewAutoresizing.flexibleBottomMargin]
     }
  
-    public func hideOverlayView() {
+    open func hideOverlayView() {
         messageLbl.removeFromSuperview()
         overlayView.removeFromSuperview()
     }
     
-    public func displayText(text:String){
-        messageLbl = UILabel( frame:CGRectMake(0, 0,
-            view.bounds.size.width,
-            view.bounds.size.height))
+    open func displayText(_ text:String){
+        messageLbl = UILabel( frame:CGRect(x: 0, y: 0,
+            width: view.bounds.size.width,
+            height: view.bounds.size.height))
         messageLbl.text = text
         messageLbl.font = UIFont(name: "Avenir Next", size: 30)
         messageLbl.textColor = ToolBox.UIColorFromRGB(0x878787)
-        messageLbl.textAlignment = NSTextAlignment.Center
+        messageLbl.textAlignment = NSTextAlignment.center
         messageLbl.translatesAutoresizingMaskIntoConstraints = true
         overlayView.addSubview(messageLbl)
         messageLbl.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        messageLbl.autoresizingMask = [UIViewAutoresizing.FlexibleLeftMargin, UIViewAutoresizing.FlexibleRightMargin, UIViewAutoresizing.FlexibleTopMargin, UIViewAutoresizing.FlexibleBottomMargin]
+        messageLbl.autoresizingMask = [UIViewAutoresizing.flexibleLeftMargin, UIViewAutoresizing.flexibleRightMargin, UIViewAutoresizing.flexibleTopMargin, UIViewAutoresizing.flexibleBottomMargin]
     }
     
 

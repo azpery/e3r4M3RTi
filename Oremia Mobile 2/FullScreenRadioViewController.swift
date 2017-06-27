@@ -23,7 +23,7 @@ class FullScreenRadioViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentSize = image!.size
         
         // 3
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: "scrollViewDoubleTapped:")
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(FullScreenRadioViewController.scrollViewDoubleTapped(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         doubleTapRecognizer.numberOfTouchesRequired = 1
         scrollView.addGestureRecognizer(doubleTapRecognizer)
@@ -44,10 +44,10 @@ class FullScreenRadioViewController: UIViewController, UIScrollViewDelegate {
         // Do any additional setup after loading the view.
 
     }
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
-    func scrollViewDidZoom(scrollView: UIScrollView) {
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerScrollViewContents()
     }
     override func didReceiveMemoryWarning() {
@@ -72,9 +72,9 @@ class FullScreenRadioViewController: UIViewController, UIScrollViewDelegate {
         
         imageView.frame = contentsFrame
     }
-    func scrollViewDoubleTapped(recognizer: UITapGestureRecognizer) {
+    func scrollViewDoubleTapped(_ recognizer: UITapGestureRecognizer) {
         // 1
-        let pointInView = recognizer.locationInView(imageView)
+        let pointInView = recognizer.location(in: imageView)
         
         // 2
         var newZoomScale = scrollView.zoomScale * 3
@@ -87,10 +87,10 @@ class FullScreenRadioViewController: UIViewController, UIScrollViewDelegate {
         let x = pointInView.x - (w / 2.0)
         let y = pointInView.y - (h / 2.0)
         
-        let rectToZoomTo = CGRectMake(x, y, w, h);
+        let rectToZoomTo = CGRect(x: x, y: y, width: w, height: h);
         
         // 4
-        scrollView.zoomToRect(rectToZoomTo, animated: true)
+        scrollView.zoom(to: rectToZoomTo, animated: true)
     }
     /*
     // MARK: - Navigation

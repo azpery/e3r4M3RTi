@@ -15,25 +15,25 @@ class HelpViewController: UIViewController {
     @IBOutlet var menuButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let leDocument = NSURL(string : "https://go.crisp.im/chat/embed/?website_id=-K4sfPrIMy3qckUKycQD&no_delay")
-        webView.loadRequest(NSURLRequest(URL: leDocument!))
+        let leDocument = URL(string : "https://go.crisp.im/chat/embed/?website_id=-K4sfPrIMy3qckUKycQD&no_delay")
+        webView.loadRequest(URLRequest(url: leDocument!))
         // Do any additional setup after loading the view.
-        self.parentViewController!.preferredContentSize = CGSizeMake(200, 200);
+        self.parent!.preferredContentSize = CGSize(width: 200, height: 200);
         
         if self.revealViewController() != nil {
-            menuButton.setFAIcon(FAType.FABars, iconSize: 24)
+            menuButton.setFAIcon(FAType.faBars, iconSize: 24)
             closeButton.title = ""
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }else {
             menuButton.title = ""
-            closeButton.setFAIcon(FAType.FAClose, iconSize: 24)
+            closeButton.setFAIcon(FAType.faClose, iconSize: 24)
         }
     }
 
-    @IBAction func closeIt(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: {})
+    @IBAction func closeIt(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {})
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

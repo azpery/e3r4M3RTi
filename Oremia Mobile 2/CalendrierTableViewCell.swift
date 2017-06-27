@@ -12,7 +12,7 @@ class CalendrierTableViewCell: UITableViewCell {
     lazy var circleView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         view.layer.borderWidth = 1
         view.layer.cornerRadius = 7
         return view

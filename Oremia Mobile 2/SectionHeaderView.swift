@@ -31,7 +31,7 @@ class SectionHeaderView: UIView {
 	// MARK: - Initialiers
 	
 	convenience init() {
-		self.init(frame: CGRectZero)
+		self.init(frame: CGRect.zero)
 	}
 	
 	override init(frame: CGRect) {
@@ -50,9 +50,9 @@ class SectionHeaderView: UIView {
 			"verticalMargin": 8
 		]
 		
-		addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-[titleLabel]|", options: [], metrics: nil, views: views))
-		addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-(verticalMargin)-[titleLabel]-(verticalMargin)-[lineView(1)]|", options: [], metrics: metrics, views: views))
-		addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|[lineView]|", options: [], metrics: metrics, views: views))
+		addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|-[titleLabel]|", options: [], metrics: nil, views: views))
+		addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(verticalMargin)-[titleLabel]-(verticalMargin)-[lineView(1)]|", options: [], metrics: metrics, views: views))
+		addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "|[lineView]|", options: [], metrics: metrics, views: views))
     }
 
 	required init?(coder aDecoder: NSCoder) {

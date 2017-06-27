@@ -22,17 +22,17 @@ class ModeleDocumentEditorViewController: UIViewController {
         
         self.view = self.webView!
     }
-    func loadDocument(idtype:Int){
-        if let url = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/?idDocument=\(idtype)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw){
-            let urlrequest = NSURLRequest(URL: url)
-            webView!.loadRequest(urlrequest)
+    func loadDocument(_ idtype:Int){
+        if let url = URL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/?idDocument=\(idtype)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw){
+            let urlrequest = URLRequest(url: url)
+            webView!.load(urlrequest)
         }
     }
     func loadNewType(){
-        if let url = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/?db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw){
-            let urlrequest = NSURLRequest(URL: url)
+        if let url = URL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/formBuilder/?db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw){
+            let urlrequest = URLRequest(url: url)
             
-            webView!.loadRequest(urlrequest)
+            webView!.load(urlrequest)
         }
     }
     override func viewDidLoad() {

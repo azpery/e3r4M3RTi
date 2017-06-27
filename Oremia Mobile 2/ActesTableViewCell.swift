@@ -11,16 +11,16 @@ import UIKit
 class ActesTableViewCell: UITableViewCell {
 
     @IBOutlet weak var date: UILabel!
-    @IBOutlet weak var cotation: UILabel!
     @IBOutlet weak var montant: UILabel!
     @IBOutlet weak var descriptif: UILabel!
     @IBOutlet weak var icon: UILabel!
+    @IBOutlet weak var noteIcon: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

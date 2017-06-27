@@ -8,7 +8,7 @@
 //
 
 import Foundation
-@objc class APIController:NSObject {
+@objc class APIController:NSObject, NSURLConnectionDelegate{
     var delegate: APIControllerProtocol?
     var context: AnyObject?
     var itunesSearchTerm: String?
@@ -20,25 +20,25 @@ import Foundation
     override init() {
         
     }
-    func getIniFile(type: String) {
+    func getIniFile(_ type: String) {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=14"
         get(urlPath, searchString: "query=\(type)")
     }
-    func checkFileUpdate(success: AnyObject->Bool = {defaut->Bool in return false}, failure: AnyObject->Bool = {defaut->Bool in return false}) {
+    func checkFileUpdate(_ success: @escaping (AnyObject)->Bool = {defaut->Bool in return false}, failure: @escaping (AnyObject)->Bool = {defaut->Bool in return false}) {
         let urlPath = "http://\(preference.ipServer)/scripts/updater.php"
         get(urlPath, searchString: "query='')", success: success, failure: failure)
     }
-    func sendRequest(searchString: String, success: NSDictionary->Bool = {defaut->Bool in return false}){
-        self.itunesSearchTerm = searchString.stringByReplacingOccurrencesOfString(" ", withString: "+", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
-        if let _ = itunesSearchTerm!.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+    func sendRequest(_ searchString: String, success: @escaping (NSDictionary)->Bool = {defaut->Bool in return false}){
+        self.itunesSearchTerm = searchString.replacingOccurrences(of: " ", with: "+", options: NSString.CompareOptions.caseInsensitive, range: nil)
+        if let _ = itunesSearchTerm!.addingPercentEscapes(using: String.Encoding.utf8) {
             let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"
             get(urlPath, searchString: "query=\(searchString)", success: success)
         }
     }
-    func insertActes(patient:patients, actes: [PrestationActe], success: NSDictionary->Bool = {defaut->Bool in return false}) -> Bool {
+    func insertActes(_ patient:patients, actes: [PrestationActe], success: @escaping  (NSDictionary)->Bool = {defaut->Bool in return false}) -> Bool {
         do{
             
-            let uuid = NSUUID().UUIDString
+            let uuid = UUID().uuidString
             if let string = PrestationActe.prestationToFormattedOutput(patient, prestations: actes){
                 let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=17"
                 get(urlPath, searchString: "idPatient=\(patient.id)&idPraticien=\(preference.idUser)&UID=\(uuid)&arr=\(string)", success: success)
@@ -52,7 +52,8 @@ import Foundation
             return false
         }
     }
-    func getCalDavRessources(var date:NSDate? = nil, calendars:[String]? = [""]){
+    func getCalDavRessources(_ date:Date? = nil, calendars:[String]? = [""]){
+        var date = date
         var cals = ""
         if calendars != nil {
             cals = "&calendars="
@@ -62,14 +63,15 @@ import Foundation
         }
         
         if date == nil {
-            date = NSDate()
+            date = Date()
         }
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/getEvents.php?idP=\(preference.idUser)&date=\(ToolBox.getFormatedDate(date!))\(cals)"
-        get(urlPath.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!, searchString: "query=\("")")
+        get(urlPath.addingPercentEscapes(using: String.Encoding.utf8)!, searchString: "query=\("")")
     }
-    func setCalDavRessources(uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int, var date:NSDate? = NSDate()){
-        if let newsummary = summary.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
-            let newTitle = title.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+    func setCalDavRessources(_ uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int, date:Date? = Date()){
+        var date = date
+        if let newsummary = summary.addingPercentEscapes(using: String.Encoding.utf8) {
+            let newTitle = title.addingPercentEscapes(using: String.Encoding.utf8)
             let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/setEvent.php?UID=\(uid)&IPP=\(ipp)&STATUT=\(statut)&DTSTART=\(dtstart)&DTEND=\(dtend)&SUMMARY=\(newsummary)&TITLE=\(newTitle!)&idP=\(preference.idUser)&TYPE=\(type)&date=\(ToolBox.getFormatedDate(date!))"
             get(urlPath, searchString: "query=\("")")
         }
@@ -78,8 +80,8 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=0"
         get(urlPath, searchString: "dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
     }
-    func checkLicence(success: Bool->Void? = {defaut->Void in}){
-        let urlPath = "http://licences.oremia.com/licences/checkSetup2.php?id=\(preference.licence)"
+    func checkLicence(_ success: @escaping (Bool)->Void? = {defaut->Void in}){
+        let urlPath = "https://licences.oremia.com/licences/checkSetup2.php?id=\(preference.licence)"
         get(urlPath, searchString: "",success: {defaut->Bool in
             let licence = defaut["licences"] as? NSDictionary
             if let l = licence {
@@ -105,20 +107,20 @@ import Foundation
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=2"
         get(urlPath, searchString: "query=select id,nom,prenom,licence  from praticiens order by id&dbname=\(connexionString.db)&user=\(connexionString.login)&pw=\(connexionString.pw)")
     }
-    func sendInsert(searchString: String) {
+    func sendInsert(_ searchString: String) {
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/index.php?type=1"
         insert(urlPath, searchString: "query=\(searchString)")
     }
-    func insertImage(image:UIImage, idPatient:Int, isNewPp:Bool = true){
+    func insertImage(_ image:UIImage, idPatient:Int, isNewPp:Bool = true){
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/?type=7&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)&&isNewPp=\(isNewPp ? 1 : 0)"
         sendImage(image, path: urlPath)
     }
-    func signDocument(sPrat:String, sPatient:String, idDoc:Int, idPatient:Int, selectedRow: Int, success: Int->Bool = {defaut->Bool in return false}){
+    func signDocument(_ sPrat:String, sPatient:String, idDoc:Int, idPatient:Int, selectedRow: Int, success: @escaping (Int)->Bool = {defaut->Bool in return false}){
         let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/documentSigner.php?idDocument=\(idDoc)&&idType=\(selectedRow)&&idPatient=\(idPatient)&&idPraticien=\(preference.idUser)"
         let query = "sPrat=\(percentEscapeString(sPrat))&sPatient=\(percentEscapeString(sPatient))"
         insert(urlPath, searchString:query,  success: success)
     }
-    func lookupAlbum(collectionId: Int) {
+    func lookupAlbum(_ collectionId: Int) {
         sendRequest("select * from patients")
     }
     func pingServer(){
@@ -126,42 +128,43 @@ import Foundation
         SimplePingHelper.ping(url, target: self.delegate, sel: "pingResult:")
     }
     
-    func get(path: String, searchString:String, success: NSDictionary->Bool = {defaut->Bool in return false}, failure: AnyObject->Bool = {defaut->Bool in return false}) {
+    func get(_ path: String, searchString:String, success: @escaping (NSDictionary)->Bool = {defaut->Bool in return false}, failure: @escaping (AnyObject)->Bool = {defaut->Bool in return false}) {
         print(path)
-        if let url = NSURL(string: path ) {
+        if let url = URL(string: path ) {
             
-            let request = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringCacheData, timeoutInterval: 3600)
-            request.HTTPMethod = "POST"
+            let request = NSMutableURLRequest(url: url, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringCacheData, timeoutInterval: 3600)
+            request.httpMethod = "POST"
             let postString = searchString
-            let postLength:NSString = String( postString.characters.count )
+            let postLength:NSString = String( postString.characters.count ) as NSString
             request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
-            request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)!
-            let body = request.HTTPBody!.description
+            request.httpBody = postString.data(using: String.Encoding.utf8)!
+            let body = request.httpBody!.description
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
-            let session = NSURLSession.sharedSession()
+            let session = URLSession.shared
             
-            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
-                if let httpResponse = response as? NSHTTPURLResponse {
+            let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
+                let err = error
+                if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 200 {
                         if(error != nil) {
                             print(error!.localizedDescription)
-                            if(!failure(1)){
+                            if(!failure(1 as AnyObject)){
                                 self.delegate?.handleError(1)
                             }
                         }else {
-                            print(response)
-                            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                            print("responseString = \(responseString)")
+                            print(response ?? "error")
+                            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                            print("responseString = \(responseString ?? "error")")
                             var jsonResult: NSDictionary?
                             do {
-                                jsonResult = (try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)) as? NSDictionary
+                                jsonResult = (try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers)) as? NSDictionary
                                 if jsonResult != nil {
                                     if success(jsonResult!) == false {
                                         self.delegate?.didReceiveAPIResults(jsonResult!)
                                     }
                                 } else {
-                                    if(!failure(1)){
+                                    if(!failure(1 as AnyObject)){
                                         self.delegate?.handleError(1)
                                     }
                                 }
@@ -170,28 +173,28 @@ import Foundation
                             }
                         }
                     } else if httpResponse.statusCode == 404{
-                        if(!failure(1)){
+                        if(!failure(1 as AnyObject)){
                             self.delegate?.handleError(1)
                         }
                     }else if httpResponse.statusCode == 406{
-                        if(!failure(1)){
+                        if(!failure(1 as AnyObject)){
                             self.delegate?.handleError(2)
                         }
                     }else if httpResponse.statusCode == 502{
                         self.delegate?.didReceiveAPIResults(["results":"Success"])
                     }else {
                         
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             if let vc = UIApplication.topViewController(){
-                                let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Requête :\(searchString).\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste. \n Erreur \(httpResponse.statusCode)", preferredStyle: UIAlertControllerStyle.Alert)
-                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                                vc.presentViewController(alert, animated: true, completion: nil)
+                                let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Requête :\(searchString).\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste. \n Erreur \(httpResponse.statusCode)", preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                vc.present(alert, animated: true, completion: nil)
                                 
                             }
                         })
                     }
                 }else  {
-                    if(!failure(1)){
+                    if(!failure(1 as AnyObject)){
                         self.delegate?.handleError(1)
                     }
                 }
@@ -199,25 +202,25 @@ import Foundation
             task.resume()
         } else {
             print(path)
-            if(!failure(1)){
+            if(!failure(1 as AnyObject)){
                 self.delegate?.handleError(1)
             }
         }
     }
     
-    func insert(path:String, searchString:String, success: Int->Bool = {defaut->Bool in return false}){
-        if let url = NSURL(string: path) {
-            let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
+    func insert(_ path:String, searchString:String, success: @escaping (Int)->Bool = {defaut->Bool in return false}){
+        if let url = URL(string: path) {
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
             let postString = searchString
-            request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
-            let session = NSURLSession.sharedSession()
-            let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+            request.httpBody = postString.data(using: String.Encoding.utf8)
+            let session = URLSession.shared
+            let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
                 print("Task completed")
                 print(response)
-                let responseString = NSString(data: data ?? NSData(), encoding: NSUTF8StringEncoding)!
+                let responseString = NSString(data: data ?? Data(), encoding: String.Encoding.utf8.rawValue)!
                 print("responseString = \(responseString)")
-                let idInserted = Int(responseString as! String)
+                let idInserted = Int(responseString as String)
                 success(idInserted ?? 0)
                 if(error != nil) {
                     print(error!.localizedDescription)
@@ -227,49 +230,48 @@ import Foundation
             
         }
     }
-    func percentEscapeString(string: String) -> String {
+    func percentEscapeString(_ string: String) -> String {
         return CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                       string,
+                                                       string as CFString,
                                                        nil,
-                                                       ":/?@!$&'()*+,;=",
+                                                       ":/?@!$&'()*+,;=" as CFString,
                                                        CFStringBuiltInEncodings.UTF8.rawValue) as String;
     }
-    func sendImage(image:UIImage, path: String){
-        let url = NSURL(string: path)
+    func sendImage(_ image:UIImage, path: String){
+        let url = URL(string: path)
         let imageData = UIImageJPEGRepresentation(image, 0.5)
-        let request = NSMutableURLRequest(URL: url!)
-        let session = NSURLSession.sharedSession()
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: url!)
+        let session = URLSession.shared
+        request.httpMethod = "POST"
         let boundary = NSString(format: "---------------------------14737809831466499882746641449")
         let contentType = NSString(format: "multipart/form-data; boundary=%@",boundary)
         request.addValue(contentType as String, forHTTPHeaderField: "Content-Type")
         let body = NSMutableData.init()
         // Image
-        body.appendData(NSString(format: "\r\n--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding)!)
-        body.appendData(NSString(format:"Content-Disposition: form-data; name=\"htdocs\"; filename=\".jpg\"\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
-        body.appendData(NSString(format: "Content-Type: application/octet-stream\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
-        body.appendData(imageData!)
-        body.appendData(NSString(format: "\r\n--%@\r\n", boundary).dataUsingEncoding(NSUTF8StringEncoding)!)
-        request.HTTPBody = body
-        let task = session.dataTaskWithRequest(request, completionHandler: {data, response, error -> Void in
+        body.append(NSString(format: "\r\n--%@\r\n", boundary).data(using: String.Encoding.utf8.rawValue)!)
+        body.append(NSString(format:"Content-Disposition: form-data; name=\"htdocs\"; filename=\".jpg\"\r\n").data(using: String.Encoding.utf8.rawValue)!)
+        body.append(NSString(format: "Content-Type: application/octet-stream\r\n\r\n").data(using: String.Encoding.utf8.rawValue)!)
+        body.append(imageData!)
+        body.append(NSString(format: "\r\n--%@\r\n", boundary).data(using: String.Encoding.utf8.rawValue)!)
+        request.httpBody = body as Data
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             print(response)
-            let returnString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let returnString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             print("returnString \(returnString)")
-            var err: NSError?
+            let err: NSError
             var jsonResult:NSDictionary
-            if let httpResponse = response as? NSHTTPURLResponse {
+            if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
                     do {
-                        jsonResult = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
-                        if(err != nil) {
-                            throw err!
-                        } else {
+                        jsonResult = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                        
                             
                             //                            let results: NSArray = jsonResult["results"] as! NSArray
                             //                            println(results)
                             //                            let value: AnyObject = results.objectAtIndex(0)
-                            self.delegate!.handleError(Int(jsonResult["results"]!["currval"] as! String)!)
-                        }
+                        let json = jsonResult["results"]! as? NSDictionary
+                            self.delegate!.handleError(Int(json?["currval"] as! String)!)
+                        
                     } catch {
                         self.delegate!.handleError(0)
                         
@@ -277,9 +279,9 @@ import Foundation
                 } else {
                     
                     if let vc = UIApplication.topViewController(){
-                        let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste.", preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
-                        vc.presentViewController(alert, animated: true, completion: nil)
+                        let alert = UIAlertController(title: "Alerte", message: "Une erreur est survenue lors de l'accès à l'URL:\(path) du serveur.\n Si cette erreur s'affiche, il est possible que l'application plante ou qu'il y ait certains disfonctionnements.\n Veuillez nous excuser pour la gêne occasionnée et contactez le service technique si ce problème persiste.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                        vc.present(alert, animated: true, completion: nil)
                         self.delegate!.handleError(2)
                     }
                     
@@ -292,82 +294,82 @@ import Foundation
         })
         task.resume()
     }
-    func getRadioFromUrl(idRadio:Int) -> UIImage {
-        let vretour = UIImage(data: NSData(contentsOfURL: NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+radio+as+image+from+radios+where+id=\(idRadio)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)!)!)
+    func getRadioFromUrl(_ idRadio:Int) -> UIImage {
+        let vretour = UIImage(data: try! Data(contentsOf: URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+radio+as+image+from+radios+where+id=\(idRadio)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)!))
         return vretour!
     }
-    func getUrlFromDocument(idDocument:Int) -> NSURL {
-        let vretour:NSURL? = NSURL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/?type=6&&id=\(idDocument)")
+    func getUrlFromDocument(_ idDocument:Int) -> URL {
+        let vretour:URL? = URL(string : "http://\(preference.ipServer)/scripts/OremiaMobileHD/?type=6&&id=\(idDocument)")
         return vretour!
     }
-    func updateServerAdress(adress:String){
+    func updateServerAdress(_ adress:String){
         let file = "/file.txt"
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true){
+        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true){
             let dir = dirs[0] //documents directory
-            let path = dir.stringByAppendingString(file)
+            let path = dir + file
             let text = adress
             
             do {
                 //writing
-                try text.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding)
+                try text.write(toFile: path, atomically: false, encoding: String.Encoding.utf8)
             } catch _ {
             };
             
             //reading
-            print(try! String(contentsOfFile: path, encoding: NSUTF8StringEncoding))
+            print(try! String(contentsOfFile: path, encoding: String.Encoding.utf8))
         }
         
     }
     func readServerAdress() -> String {
         let file = "/file.txt"
         var text2 = ""
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true){
+        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true){
             let dir = dirs[0] //documents directory
-            let path = dir.stringByAppendingString(file);
+            let path = dir + file;
             //reading
-            text2 = (try? String(contentsOfFile: path, encoding: NSUTF8StringEncoding)) ?? ""
+            text2 = (try? String(contentsOfFile: path, encoding: String.Encoding.utf8)) ?? ""
         }
         return text2
     }
-    func updatepreference(newPref:String){
+    func updatepreference(_ newPref:String){
         let file = "/pref.txt"
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true){
+        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true){
             let dir = dirs[0] //documents directory
-            let path = dir.stringByAppendingString(file)
+            let path = dir + file
             let text = newPref
             
             do {
                 //writing
-                try text.writeToFile(path, atomically: false, encoding: NSUTF8StringEncoding)
+                try text.write(toFile: path, atomically: false, encoding: String.Encoding.utf8)
             } catch _ {
             };
             
             //reading
-            print(try! String(contentsOfFile: path, encoding: NSUTF8StringEncoding))
+            print(try! String(contentsOfFile: path, encoding: String.Encoding.utf8))
         }
         
     }
     func readPreference() -> String {
         let file = "/pref.txt"
         var text2 = ""
-        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true){
+        if let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true){
             let dir = dirs[0] //documents directory
-            let path = dir.stringByAppendingString(file);
+            let path = dir + file;
             //reading
-            text2 = (try? String(contentsOfFile: path, encoding: NSUTF8StringEncoding)) ?? ""
+            text2 = (try? String(contentsOfFile: path, encoding: String.Encoding.utf8)) ?? ""
         }
         print(text2)
         return text2
     }
-    func getPref(nomPref:String) ->[String]{
-        var vretour = []
+    func getPref(_ nomPref:String) ->[String]{
+        var vretour:[String] = []
         var cachePref = ""
         let preference = self.readPreference()
         var lespref = preference.characters.split{$0 == ";"}.map(String.init)
         var calendarArray = preference.characters.split{$0 == ";"}.map(String.init)
         var nameValue = [String]()
         let nbprf = calendarArray.count
-        for (var i = 0; i < nbprf; i++){
+        for i in (0 ..< nbprf){
             lespref = calendarArray[i].characters.split{$0 == ":"}.map(String.init)
             nameValue = calendarArray[i].characters.split{$0 == ":"}.map(String.init)
             if(nameValue[0] == nomPref){
@@ -378,7 +380,7 @@ import Foundation
         }
         return vretour as! [String]
     }
-    func addPref(nomPref:String, prefs:[String]){
+    func addPref(_ nomPref:String, prefs:[String]){
         
         var lesCal = ""
         var cachePref = ""
@@ -387,7 +389,7 @@ import Foundation
         var calendarArray = preference.characters.split{$0 == ";"}.map(String.init)
         var nameValue = [String]()
         let nbprf = calendarArray.count
-        for (var i = 0; i < nbprf; i++){
+        for i in (0 ..< nbprf){
             lespref = calendarArray[i].characters.split{$0 == ":"}.map(String.init)
             nameValue = calendarArray[i].characters.split{$0 == ":"}.map(String.init)
             if(nameValue[0] != nomPref) {
@@ -408,26 +410,28 @@ import Foundation
             if (u > 0 && u != prefs.count-1){
                 lesCal += ","+k
             }
-            u++
+            u += 1
         }
         self.updatepreference(nomPref+":"+lesCal+cachePref)
         self.readPreference()
     }
     
-    class func loadFileSync(url: NSURL,fileType:String,nom:String, id:Int, completion:(path:String, error:NSError!) -> Void)->NSURL {
-        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
-        let destinationUrl = documentsUrl.URLByAppendingPathComponent("\(nom)[\(id)].\(fileType)")
-        if let dataFromURL = NSData(contentsOfURL: url){
-            if dataFromURL.writeToURL(destinationUrl, atomically: true) {
-                completion(path: destinationUrl.path!, error:nil)
+    class func loadFileSync(_ url: URL,fileType:String,nom:String, id:Int, completion:(_ path:String, _ error:NSError?) -> Void)->URL {
+        var nom = nom
+        nom = nom.replace("/", withString: "-")
+        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first! as URL
+        let destinationUrl = documentsUrl.appendingPathComponent("\(nom)[\(id)].\(fileType)")
+        if let dataFromURL = try? Data(contentsOf: url){
+            if (try? dataFromURL.write(to: destinationUrl, options: [.atomic])) != nil {
+                completion(destinationUrl.path, nil)
             } else {
                 print("error saving file")
                 let error = NSError(domain:"Error saving file", code:1001, userInfo:nil)
-                completion(path: destinationUrl.path!, error:error)
+                completion(destinationUrl.path, error)
             }
         } else {
             let error = NSError(domain:"Error downloading file", code:1002, userInfo:nil)
-            completion(path: destinationUrl.path!, error:error)
+            completion(destinationUrl.path, error)
         }
         return destinationUrl
     }
@@ -438,11 +442,23 @@ import Foundation
     }
     
     
+    //Delegate
+    func connection(_ connection:NSURLConnection,  protectionSpace:URLProtectionSpace) -> Bool{
+        return protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust;
+    }
+    
+    func connection(_ connection:NSURLConnection, challenge:URLAuthenticationChallenge) {
+        if (challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust){
+            challenge.sender!.use(URLCredential(trust:challenge.protectionSpace.serverTrust!), for: challenge)
+                challenge.sender!.continueWithoutCredential(for: challenge);
+        }
+    }
+    
 }
 
 
 
 @objc protocol APIControllerProtocol {
-    func didReceiveAPIResults(results: NSDictionary)
-    func handleError(results: Int)
+    func didReceiveAPIResults(_ results: NSDictionary)
+    func handleError(_ results: Int)
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 class NewPatientNavigationController: UINavigationController {
-    var parent:DetailsViewController?
+    var parents:DetailsViewController?
     override func viewDidLoad() {
         super.viewDidLoad()
 

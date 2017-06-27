@@ -18,13 +18,14 @@ class Document {
         self.date=date
         
     }
-    class func documentWithJSON(allResults: NSArray) -> [Document] {
+    class func documentWithJSON(_ allResults: NSArray) -> [Document] {
         var document = [Document]()
         if allResults.count>0 {
             for result in allResults {
-                let id = result["id"] as? Int
-                let nom = result["nom"] as? String
-                let date = result["date"] as? String
+                let r = result as! NSDictionary
+                let id = r["id"] as? Int
+                let nom = r["nom"] as? String
+                let date = r["date"] as? String
                 
                 let newAlbum = Document(id: id!, nom: nom!, date: date!)
                 document.append(newAlbum)

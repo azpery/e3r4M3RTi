@@ -32,29 +32,30 @@ class Prestation{
         let api = APIController()
         api.sendRequest("SELECT tarif FROM ccam WHERE code = '\(self.lettreCle)'",success: {results in
             let dictRes = results["results"] as? NSArray ?? [""]
-            let res = dictRes!.count > 0 ? dictRes![0] as? NSDictionary ?? ["tarif":"0.00"] : ["tarif":"0.00"]
+            let res = dictRes.count > 0 ? dictRes[0] as? NSDictionary ?? ["tarif":"0.00"] : ["tarif":"0.00"]
             self.montant = res["tarif"] as! String
             return true
         })
     }
     
-    class func prestationWithJSON(allResults: NSArray) -> (favoris:[Prestation], favorisPlus: [[String:[Prestation]]]) {
+    class func prestationWithJSON(_ allResults: NSArray) -> (favoris:[Prestation], favorisPlus: [[String:[Prestation]]]) {
         var prestations = [Prestation]()
         if allResults.count>0 {
             for value in allResults {
-                let nom =  value["nom"] as? String  ?? "Prestation_0"
+                let v = value as! NSDictionary
+                let nom =  v["nom"] as? String  ?? "Prestation_0"
                 let ordre = Int(nom.replace("Prestation_", withString: "")) ?? 0
-                let coefficient = Int(value["Coefficient"] as? String ?? "0") ?? 0
-                let description = value["Description"] as? String  ?? ""
-                let qualificatif = value["Qualificatif"] as? String ?? ""
-                let lettreCle = value["LettreCle"] as? String ?? ""
-                let coefficientEnft = Int(value["CoefficientEnft"] as? String ?? "0") ?? 0
-                let image = value["Image"] as? String ?? ""
+                let coefficient = Int(v["Coefficient"] as? String ?? "0") ?? 0
+                let description = v["Description"] as? String  ?? ""
+                let qualificatif = v["Qualificatif"] as? String ?? ""
+                let lettreCle = v["LettreCle"] as? String ?? ""
+                let coefficientEnft = Int(v["CoefficientEnft"] as? String ?? "0") ?? 0
+                let image = v["Image"] as? String ?? ""
                 var needMontant = false
-                if value["Montant"] as? String == nil{
+                if v["Montant"] as? String == nil{
                     needMontant = true
                 }
-                let montant = value["Montant"] as? String ?? "0,00"
+                let montant = v["Montant"] as? String ?? "0,00"
                 
                 let newPrest = Prestation(nom: ordre, coefficient: coefficient, description: description, lettreCle: lettreCle,qualificatif:qualificatif, coefficientEnft: coefficientEnft, image: image, montant: montant)
                 if needMontant{
@@ -63,14 +64,14 @@ class Prestation{
                 prestations.append(newPrest)
             }
         }
-        prestations = prestations.sort({$0.nom < $1.nom})
+        prestations = prestations.sorted(by: {$0.nom < $1.nom})
         
         
         
         return dispatchPrestation(prestations)
     }
     
-    class func dispatchPrestation(allPrestations: [Prestation]) -> (favoris:[Prestation], favorisPlus: [[String:[Prestation]]]) {
+    class func dispatchPrestation(_ allPrestations: [Prestation]) -> (favoris:[Prestation], favorisPlus: [[String:[Prestation]]]) {
         var favoris:[Prestation] = []
         var favorisPlus:[String:[Prestation]] = [:]
         var arrayFavoris = [[String:[Prestation]]]()
@@ -80,9 +81,9 @@ class Prestation{
         var parent = ""
         favorisPlus["-favoris"] = []
         for presation in allPrestations {
-            var description = presation.description ?? "Aucune description disponible"
+            let description = presation.description ?? "Aucune description disponible"
             
-            if description.rangeOfString("Plus...") != nil{
+            if description.range(of: "Plus...") != nil{
                 isPlusPassed = true
             }
             
@@ -91,8 +92,8 @@ class Prestation{
                 favoris.append(presation)
             }else{
                 index = 1
-                if description.rangeOfString("-") != nil {
-                    index = description.startIndex.distanceTo((description.rangeOfString("-")?.startIndex)!)
+                if description.range(of: "-") != nil {
+                    index = description.characters.distance(from: description.startIndex, to: (description.range(of: "-")?.lowerBound)!)
                 }
                 
                 if index == 0 {

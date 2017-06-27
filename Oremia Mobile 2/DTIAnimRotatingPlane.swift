@@ -11,17 +11,17 @@ import QuartzCore
 
 class DTIAnimRotatingPlane: DTIAnimProtocol {
     /** private properties */
-    private let owner: DTIActivityIndicatorView
+    fileprivate let owner: DTIActivityIndicatorView
     
-    private let spinnerView = UIView()
-    private let planeView = UIView()
+    fileprivate let spinnerView = UIView()
+    fileprivate let planeView = UIView()
     
     /** ctor */
     init(indicatorView: DTIActivityIndicatorView) {
         self.owner = indicatorView
     }
     
-    func transformPlane(perspective:CGFloat, angle:CGFloat, x:CGFloat, y:CGFloat, z:CGFloat) -> CATransform3D {
+    func transformPlane(_ perspective:CGFloat, angle:CGFloat, x:CGFloat, y:CGFloat, z:CGFloat) -> CATransform3D {
         var transform: CATransform3D = CATransform3DIdentity
         transform.m34 = perspective
         return CATransform3DRotate(transform, angle, x, y, z)
@@ -32,7 +32,7 @@ class DTIAnimRotatingPlane: DTIAnimProtocol {
     // -------------------------------------------------------------------------
     func needLayoutSubviews() {
         self.spinnerView.frame = self.owner.bounds
-        self.planeView.frame = CGRectInset(self.owner.bounds, 2.0, 2.0);
+        self.planeView.frame = self.owner.bounds.insetBy(dx: 2.0, dy: 2.0);
     }
     
     func needUpdateColor() {
@@ -49,7 +49,7 @@ class DTIAnimRotatingPlane: DTIAnimProtocol {
         
         let anim = CAKeyframeAnimation()
         anim.keyPath = "transform"
-        anim.removedOnCompletion = false
+        anim.isRemovedOnCompletion = false
         anim.repeatCount = HUGE
         anim.duration = 1.2
         anim.keyTimes = [0.0, 0.45, 0.95]
@@ -59,15 +59,15 @@ class DTIAnimRotatingPlane: DTIAnimProtocol {
             CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         ]
         anim.values = [
-            NSValue(CATransform3D: self.transformPlane(1.0/120.0, angle: 0.0, x: 0.0, y: 0.0, z: 0.0)),
-            NSValue(CATransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(M_PI), x: 0.0, y: 1.0, z: 0.0)),
-            NSValue(CATransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(M_PI), x: 0.0, y: 0.0, z: 1.0))
+            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: 0.0, x: 0.0, y: 0.0, z: 0.0)),
+            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(M_PI), x: 0.0, y: 1.0, z: 0.0)),
+            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(M_PI), x: 0.0, y: 0.0, z: 1.0))
         ]
         
-        self.spinnerView.layer.addAnimation(anim, forKey: "DTIAnimRotatingPlane~animateCanvas")
+        self.spinnerView.layer.add(anim, forKey: "DTIAnimRotatingPlane~animateCanvas")
     }
     
-    func stopActivity(animated: Bool) {
+    func stopActivity(_ animated: Bool) {
         func removeAnimations() {
             self.spinnerView.layer.removeAllAnimations()
             

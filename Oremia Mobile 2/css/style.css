@@ -1,0 +1,110 @@
+@font-face {
+    font-family: 'Avenir';
+    src: url('../fonts/New Cicle Fina.ttf'), url('../fonts/New Cicle Fina.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'Avenir';
+}
+
+.cb-wrap {
+    position: fixed;
+    right: 15px;
+}
+
+canvas#signature {
+    border: solid;
+}
+
+form > fieldset {
+    padding: 0;
+}
+
+.container {
+    margin: auto 50px;
+    border: solid 1px #878787;
+    border-radius: 7px;
+    margin-top: 10px;
+    border-top: solid 3px #878787;
+}
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  position: absolute;
+  display:         flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+}
+.row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
+.docSection {
+    background: #f5f5f5;
+    box-shadow: 0px 7px 16px 0px #d1d1d1;
+        min-width: 210px;
+
+}
+
+.docSelection li {
+    min-height: 64px;
+    overflow: hidden;
+    margin-left: 12px;
+    border-bottom: 1px #aaa solid;
+    border-top: 1px #aaa solid;
+    text-align: center;
+    line-height: 45px;
+}
+
+.docSelection {
+    margin-top: 20px;
+}
+
+.docSelection li:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
+.docSelection li.selected {
+    background-color: #ddd;
+    cursor: pointer;
+}
+.docSelection .glyphicon {
+    float: right;
+    top: 12px;
+    margin: 5px;
+}
+.right-side {
+    max-height: 100%;
+    overflow: overlay;
+}
+body {
+    overflow: hidden;
+}
+
+.option-value{
+  display:none;
+}
+
+ol.sortable-options input[type=text] {
+    width: calc(95% - 17px);
+}
+
+.dash {
+  height: 60px;
+  overflow: hidden;
+}
+.icon-checkbox{
+  display: none;
+}

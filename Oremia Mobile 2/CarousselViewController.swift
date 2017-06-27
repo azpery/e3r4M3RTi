@@ -7,6 +7,19 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class CarousselViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     var pageViews: [UIImageView?] = []
@@ -26,45 +39,45 @@ class CarousselViewController: UIViewController, UIPageViewControllerDataSource,
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    @IBAction func swipeLeft(sender: AnyObject) {
+    @IBAction func swipeLeft(_ sender: AnyObject) {
         print("SWipe left")
     }
-    @IBAction func swiped(sender: AnyObject) {
+    @IBAction func swiped(_ sender: AnyObject) {
         
         self.pageViewController.view .removeFromSuperview()
         self.pageViewController.removeFromParentViewController()
         reset()
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         setTabBarVisible(true, animated: true)
     }
 
     func reset() {
         /* Getting the page View controller */
         setTabBarVisible(false, animated: true)
-        pageViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
+        pageViewController = self.storyboard?.instantiateViewController(withIdentifier: "PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
         
         let pageContentViewController = self.viewControllerAtIndex(0)
-        self.pageViewController.setViewControllers([pageContentViewController!], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+        self.pageViewController.setViewControllers([pageContentViewController!], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
         
         /* We are substracting 30 because we have a start again button whose height is 30*/
-        self.pageViewController.view.frame = CGRectMake(0, (self.navigationController?.navigationBar.layer.frame.height)!, self.view.frame.width, self.view.frame.height  )
+        self.pageViewController.view.frame = CGRect(x: 0, y: (self.navigationController?.navigationBar.layer.frame.height)!, width: self.view.frame.width, height: self.view.frame.height  )
         self.addChildViewController(pageViewController)
         self.view.addSubview(pageViewController.view)
-        self.pageViewController.didMoveToParentViewController(self)
+        self.pageViewController.didMove(toParentViewController: self)
     }
     
-    @IBAction func start(sender: AnyObject) {
+    @IBAction func start(_ sender: AnyObject) {
         let pageContentViewController = self.viewControllerAtIndex(0)
-        self.pageViewController.setViewControllers([pageContentViewController!], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+        self.pageViewController.setViewControllers([pageContentViewController!], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
     }
     
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
     
     var index = (viewController as! ImageScrollViewController).pageIndex!
-    index++
+    index += 1
     if(index == self.imageCache.count){
     return nil
     }
@@ -72,22 +85,22 @@ class CarousselViewController: UIViewController, UIPageViewControllerDataSource,
     
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
     
     var index = (viewController as! ImageScrollViewController).pageIndex!
     if(index == 0){
     return nil
     }
-    index--
+    index -= 1
     return self.viewControllerAtIndex(index)
     
     }
     
-    func viewControllerAtIndex(index : Int) -> UIViewController? {
+    func viewControllerAtIndex(_ index : Int) -> UIViewController? {
     if((self.imageCache.count == 0) || (index >= self.imageCache.count)) {
     return nil
     }
-    let pageContentViewController = self.storyboard?.instantiateViewControllerWithIdentifier("PageContentViewController")as! ImageScrollViewController
+    let pageContentViewController = self.storyboard?.instantiateViewController(withIdentifier: "PageContentViewController")as! ImageScrollViewController
     pageContentViewController.navigationHeight = (self.navigationController?.navigationBar.frame.height)!
     pageContentViewController.imageScrollLargeImageName = self.imageCache[index]
 //    pageContentViewController.titleText = self.pageTitles[index]
@@ -96,14 +109,14 @@ class CarousselViewController: UIViewController, UIPageViewControllerDataSource,
     return pageContentViewController
     }
     
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
     return imageCache.count
     }
     
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
     return 0
     }
-    func setTabBarVisible(visible:Bool, animated:Bool) {
+    func setTabBarVisible(_ visible:Bool, animated:Bool) {
         
         //* This cannot be called before viewDidLayoutSubviews(), because the frame is not set before this time
         
@@ -116,18 +129,18 @@ class CarousselViewController: UIViewController, UIPageViewControllerDataSource,
         let offsetY = (visible ? -height! : height)
         
         // zero duration means no animation
-        let duration:NSTimeInterval = (animated ? 0.3 : 0.0)
+        let duration:TimeInterval = (animated ? 0.3 : 0.0)
         
         //  animate the tabBar
         if frame != nil {
-            UIView.animateWithDuration(duration) {
-                self.tabBarController?.tabBar.frame = CGRectOffset(frame!, 0, offsetY!)
+            UIView.animate(withDuration: duration, animations: {
+                self.tabBarController?.tabBar.frame = frame!.offsetBy(dx: 0, dy: offsetY!)
                 return
-            }
+            }) 
         }
     }
     func tabBarIsVisible() ->Bool {
-        return self.tabBarController?.tabBar.frame.origin.y < CGRectGetMaxY(self.view.frame)
+        return self.tabBarController?.tabBar.frame.origin.y < self.view.frame.maxY
     }
 
 

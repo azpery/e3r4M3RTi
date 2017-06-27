@@ -31,13 +31,14 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     @IBOutlet weak var quitButton: UIBarButtonItem!
     @IBOutlet var cv: UICollectionView!
     @IBOutlet var takePic: UIBarButtonItem!
+    @IBOutlet var pickPic: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         api=APIController(delegate: self)
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
-        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorColor = UIColor.black
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
         if self.tabBarController != nil{
@@ -49,48 +50,49 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         }
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         nb=0
         idRadio = nil
         self.collectionView?.reloadData()
-        menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
-        quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
-        takePic.setFAIcon(FAType.FACamera, iconSize: 24)
+        menuButton.setFAIcon(FAType.faSearch, iconSize: 24)
+        quitButton.setFAIcon(FAType.faTimes, iconSize: 24)
+        takePic.setFAIcon(FAType.faCamera, iconSize: 24)
+        pickPic.setFAIcon(FAType.faPictureO, iconSize: 24)
         api!.sendRequest("select id from images where idpatient=\(patient!.id)")
         
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(ImageCollectionViewController.handleRefresh(_:)), for: UIControlEvents.valueChanged)
         self.collectionView?.addSubview(self.refreshControl!)
         self.collectionView?.alwaysBounceVertical = true
         
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.getFullName())"
 
         
         
     }
-    func quit(sender: UIBarButtonItem){
-        self.performSegueWithIdentifier("unWind", sender: self)
+    func quit(_ sender: UIBarButtonItem){
+        self.performSegue(withIdentifier: "unWind", sender: self)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-   func longPressImage(sender: UILongPressGestureRecognizer) {
+   func longPressImage(_ sender: UILongPressGestureRecognizer) {
         
-        if sender.state == UIGestureRecognizerState.Began{
+        if sender.state == UIGestureRecognizerState.began{
         
-        sender.view!.userInteractionEnabled = false
+        sender.view!.isUserInteractionEnabled = false
         let alert = SCLAlertView()
         alert.addButton("Oui", action: {
             let cell = sender.view as! UICollectionViewCell
-            let indexPath = self.collectionView?.indexPathForCell(cell)
+            let indexPath = self.collectionView?.indexPath(for: cell)
             
             if let index = indexPath {
-                let idr = self.idRadio?.objectAtIndex(index.row).valueForKey("id") as! Int
+                let idr = (self.idRadio?.object(at: index.row) as AnyObject).value(forKey: "id") as! Int
                 self.api!.sendRequest("UPDATE patients SET idphoto = \(idr) where id=\(self.patient!.id)")
                 self.patient?.idPhoto=idr
                 print(index.row)
@@ -106,35 +108,35 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         
     }
     
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         ToolBox.setDefaultBackgroundMessageForCollection(self.collectionView!, elements: nb, message: "Aucune photo n'a été prise")
         return 1
     }
     
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return nb
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! RadioCollectionViewCell
-        let idr:Int = idRadio?.objectAtIndex(indexPath.row).valueForKey("id") as! Int
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RadioCollectionViewCell
+        let idr:Int = (idRadio?.object(at: indexPath.row) as AnyObject).value(forKey: "id") as! Int
         //var image = api!.getRadioFromUrl(idr)
-        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundColor = UIColor.clear
         var datec = " Date de création :"
-        datec += dateCrea!.objectAtIndex(indexPath.row).valueForKey("date") as! String
-        cell.label.text = datec
-        cell.imageView.contentMode = .ScaleAspectFit
+        datec += (dateCrea!.object(at: indexPath.row) as AnyObject).value(forKey: "date") as! String
+        cell.label.text = ToolBox.getFormatedDate(ToolBox.getDateFromString(datec) ?? Date())
+        cell.imageView.contentMode = .scaleAspectFit
         // Configure the cell
-        let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
-        let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(idr)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
+        let progressIndicatorView = CircularLoaderView(frame: CGRect.zero)
+        let urlString = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(idr)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
         progressIndicatorView.frame = cell.imageView.bounds
-        progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        dispatch_async(dispatch_get_main_queue(), {
+        progressIndicatorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        DispatchQueue.main.async(execute: {
             cell.imageView.addSubview(progressIndicatorView)
             var alreadyLoad = true
-        cell.imageView?.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+        cell.imageView?.sd_setImage(with: urlString, placeholderImage: nil, options: .cacheMemoryOnly, progress: {
             (receivedSize, expectedSize) -> Void in
             alreadyLoad = false
             progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
@@ -154,37 +156,40 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
                 
         }
         })
-        let recognizer = UILongPressGestureRecognizer(target: self, action: "longPressImage:")
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(ImageCollectionViewController.longPressImage(_:)))
         recognizer.minimumPressDuration = 0.5
         recognizer.delaysTouchesBegan = true
         recognizer.delegate = self as? UIGestureRecognizerDelegate
         cell.addGestureRecognizer(recognizer)
         return cell
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         
         if let resultsArr = results["results"] as? NSArray{
             var type = 1
             for value in resultsArr{
-                if value.count == 0 {
+                if (value as AnyObject).count == 0 {
                     type = 3
                 } else
-                    if value.objectForKey("id") !=  nil{
+                    if (value as AnyObject).object(forKey: "id") !=  nil{
                         type = 0
                         idRadio=resultsArr
                         nb = idRadio!.count
                     } else
-                        if value.objectForKey("date") !=  nil{
+                        if (value as AnyObject).object(forKey: "date") !=  nil{
                             type = 0
                             dateCrea=resultsArr
-                        } else
-                            if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
+                        } else{
+                            let v = value as? NSDictionary
+                            if (value as AnyObject).object(forKey: "error") !=  nil && v?["error"] as? Int == 7{
                                 type = 2
+                            }
+                            
                 }
                 
             }
-            dispatch_async(dispatch_get_main_queue(), {
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            DispatchQueue.main.async(execute: {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 if(self.dateCrea?.count ?? 0 != self.nb){
                     self.api!.sendRequest("select date from images where idpatient=\(self.patient!.id)")
                 } else {
@@ -192,7 +197,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
                     self.activityIndicator.removeFromSuperview()
                     self.collectionView?.reloadData()
                     if let a = self.refreshControl {
-                        if a.refreshing {
+                        if a.isRefreshing {
                             a.endRefreshing()
                         }
                     }
@@ -204,7 +209,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
             })
             
         }else{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 
                 self.api!.sendRequest("select id from images where idpatient=\(self.patient!.id)")
                 
@@ -212,67 +217,79 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         }
         
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results != 0{
             self.api!.sendRequest("select id from images where idpatient=\(self.patient!.id)")
         }else
         if results == 1{
             api!.sendRequest("select id from images where idpatient=\(patient!.id)")
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
     
-    func handleRefresh(refreshControl:UIRefreshControl){
+    func handleRefresh(_ refreshControl:UIRefreshControl){
         api!.sendRequest("select id from images where idpatient=\(patient!.id)")
         
     }
     
-    @IBAction func takePic(sender: AnyObject) {
+    @IBAction func takePic(_ sender: AnyObject) {
         presentCamera()
+    }
+    @IBAction func pickPic(_ sender: AnyObject) {
+        presentGallery()
     }
     
     func presentCamera()
     {
         cameraUI = UIImagePickerController()
         cameraUI.delegate = self
-        cameraUI.sourceType = UIImagePickerControllerSourceType.Camera
+        cameraUI.sourceType = UIImagePickerControllerSourceType.camera
         //cameraUI.mediaTypes = [kUTTypeImage] as! String
-        cameraUI.allowsEditing = true
+        cameraUI.allowsEditing = false
         cameraUI.navigationItem.title = "kikou"
-        self.presentViewController(cameraUI, animated: true, completion: nil)
+        self.present(cameraUI, animated: true, completion: nil)
     }
     
-    
-    
-    func imagePickerControllerDidCancel(picker:UIImagePickerController)
+    func presentGallery()
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        cameraUI = UIImagePickerController()
+        cameraUI.delegate = self
+        cameraUI.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        //cameraUI.mediaTypes = [kUTTypeImage] as! String
+        cameraUI.allowsEditing = false
+        cameraUI.navigationItem.title = "Photo"
+        self.present(cameraUI, animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerControllerDidCancel(_ picker:UIImagePickerController)
+    {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
         var imageToSave:UIImage
         imageToSave = image
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         api?.insertImage(image, idPatient: self.patient!.id, isNewPp: false)
     }
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
-        let cell:RadioCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! RadioCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+        let cell:RadioCollectionViewCell = collectionView.cellForItem(at: indexPath) as! RadioCollectionViewCell
             self.selectedPhoto = cell.imageView.image
             
-            self.performSegueWithIdentifier("showPhoto", sender: self)
+            self.performSegue(withIdentifier: "showPhoto", sender: self)
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.destinationViewController.isKindOfClass(EtatCivilNavigationViewController) && self.cv.indexPathsForSelectedItems()!.count != 0 ){
-            let fullScreenView: EtatCivilNavigationViewController = segue.destinationViewController as! EtatCivilNavigationViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.destination.isKind(of: EtatCivilNavigationViewController.self) && self.cv.indexPathsForSelectedItems!.count != 0 ){
+            let fullScreenView: EtatCivilNavigationViewController = segue.destination as! EtatCivilNavigationViewController
             fullScreenView.profilePicture = self.selectedPhoto
-            let idr = idRadio?.objectAtIndex((self.cv.indexPathsForSelectedItems()?.first?.row)!).valueForKey("id") as! Int
+            let idr = (idRadio?.object(at: (self.cv.indexPathsForSelectedItems?.first?.row)!) as AnyObject).value(forKey: "id") as! Int
             api!.sendInsert("UPDATE patients SET idphoto = \(idr) where id=\(patient!.id)")
             patient?.idPhoto=idr
         }
-        if segue.destinationViewController.isKindOfClass(CarousselViewController){
-            let fullScreenView: CarousselViewController = segue.destinationViewController as! CarousselViewController
+        if segue.destination.isKind(of: CarousselViewController.self){
+            let fullScreenView: CarousselViewController = segue.destination as! CarousselViewController
             fullScreenView.imageCache = [self.selectedPhoto!]
         }
     }

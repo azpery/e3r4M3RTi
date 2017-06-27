@@ -15,7 +15,7 @@ class EtatCivilNavigationViewController: UINavigationController {
         
         // Do any additional setup after loading the view.
     }
-    @IBAction func unwindToEtatCivil(segue: UIStoryboardSegue) {
+    @IBAction func unwindToEtatCivil(_ segue: UIStoryboardSegue) {
         if self.profilePicture != nil{
         let rootView = self.topViewController as! EtatCivilViewController
         rootView.profilePicture.image = profilePicture

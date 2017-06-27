@@ -19,14 +19,15 @@ class Praticien {
         self.prenom = prenom
         self.licence = licence
     }
-    class func praticienWithJSON(allResults: NSArray) -> [Praticien] {
+    class func praticienWithJSON(_ allResults: NSArray) -> [Praticien] {
         var praticien = [Praticien]()
         if allResults.count>0 {
             for result in allResults {
-                let id : Int = result["id"] as? Int ?? 0
-                let nom = result["nom"] as? String ?? ""
-                let prenom = result["prenom"] as? String ?? ""
-                let licence = result["licence"] as? Int ?? 0
+                let r = result as! NSDictionary
+                let id : Int = r["id"] as? Int ?? 0
+                let nom = r["nom"] as? String ?? ""
+                let prenom = r["prenom"] as? String ?? ""
+                let licence = r["licence"] as? Int ?? 0
                 let newAlbum = Praticien(id: id, nom: nom, prenom: prenom, licence: licence)
                 praticien.append(newAlbum)
             }

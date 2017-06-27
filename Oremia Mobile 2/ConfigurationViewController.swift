@@ -16,7 +16,7 @@ class ConfigurationViewController: UIViewController, APIControllerProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         ipTextField.text=preference.ipServer
-        validButton.addTarget(self, action: "editServerIp", forControlEvents: UIControlEvents.TouchUpInside)
+        validButton.addTarget(self, action: #selector(ConfigurationViewController.editServerIp), for: UIControlEvents.touchUpInside)
 
         // Do any additional setup after loading the view.
     }
@@ -28,9 +28,9 @@ class ConfigurationViewController: UIViewController, APIControllerProtocol {
     func editServerIp(){
         preference.ipServer=ipTextField.text!
         api.updateServerAdress(ipTextField.text!)
-        self.performSegueWithIdentifier("goBackSegue", sender:self)
+        self.performSegue(withIdentifier: "goBackSegue", sender:self)
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //        var selectPratViewController = segue.destinationViewController.topViewController as! selectPratViewController
     }
     /*
@@ -42,14 +42,14 @@ class ConfigurationViewController: UIViewController, APIControllerProtocol {
         // Pass the selected object to the new view controller.
     }
     */
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
             SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer")
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
 

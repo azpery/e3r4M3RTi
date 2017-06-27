@@ -8,7 +8,7 @@
 
 import Foundation
 @objc class ToolBox:NSObject{
-    static func UIColorFromRGB(rgbValue: UInt) -> UIColor {
+    static func UIColorFromRGB(_ rgbValue: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
@@ -16,22 +16,22 @@ import Foundation
             alpha: CGFloat(1.0)
         )
     }
-    static func shakeIt(view:UIView) {
+    static func shakeIt(_ view:UIView) {
         let anim = CAKeyframeAnimation( keyPath:"transform" )
         anim.values = [
-            NSValue( CATransform3D:CATransform3DMakeTranslation(-5, 0, 0 ) ),
-            NSValue( CATransform3D:CATransform3DMakeTranslation( 5, 0, 0 ) )
+            NSValue( caTransform3D:CATransform3DMakeTranslation(-5, 0, 0 ) ),
+            NSValue( caTransform3D:CATransform3DMakeTranslation( 5, 0, 0 ) )
         ]
         anim.autoreverses = true
         anim.repeatCount = 2
         anim.duration = 7/100
         
-        view.layer.addAnimation( anim, forKey:nil )
+        view.layer.add( anim, forKey:nil )
     }
-    static func getFormatedDate(date:NSDate)->String{
+    static func getFormatedDate(_ date:Date)->String{
     
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components([.day , .month , .year], from: date)
         
         let year =  components.year
         let month = components.month
@@ -42,10 +42,10 @@ import Foundation
         print(day)
         return "\(year)-\(month)-\(day)"
     }
-    static func getFormatedDateWithSlash(date:NSDate)->String{
+    static func getFormatedDateWithSlash(_ date:Date)->String{
         
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Day , .Month , .Year], fromDate: date)
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components([.day , .month , .year], from: date)
         
         let year =  components.year
         let month = components.month
@@ -57,33 +57,33 @@ import Foundation
         return "\(day)/\(month)/\(year)"
     }
     
-    static func isDateGreaterThanToday(date: NSDate)->Bool{
+    static func isDateGreaterThanToday(_ date: Date)->Bool{
         var vretour = false
-        let dateToday = NSDate()
-        if date.compare(dateToday) == NSComparisonResult.OrderedDescending {
+        let dateToday = Date()
+        if date.compare(dateToday) == ComparisonResult.orderedDescending {
             vretour = true
         }
         return vretour
     }
     
-    static func getDateFromString(dateStr:String)->NSDate?{
-        let dateFormatter = NSDateFormatter()
+    static func getDateFromString(_ dateStr:String)->Date?{
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let date = dateFormatter.dateFromString(dateStr)
+        let date = dateFormatter.date(from: dateStr)
         return date
     }
     
-    static func getFormatedDateFromString(dateStr:String, pattern:String = "dd/MM/yyyy")->String{
-        let dateFormatter = NSDateFormatter()
+    static func getFormatedDateFromString(_ dateStr:String, pattern:String = "dd/MM/yyyy")->String{
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = pattern
-        let date = dateFormatter.dateFromString(dateStr)
-        return self.getFormatedDate(date ?? NSDate())
+        let date = dateFormatter.date(from: dateStr)
+        return self.getFormatedDate(date ?? Date())
     }
     
-    static func setDefaultBackgroundMessage(tableView:UITableView, elements:Int, message:String){
-        let messageLbl = UILabel( frame:CGRectMake(0, 0,
-            tableView.bounds.size.width,
-            tableView.bounds.size.height))
+    static func setDefaultBackgroundMessage(_ tableView:UITableView, elements:Int, message:String){
+        let messageLbl = UILabel( frame:CGRect(x: 0, y: 0,
+            width: tableView.bounds.size.width,
+            height: tableView.bounds.size.height))
         if (elements == 0) {
             messageLbl.text = message
         }else{
@@ -91,16 +91,16 @@ import Foundation
         }
         messageLbl.font = UIFont(name: "Avenir Next", size: 30)
         messageLbl.textColor = ToolBox.UIColorFromRGB(0x878787)
-        messageLbl.textAlignment = NSTextAlignment.Center
+        messageLbl.textAlignment = NSTextAlignment.center
         messageLbl.sizeToFit()
         tableView.backgroundView = messageLbl
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.none
     }
     
-    static func setDefaultBackgroundMessageForCollection(tableView:UICollectionView, elements:Int, message:String){
-        let messageLbl = UILabel( frame:CGRectMake(0, 0,
-            tableView.bounds.size.width,
-            tableView.bounds.size.height))
+    static func setDefaultBackgroundMessageForCollection(_ tableView:UICollectionView, elements:Int, message:String){
+        let messageLbl = UILabel( frame:CGRect(x: 0, y: 0,
+            width: tableView.bounds.size.width,
+            height: tableView.bounds.size.height))
         if (elements == 0) {
             messageLbl.text = message
         }else{
@@ -108,33 +108,34 @@ import Foundation
         }
         messageLbl.font = UIFont(name: "Avenir Next", size: 30)
         messageLbl.textColor = ToolBox.UIColorFromRGB(0x878787)
-        messageLbl.textAlignment = NSTextAlignment.Center
+        messageLbl.textAlignment = NSTextAlignment.center
         messageLbl.sizeToFit()
         tableView.backgroundView = messageLbl
     }
     
-    static func startActivity(view: UIView) -> DTIActivityIndicatorView{
+    static func startActivity(_ view: UIView) -> DTIActivityIndicatorView{
         let activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
-        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorColor = UIColor.black
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
         return activityIndicator
     }
     
-    static func stopActivity(activityIndicator:DTIActivityIndicatorView){
+    static func stopActivity(_ activityIndicator:DTIActivityIndicatorView){
         activityIndicator.stopActivity()
         activityIndicator.removeFromSuperview()
     }
     
-    static func calcAge(birthday:String) -> Int{
-        let dateFormater = NSDateFormatter()
+    static func calcAge(_ birthday:String) -> Int{
+        let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd"
-        let birthdayDate = dateFormater.dateFromString(birthday)
-        let calendar: NSCalendar! = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
-        let now: NSDate! = NSDate()
-        let calcAge = calendar.components(.Year, fromDate: birthdayDate!, toDate: now, options: [])
-        let age = calcAge.year
+        let birthdayDate = dateFormater.date(from: birthday)
+        let calendar = Calendar.current
+        let now: Date! = Date()
+        let age = calendar.component(.year, from: birthdayDate!)
         return age
     }
+    
+    
 }

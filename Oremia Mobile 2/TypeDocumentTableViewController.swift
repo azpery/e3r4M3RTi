@@ -11,7 +11,7 @@ import UIKit
 class TypeDocumentTableViewController: UITableViewController {
     
     var patient:patients?
-    var success:((sPrat:String,sPatient:String, selectedRow:Int)->Void)?
+    var success:((_ sPrat:String,_ sPatient:String, _ selectedRow:Int)->Void)?
     var selectedRow = 1
 
     @IBOutlet var cancelButton: UIBarButtonItem!
@@ -20,31 +20,34 @@ class TypeDocumentTableViewController: UITableViewController {
         rect.size.width = 605;
         rect.size.height = 350;
         self.navigationController!.view.superview!.bounds = rect;
-        self.navigationController!.preferredContentSize = CGSizeMake(605, 350);
+        self.navigationController!.preferredContentSize = CGSize(width: 605, height: 350);
         self.view.setNeedsLayout()
         self.view.setNeedsDisplay()
-        cancelButton.setFAIcon(FAType.FAClose, iconSize: 22)
+        cancelButton.setFAIcon(FAType.faClose, iconSize: 22)
         super.viewDidLoad()
     }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedRow = indexPath.row
-        self.performSegueWithIdentifier("showSignatureView", sender: self)
+        self.performSegue(withIdentifier: "showSignatureView", sender: self)
+//        let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("SignatureViewController") as! SignatureViewController
+//        self.navigationController!.pushViewController(VC1, animated: true)
+//        VC1.selectedRow = selectedRow
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destinationView:SignatureViewController = segue.destinationViewController as! SignatureViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationView:SignatureViewController = segue.destination as! SignatureViewController
         destinationView.patient = self.patient
         destinationView.success = self.success
         destinationView.selectedRow = self.selectedRow
     }
  
-    @IBAction func close(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: {})
+    @IBAction func close(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {})
     }
 
 }

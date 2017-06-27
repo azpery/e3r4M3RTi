@@ -16,6 +16,7 @@ class SaisieActesTableViewCell: UITableViewCell {
     @IBOutlet var descriptif: UILabel!
     @IBOutlet var depense: UILabel!
     @IBOutlet var lettre: UILabel!
+    @IBOutlet var noteImage: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,7 +24,7 @@ class SaisieActesTableViewCell: UITableViewCell {
         
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

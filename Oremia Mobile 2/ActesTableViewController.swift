@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import QuickLook
 
-class ActesTableViewController: UITableViewController, APIControllerProtocol {
+class ActesTableViewController: UITableViewController, APIControllerProtocol, QLPreviewControllerDataSource,UIPopoverPresentationControllerDelegate {
+    
+    var selectedActes:Actes = Actes()
 
     @IBOutlet var actesTableView: UITableView!
     var sortedActes = [String:[Actes]]()
     var lesActes = [Actes]()
-    var patient = patients?()
-    var api = APIController?()
+    var patient:patients?
+    var api:APIController?
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var quitButton: UIBarButtonItem!
     override func viewDidLoad() {
@@ -24,16 +27,19 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
         api = APIController(delegate: self)
         let tb : TabBarViewController = self.tabBarController as! TabBarViewController
         patient = tb.patient!
-        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id) ORDER BY date")
-        menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
-        quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
+        menuButton.setFAIcon(FAType.faSearch, iconSize: 24)
+        quitButton.setFAIcon(FAType.faTimes, iconSize: 24)
         
-        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(ActesTableViewController.handleRefresh(_:)), for: UIControlEvents.valueChanged)
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.getFullName())"
 
         
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id) ORDER BY date DESC")
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,144 +49,208 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         ToolBox.setDefaultBackgroundMessage(self.tableView, elements: sortedActes.count, message: "Aucun acte n'a été appliqué à ce jour")
-        return sortedActes.count
+        return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-                let index = sortedActes.startIndex.advancedBy(section)
-        return sortedActes[sortedActes.keys[index]]!.count
+                let index = sortedActes.index(sortedActes.startIndex, offsetBy: section)
+        return lesActes.count
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("actesCell", forIndexPath: indexPath) as! ActesTableViewCell
-        let index = sortedActes.startIndex.advancedBy(indexPath.section)
-        let lActe = sortedActes[sortedActes.keys[index]]![indexPath.row]
-        let dateFormat = NSDateFormatter()
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "actesCell", for: indexPath) as! ActesTableViewCell
+        let index = sortedActes.index(sortedActes.startIndex, offsetBy: indexPath.section)
+        let lActe = lesActes[indexPath.row]
+        let dateFormat = DateFormatter()
         dateFormat.dateFormat = "yyyy-MM-dd"
-        let ddate = dateFormat.dateFromString(lActe.date)
-        dateFormat.timeStyle = NSDateFormatterStyle.NoStyle
-        dateFormat.dateStyle = NSDateFormatterStyle.MediumStyle
-        cell.date.text = dateFormat.stringFromDate(ddate ?? NSDate())
-        cell.cotation.text = "\(lActe.cotation)"
+        let ddate = dateFormat.date(from: lActe.date)
+        dateFormat.timeStyle = DateFormatter.Style.none
+        dateFormat.dateStyle = DateFormatter.Style.medium
+        cell.date.text = dateFormat.string(from: ddate ?? Date())
         cell.descriptif.text = lActe.descriptif
         cell.montant.text = "\(lActe.montant)"
-        switch sortedActes.keys[index] {
+        switch lActe.lettre {
         case "C":
-            cell.icon.setFAIcon(FAType.FAEye, iconSize: 17)
-            cell.backgroundColor = ToolBox.UIColorFromRGB(0x0099CC)
+            cell.icon.setFAIcon(FAType.faEye, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFFFFFF)
             break
         case "BDC":
-            cell.icon.setFAIcon(FAType.FAExclamationCircle, iconSize: 17)
-            break
-        case "Z":
-            cell.icon.setFAIcon(FAType.FAPictureO, iconSize: 17)
-            cell.backgroundColor = ToolBox.UIColorFromRGB(0xCCCCCC)
+            cell.icon.setFAIcon(FAType.faExclamationCircle, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFFFFFF)
             break
         case "#REG":
-            cell.icon.setFAIcon(FAType.FACalculator, iconSize: 17)
-             cell.backgroundColor = ToolBox.UIColorFromRGB(0xA2B2AD)
+            cell.icon.setFAIcon(FAType.faCalculator, iconSize: 17)
+             cell.backgroundColor = ToolBox.UIColorFromRGB(0xB2BFBB)
             break
         case "#COM":
-            cell.icon.setFAIcon(FAType.FAPencilSquareO, iconSize: 17)
-            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFEEE87)
+            cell.icon.setFAIcon(FAType.faPencilSquareO, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFDF19C)
             break
         case "#FSE":
-            cell.icon.setFAIcon(FAType.FAFilePdfO, iconSize: 17)
-            cell.backgroundColor = ToolBox.UIColorFromRGB(0x2EB49C)
+            cell.icon.setFAIcon(FAType.faFilePdfO, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0x94D500)
             break
         case "#DOC":
-            cell.icon.setFAIcon(FAType.FAFileText, iconSize: 17)
+            cell.icon.setFAIcon(FAType.faFileText, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0x3EBFAC)
             break
         case "#MDT":
-            cell.icon.setFAIcon(FAType.FABarcode, iconSize: 17)
-            cell.backgroundColor = ToolBox.UIColorFromRGB(0xF7CB31)
+            cell.icon.setFAIcon(FAType.faBarcode, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0xF7D44B)
             break
         case "#TODO":
-            cell.icon.setFAIcon(FAType.FACheckCircle, iconSize: 17)
-            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFC6674)
+            cell.icon.setFAIcon(FAType.faCheckCircle, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFC7E88)
             break
         default :
-            cell.icon.setFAIcon(FAType.FAEuro, iconSize: 17)
+            cell.icon.setFAIcon(FAType.faEuro, iconSize: 17)
+            cell.backgroundColor = ToolBox.UIColorFromRGB(0xFFFFFF)
             break
+        }
+        if lActe.descriptif.contains("\n") {
+            cell.noteIcon.isHidden = false
+        }else{
+            cell.noteIcon.isHidden = true
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = SectionHeaderView()
-         let index = sortedActes.startIndex.advancedBy(section)
-        var title = ""
-        switch sortedActes.keys[index] {
-        case "C":
-            title = "Consultation"
-            break
-        case "BDC":
-            title = "Bilan"
-            break
-        case "Z":
-            title = "Radiographie"
-            break
-        case "#REG":
-            title = "Réglement"
-            break
-        case "#COM":
-            title = "A faire "
-            break
-        case "#FSE":
-            title = "Création FSE"
-            break
-        case "#DOC":
-            title = "Création document"
-            break
-        case "#MDT":
-            title = "Traçabilité"
-            break
-        default :
-            title = sortedActes.keys[index]
-            break
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let lettre = lesActes[indexPath.row].lettre
+        if(lettre != "#MDT" && lettre != "#DOC" && lettre != "#REG"){
+            selectedActes = lesActes[indexPath.row]
+            performSegue(withIdentifier: "showNotesSegue", sender: self)
+        }else if lettre == "#DOC"{
+            let previewQL = QLPreviewController()
+            previewQL.dataSource = self
+            previewQL.currentPreviewItemIndex = indexPath.row
+            show(previewQL, sender: nil)
         }
-        view.titleLabel.text = title
-        return view
-    }
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
     }
     
-    @IBAction func dismiss(sender: AnyObject) {
-        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination.isKind(of: UINavigationController.self) && segue.identifier == "showNotesSegue"{
+            let navigationController: UINavigationController = segue.destination as! UINavigationController
+            let viewControllers = navigationController.viewControllers
+            
+            let noteView: NotesTableViewController = viewControllers.first as! NotesTableViewController
+            noteView.title = "\(selectedActes.lettre) - \(patient!.getFullName())"
+            noteView.preferredContentSize = CGSize(width: 605, height: 305)
+            noteView.acte = self.selectedActes
+        }
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    
+//    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let view = SectionHeaderView()
+//         let index = sortedActes.startIndex.advancedBy(section)
+//        var title = ""
+//        switch sortedActes.keys[index] {
+//        case "C":
+//            title = "Consultation"
+//            break
+//        case "BDC":
+//            title = "Bilan"
+//            break
+//        case "Z":
+//            title = "Radiographie"
+//            break
+//        case "#REG":
+//            title = "Réglement"
+//            break
+//        case "#COM":
+//            title = "A faire "
+//            break
+//        case "#FSE":
+//            title = "Création FSE"
+//            break
+//        case "#DOC":
+//            title = "Création document"
+//            break
+//        case "#MDT":
+//            title = "Traçabilité"
+//            break
+//        default :
+//            title = sortedActes.keys[index]
+//            break
+//        }
+//        view.titleLabel.text = title
+//        return view
+//    }
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    @IBAction func dismiss(_ sender: AnyObject) {
+        self.tabBarController?.dismiss(animated: true, completion: nil)
+    }
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.lesActes = Actes.actesWithJSON(resultsArr)
-            self.sortedActes = Actes.sortInDict(self.lesActes)
+            //self.sortedActes = Actes.sortInDict(self.lesActes)
             self.actesTableView.reloadData()
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if let a = self.refreshControl {
-                if a.refreshing {
+                if a.isRefreshing {
                     a.endRefreshing()
                 }
             }
         })
     }
     
-    func handleRefresh(refreshControl:UIRefreshControl){
-        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id)")
+    func handleRefresh(_ refreshControl:UIRefreshControl){
+        api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id) ORDER BY date DESC")
         
     }
     
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
             
-            api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id)")
+            api!.sendRequest("SELECT * FROM actes WHERE idpatient = \(patient!.id) ORDER BY date DESC")
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
+    @IBAction func newNoteAtion(_ sender: AnyObject) {
+        selectedActes = Actes()
+        selectedActes.lettre = "#COM"
+        selectedActes.idPatient = patient?.id ?? 0
+        selectedActes.date = ToolBox.getFormatedDate(Date())
+        performSegue(withIdentifier: "showNotesSegue", sender: self)
+    }
 
+    @IBAction func newTodoAction(_ sender: AnyObject) {
+        selectedActes = Actes()
+        selectedActes.lettre = "#TODO"
+        selectedActes.idPatient = patient?.id ?? 0
+        selectedActes.date = ToolBox.getFormatedDate(Date())
+        performSegue(withIdentifier: "showNotesSegue", sender: self)
+    }
+    
+    //qldelegate
+    
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int{
+        return 1
+        
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        var idr:Int = 0
+        //var selectedDocument = api!.getRadioFromUrl(idr)
+        var fileType = ""
+        var nom = ""
+        idr = lesActes[tableView.indexPathForSelectedRow!.row].idDocument
+        nom = lesActes[tableView.indexPathForSelectedRow!.row].descriptif
+        nom = nom.replace("/", withString: "-")
+        fileType = "pdf"
+        let doc = api!.getUrlFromDocument(idr)
+        let path = APIController.loadFileSync(doc,fileType: fileType, nom: nom, id: idr, completion:{(path:String, error:NSError!) in })
+        return path as QLPreviewItem
+    }
 }

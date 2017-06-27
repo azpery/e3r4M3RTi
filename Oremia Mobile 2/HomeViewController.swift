@@ -14,7 +14,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var webView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        menuButton.setFAIcon(FAType.FABars, iconSize: 24)
+        menuButton.setFAIcon(FAType.faBars, iconSize: 24)
 //        let request = NSURL(string: "http://www.oremia.com/index.php/actualite/")
       
         // Do any additional setup after loading the view.
@@ -24,16 +24,16 @@ class HomeViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier=="embedToDalle"){
-            let detailsViewController: DalleAccueilCollectionViewController = segue.destinationViewController as! DalleAccueilCollectionViewController
+            let detailsViewController: DalleAccueilCollectionViewController = segue.destination as! DalleAccueilCollectionViewController
             detailsViewController.homeView = self
             
         }

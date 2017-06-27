@@ -34,14 +34,14 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
         }
         
         // Do any additional setup after loading the view, typically from a nib.
-        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_BACKGROUND.rawValue), 0)) {
+        DispatchQueue.main.async {
             self.api.sendRequest("select inifile from config where titre = 'calendarNamesForUsers'", success: {results->Bool in
                 do{
                     let res = results["results"] as! NSArray
                     if(res.count > 0){
                         let value = res[0] as! NSDictionary
                         let calName = value["inifile"] as! NSString
-                        let jsonResult = try NSJSONSerialization.JSONObjectWithData(calName.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                        let jsonResult = try JSONSerialization.jsonObject(with: calName.data(using: String.Encoding.utf8.rawValue)!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary
                         if let calendarName = jsonResult!["\(preference.idUser)"] as? String {
                             self.calDavName = calendarName
                             self.api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [calendarName])
@@ -49,11 +49,11 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
                             self.eventManager.loadCalendars()
                             
                         }else{
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                 alert.showInfo("Calendrier introuvable", subTitle: "Le calendrier de l'agenda 2 n'a pas été configuré pour ce praticien. \n Veuillez sélectionner un calendrier dans les préférences du calendrier dans Oremia pour le Dr \(preference.nomUser).")
                             })
                         }
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             self.tableView.reloadData()
                         })
                     }
@@ -65,7 +65,7 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
             })
             self.calendars = self.eventManager.allCalendars
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
@@ -75,16 +75,16 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
         
     }
     
-    @IBAction func validerTapped(sender: AnyObject) {
+    @IBAction func validerTapped(_ sender: AnyObject) {
         api.addPref("calendrier\(preference.idUser)", prefs: selectedCalendar)
         self.tableView.setContentOffset(CGPoint.zero, animated: false)
-        let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! PreferenceTableViewCell
+        let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! PreferenceTableViewCell
         let heureDebut = Int(cell.heureDebut.text!)
         let heureFin = Int(cell.heureFin.text!)
         if(heureDebut != nil && heureFin != nil && cell.heureDebut.text! != "" && cell.heureFin.text! != "" && heureDebut! >= 0 && heureDebut! <= 11 && heureFin! > 0 && heureFin! <= 23){
             api.addPref("time\(preference.idUser)", prefs: [cell.heureDebut.text!, cell.heureFin.text!])
             
-            self.dismissViewControllerAnimated(true, completion: ({
+            self.dismiss(animated: true, completion: ({
                 self.caller?.iSaidReloadit()
             }))
         } else {
@@ -92,18 +92,18 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
         }
     }
     
-    @IBAction func annulerTapped(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: ({
+    @IBAction func annulerTapped(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: ({
             
         }))
     }
     
-    @IBAction func goToSettingsButtonTapped(sender: UIButton) {
-        let openSettingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
-        UIApplication.sharedApplication().openURL(openSettingsUrl!)
+    @IBAction func goToSettingsButtonTapped(_ sender: UIButton) {
+        let openSettingsUrl = URL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.shared.openURL(openSettingsUrl!)
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let calendars = self.calendars {
             return calendars.count + 2
         }
@@ -112,12 +112,12 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
     }
     
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell : UITableViewCell?
         
         if(indexPath.row == 0){
             
-            let preferenceCell = tableView.dequeueReusableCellWithIdentifier("PreferenceTableViewCell", forIndexPath: indexPath) as! PreferenceTableViewCell
+            let preferenceCell = tableView.dequeueReusableCell(withIdentifier: "PreferenceTableViewCell", for: indexPath) as! PreferenceTableViewCell
             var heure = api.getPref("time\(preference.idUser)")
             if(heure.count == 0){
                 heure = ["8","20"]
@@ -128,17 +128,17 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
             
             cell = preferenceCell
         } else if indexPath.row != calendars!.count + 1{
-            let calendarCell = tableView.dequeueReusableCellWithIdentifier("CalendrierPreferenceTableViewCell", forIndexPath: indexPath) as! CalendrierTableViewCell
+            let calendarCell = tableView.dequeueReusableCell(withIdentifier: "CalendrierPreferenceTableViewCell", for: indexPath) as! CalendrierTableViewCell
             //        if indexPath.row == 0 {
             ////            cell.tickIcon.setFAIcon(FAType.FACheck, iconSize: 12)
             ////            cell.tickIcon.textColor = UIColor(CGColor: calendars![indexPath.row].CGColor)
             //        } else {
             
             calendarCell.circle.translatesAutoresizingMaskIntoConstraints = false
-            calendarCell.circle.backgroundColor = UIColor.whiteColor()
+            calendarCell.circle.backgroundColor = UIColor.white
             calendarCell.circle.layer.borderWidth = 2
             calendarCell.circle.layer.cornerRadius = calendarCell.circle.layer.frame.height / 2
-            calendarCell.circle.layer.borderColor = calendars![indexPath.row - 1].CGColor
+            calendarCell.circle.layer.borderColor = calendars![indexPath.row - 1].cgColor
             calendarCell.tickIcon.text = ""
             //        }
             if let calendars = self.calendars {
@@ -146,8 +146,8 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
                 calendarCell.calendarLabel.text = calendarName == self.calDavName ? "\(calendarName) - Oremia" : calendarName
                 for k in myCalendar {
                     if k == calendarName {
-                        calendarCell.tickIcon.setFAIcon(FAType.FACheck, iconSize: 12)
-                        calendarCell.tickIcon.textColor = UIColor(CGColor: calendars[indexPath.row - 1].CGColor)
+                        calendarCell.tickIcon.setFAIcon(FAType.faCheck, iconSize: 12)
+                        calendarCell.tickIcon.textColor = UIColor(cgColor: calendars[indexPath.row - 1].cgColor)
                     }
                 }
             } else {
@@ -155,33 +155,33 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
             }
             cell = calendarCell
         }else {
-            let calendarCell = tableView.dequeueReusableCellWithIdentifier("CalendrierDefautTableViewCell", forIndexPath: indexPath) as! CalendrierDefautTableViewCell
+            let calendarCell = tableView.dequeueReusableCell(withIdentifier: "CalendrierDefautTableViewCell", for: indexPath) as! CalendrierDefautTableViewCell
             calendarCell.calendrierLabel.text = eventManager.defaultCalendar!.title
             cell = calendarCell
         }
         
         return cell!
     }
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row > 0 && indexPath.row != (calendars?.count)! + 1 {
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! CalendrierTableViewCell
+            let cell = tableView.cellForRow(at: indexPath) as! CalendrierTableViewCell
             if cell.tickIcon.text == ""{
-                cell.selected = false
-                cell.tickIcon.setFAIcon(FAType.FACheck, iconSize: 12)
-                cell.tickIcon.textColor = UIColor(CGColor: calendars![indexPath.row - 1].CGColor)
+                cell.isSelected = false
+                cell.tickIcon.setFAIcon(FAType.faCheck, iconSize: 12)
+                cell.tickIcon.textColor = UIColor(cgColor: calendars![indexPath.row - 1].cgColor)
                 selectedCalendar.append(calendars![indexPath.row - 1].title)
-                cell.circle.layer.backgroundColor = calendars![indexPath.row - 1].CGColor
+                cell.circle.layer.backgroundColor = calendars![indexPath.row - 1].cgColor
 
             } else {
-                cell.selected = false
+                cell.isSelected = false
                 cell.tickIcon.text = ""
-                cell.circleView.backgroundColor = UIColor.whiteColor()
+                cell.circleView.backgroundColor = UIColor.white
                 var v = 0
                 for k in selectedCalendar {
                     if k == calendars![indexPath.row - 1].title{
-                        selectedCalendar.removeAtIndex(v)
+                        selectedCalendar.remove(at: v)
                     }
-                    v++
+                    v += 1
                 }
                 
             }
@@ -190,7 +190,7 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
         }
         
     }
-    override func tableView(tableView: UITableView,heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    override func tableView(_ tableView: UITableView,heightForRowAt indexPath: IndexPath) -> CGFloat
     {
         if indexPath.row == 0{
             return 84
@@ -205,15 +205,15 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
     //        cell.tickIcon.text = ""
     //
     //    }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.destinationViewController.isKindOfClass(CalendarsTableViewController){
-            let  destination = segue.destinationViewController as! CalendarsTableViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination.isKind(of: CalendarsTableViewController.self){
+            let  destination = segue.destination as! CalendarsTableViewController
             destination.eventManager = eventManager
             destination.isDefault = true
             destination.defaultCaller = self

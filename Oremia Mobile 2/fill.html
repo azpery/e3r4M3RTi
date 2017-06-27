@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+<head>
+	<title>Modèle de document</title>
+	<!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+	<!-- <link rel="stylesheet" type="text/css" media="screen" href="src/css/form-builder.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" media="screen" href="src/css/form-render.min.css"> -->
+	<link rel="stylesheet" type="text/css" media="screen" href="css/theme.css">
+	<link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/pnotify.custom.min.css">
+
+
+</head>
+<body>
+
+<div class="container" style="display:none;">
+
+	<textarea id="fb-template">
+	</textarea>
+	<div id="rendered-form">
+		<form action="#">
+			
+		</form>
+	</div>
+	<div>
+		<h4 class="form-title">Signature du patient:</h4>
+		<fieldset>
+		<button class="button button-red icon-delete" id="clearSignature">Modifier la signature</button>
+		<canvas id="signature" class="center-block">
+		</canvas>
+		</fieldset>
+
+	</div>
+	<div class="form-submit">
+          <button id="sendForm" class="button button-green icon-check">Sauvegarder</button>
+     </div>
+</div>
+
+</body>
+    <script src="js/jquery-2.2.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/signature_pad.min.js"></script>
+	<script type="text/javascript" src="js/pnotify.custom.min.js"></script>
+	<script src="js/unserialize.js"></script>
+  	<script src="src/js/form-render.min.js"></script>
+  	<script src="js/serialize.js"></script>
+  	<script src="js/wrap.js"></script>
+  	<script src="js/fill.js"></script>
+</html>

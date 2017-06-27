@@ -17,10 +17,10 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
         }
-        let request = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/calendrier/")
-        calendarView.loadRequest(NSURLRequest(URL: request!))
+        let request = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/calendrier/")
+        calendarView.loadRequest(URLRequest(url: request!))
         // Do any additional setup after loading the view.
     }
 

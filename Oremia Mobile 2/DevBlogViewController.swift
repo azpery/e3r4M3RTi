@@ -14,14 +14,14 @@ class DevBlogViewController: UIViewController {
     @IBOutlet var webView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let leDocument = NSURL(string : "http://rdelaporte.alwaysdata.net/OM/")
-        webView.loadRequest(NSURLRequest(URL: leDocument!))
+        let leDocument = URL(string : "http://rdelaporte.alwaysdata.net/OM/")
+        webView.loadRequest(URLRequest(url: leDocument!))
         // Do any additional setup after loading the view.
-        barButton.setFAIcon(FAType.FABars, iconSize: 24)
+        barButton.setFAIcon(FAType.faBars, iconSize: 24)
         // Do any additional setup after loading the view.
         if self.revealViewController() != nil {
             barButton.target = self.revealViewController()
-            barButton.action = "revealToggle:"
+            barButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
     }

@@ -20,38 +20,38 @@ class DalleAccueilCollectionViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        patient.setFAIcon(FAType.FAUser, forState: .Normal)
-        agenda.setFAIcon(FAType.FACalendar, forState: .Normal)
+        patient.setFAIcon(FAType.faUser, forState: UIControlState())
+        agenda.setFAIcon(FAType.faCalendar, forState: UIControlState())
 //        reglage.setFAIcon(FAType.FACogs, forState: .Normal)
-        deco.setFAIcon(FAType.FASignOut, forState: .Normal)
-        devBlog.setFAIcon(FAType.FACode, forState: .Normal)
-        assistance.setFAIcon(FAType.FAMedkit, forState: .Normal)
+        deco.setFAIcon(FAType.faSignOut, forState: UIControlState())
+        devBlog.setFAIcon(FAType.faCode, forState: UIControlState())
+        assistance.setFAIcon(FAType.faMedkit, forState: UIControlState())
 
     }
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-    return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+    return UIStatusBarStyle.lightContent
     }
 
-    @IBAction func buttonPatientpressed(sender: AnyObject) {
-        homeView!.performSegueWithIdentifier("showPatient", sender:homeView!)
+    @IBAction func buttonPatientpressed(_ sender: AnyObject) {
+        homeView!.performSegue(withIdentifier: "showPatient", sender:homeView!)
     }
 
-    @IBAction func buttonCalendarPressed(sender: AnyObject) {
+    @IBAction func buttonCalendarPressed(_ sender: AnyObject) {
         let  calendarViewController  = MSCalendarViewController.init()
-        self.showViewController(calendarViewController, sender: homeView!)
+        self.show(calendarViewController, sender: homeView!)
 
     }
-    @IBAction func buttonReglagePressed(sender: AnyObject) {
-        homeView!.performSegueWithIdentifier("showReglage", sender:homeView!)
+    @IBAction func buttonReglagePressed(_ sender: AnyObject) {
+        homeView!.performSegue(withIdentifier: "showReglage", sender:homeView!)
     }
 
-    @IBAction func buttonDecoPressed(sender: AnyObject) {
-        homeView!.performSegueWithIdentifier("showSelect", sender:homeView!)
+    @IBAction func buttonDecoPressed(_ sender: AnyObject) {
+        homeView!.performSegue(withIdentifier: "showSelect", sender:homeView!)
     }
-    @IBAction func buttonDevPressed(sender: AnyObject) {
-        homeView!.performSegueWithIdentifier("showDevBlog", sender:homeView!)
+    @IBAction func buttonDevPressed(_ sender: AnyObject) {
+        homeView!.performSegue(withIdentifier: "showDevBlog", sender:homeView!)
     }
-    @IBAction func buttonAssistancePressed(sender: AnyObject) {
-        homeView!.performSegueWithIdentifier("showAssistance", sender:homeView!)
+    @IBAction func buttonAssistancePressed(_ sender: AnyObject) {
+        homeView!.performSegue(withIdentifier: "showAssistance", sender:homeView!)
     }
 }

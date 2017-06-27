@@ -17,7 +17,7 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
     var selectedRow = 1
     
     
-    var success:((sPrat:String,sPatient:String, selectedRow:Int)->Void)?
+    var success:((_ sPrat:String,_ sPatient:String, _ selectedRow:Int)->Void)?
     
     @IBOutlet var signatureView: DrawableView!
 
@@ -27,10 +27,10 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
     @IBOutlet var libelle: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-        cancelButton.setFAIcon(FAType.FAClose, iconSize: 22)
-        skipButton.setFAIcon(FAType.FAStepForward, iconSize: 22)
-        validButton.setFAIcon(FAType.FACheck, iconSize: 22)
-        self.view.backgroundColor = UIColor.whiteColor()
+        cancelButton.setFAIcon(FAType.faClose, iconSize: 22)
+        skipButton.setFAIcon(FAType.faStepForward, iconSize: 22)
+        validButton.setFAIcon(FAType.faCheck, iconSize: 22)
+        self.view.backgroundColor = UIColor.white
         if patientb64 == nil && pratb64 != nil{
             self.libelle.text = "Signature du patient"
         }
@@ -45,40 +45,40 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func performSignature(sender: AnyObject) {
+    @IBAction func performSignature(_ sender: AnyObject) {
         if signatureView.containsSignature && patientb64 == nil && pratb64 == nil{
             let prat = signatureView.getSignatureCropped()
             let data = UIImagePNGRepresentation(prat!)
-            pratb64 = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)) ?? ""
-            let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("SignatureViewController") as! SignatureViewController
+            pratb64 = data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
+            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "SignatureViewController") as! SignatureViewController
             self.navigationController!.pushViewController(VC1, animated: true)
             VC1.success = success
             VC1.pratb64 = pratb64
+            VC1.selectedRow = self.selectedRow
             
-            // Do something with img
         }else if signatureView.containsSignature && patientb64 == nil && pratb64 != nil{
             let patient = signatureView.getSignatureCropped()
             let data = UIImagePNGRepresentation(patient!)
-            patientb64 = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)) ?? ""
+            patientb64 = data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             
         }
         if success != nil && pratb64 != nil && patientb64 != nil{
-            success!(sPrat: pratb64!, sPatient: patientb64!, selectedRow: self.selectedRow)
-            self.dismissViewControllerAnimated(true, completion: {})
+            success!(pratb64!, patientb64!, self.selectedRow)
+            self.dismiss(animated: true, completion: {})
         }else if !signatureView.containsSignature && patientb64 == nil && pratb64 != nil || !signatureView.containsSignature && patientb64 == nil && pratb64 == nil{
             ToolBox.shakeIt(self.view)
         }
         
     }
-    @IBAction func performCancel(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: {})
+    @IBAction func performCancel(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {})
 
     }
     
-    @IBAction func performIgnore(sender: AnyObject) {
+    @IBAction func performIgnore(_ sender: AnyObject) {
         if patientb64 == nil && pratb64 == nil{
             pratb64 = ""
-            let VC1 = self.storyboard!.instantiateViewControllerWithIdentifier("SignatureViewController") as! SignatureViewController
+            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "SignatureViewController") as! SignatureViewController
             self.navigationController!.pushViewController(VC1, animated: true)
             VC1.success = success
             VC1.pratb64 = pratb64
@@ -88,15 +88,15 @@ class SignatureViewController: UIViewController, DrawableViewDelegate {
             if signatureView.containsSignature{
                 let patient = signatureView.getSignatureCropped()
                 let data = UIImagePNGRepresentation(patient!)
-                patientb64 = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)) ?? ""
+                patientb64 = data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) ?? ""
             }
         }
         if pratb64 != nil && patientb64 != nil
         {
             if pratb64 != "" || patientb64 != ""{
-                success!(sPrat: pratb64!, sPatient: patientb64!, selectedRow: self.selectedRow)
+                success!(pratb64!, patientb64!, self.selectedRow)
             }
-            self.dismissViewControllerAnimated(true, completion: {})
+            self.dismiss(animated: true, completion: {})
         }
     }
     func startedSignatureDrawing() {

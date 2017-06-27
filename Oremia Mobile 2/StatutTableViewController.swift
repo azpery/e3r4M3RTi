@@ -25,7 +25,7 @@ class StatutTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row{
         case 0 :
             label!.text = "À l'heure"
@@ -51,7 +51,7 @@ class StatutTableViewController: UITableViewController {
             break
         }
         eventManager!.internalEvent.statut = indexPath.row + 1
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
 }

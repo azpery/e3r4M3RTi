@@ -33,8 +33,8 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         if(!self.isSelectingPatient){
-            menuButton.setFAIcon(FAType.FABars, iconSize: 24)
-            addButton.setFAIcon(FAType.FAUserPlus, iconSize: 24)
+            menuButton.setFAIcon(FAType.faBars, iconSize: 24)
+            addButton.setFAIcon(FAType.faUserPlus, iconSize: 24)
             
         } else {
             self.navigationItem.rightBarButtonItem = nil
@@ -44,7 +44,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
-        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorColor = UIColor.black
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
         api.sendRequest("select * from patients where idpraticien=\(preference.idUser) ORDER BY id DESC LIMIT 10 OFFSET 0 ")
@@ -54,11 +54,11 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         } else {
-            let barbuttonFont = UIFont(name: "Avenir Next", size: 15) ?? UIFont.systemFontOfSize(15)
+            let barbuttonFont = UIFont(name: "Avenir Next", size: 15) ?? UIFont.systemFont(ofSize: 15)
             menuButton.title = "annuler"
             menuButton.action = #selector(DetailsViewController.hideMe)
             menuButton.target = self
-            menuButton.setTitleTextAttributes([NSFontAttributeName: barbuttonFont], forState: UIControlState.Normal)
+            menuButton.setTitleTextAttributes([NSFontAttributeName: barbuttonFont], for: UIControlState())
         }
         self.tracksTableView.reloadData()
         self.searchDisplayController?.searchResultsTableView.rowHeight = tracksTableView.rowHeight
@@ -68,59 +68,59 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         test.showButton(self)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        if (self.searchDisplayController!.active){
+    override func viewDidAppear(_ animated: Bool) {
+        if (self.searchDisplayController!.isActive){
             self.searchActive = true
         }
         
     }
     func hideMe() {
-        self.dismissViewControllerAnimated(true, completion: {})
+        self.dismiss(animated: true, completion: {})
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.searchActive || self.searchDisplayController!.active{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.searchActive || self.searchDisplayController!.isActive{
             return self.filtredpatients.count
         } else {
             return tracks.count
         }
     }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var track:patients
-        let cell = tracksTableView.dequeueReusableCellWithIdentifier("TrackCell") as! TrackCell
-        if self.searchActive || self.searchDisplayController!.active {
+        let cell = tracksTableView.dequeueReusableCell(withIdentifier: "TrackCell") as! TrackCell
+        if self.searchActive || self.searchDisplayController!.isActive {
             track  = filtredpatients[indexPath.row]
         } else {
             track = tracks[indexPath.row]
         }
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let ddate = dateFormatter.dateFromString(track.dateNaissance)
+        let ddate = dateFormatter.date(from: track.dateNaissance)
         //        dateFormatter.dateFormat = "yyyy"
-        let flags: NSCalendarUnit = [.NSDayCalendarUnit, .NSMonthCalendarUnit, .NSYearCalendarUnit]
-        let date = NSDate()
-        let components = NSCalendar.currentCalendar().components(flags, fromDate: date)
-        let year = components.year as Int
+        let flags: NSCalendar.Unit = [.NSDayCalendarUnit, .NSMonthCalendarUnit, .NSYearCalendarUnit]
+        let date = Date()
+        let components = (Calendar.current as NSCalendar).components(flags, from: date)
+        let year = components.year as! Int
         if (ddate != nil ){
-            let dyear =  NSCalendar.currentCalendar().components(flags, fromDate: ddate!).year as Int
+            let dyear =  (Calendar.current as NSCalendar).components(flags, from: ddate!).year as! Int
             let dage = year - dyear
             cell.age.text = "\(dage) ans"
         }else {
             cell.age.text = "Date naissance non renseignée"
         }
         
-        cell.Adresse.text = (""+renseigner(track.adresse)+" "+track.codePostal+" "+track.ville).lowercaseString.capitalizedString
+        cell.Adresse.text = (""+renseigner(track.adresse)+" "+track.codePostal+" "+track.ville).lowercased().capitalized
         cell.email.text = ""+renseigner(track.email)
         cell.tel.text = ""+renseigner(track.telephone1)
-        cell.titleLabel.text = ""+track.prenom.lowercaseString.capitalizedString+" "+track.nom.lowercaseString.capitalizedString
-        print(NSDate())
+        cell.titleLabel.text = track.getFullName()
+        print(Date())
         cell.avatar.layer.cornerRadius = cell.avatar.frame.size.width / 2;
         cell.avatar.clipsToBounds = true
         cell.avatar.layer.borderWidth = 0.5
-        cell.avatar.layer.borderColor = UIColor.whiteColor().CGColor
-        cell.avatar.contentMode = .ScaleAspectFill
-        let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images_preview+where+id=\(track.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
-        dispatch_async(dispatch_get_main_queue(), {
-            cell.avatar.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+        cell.avatar.layer.borderColor = UIColor.white.cgColor
+        cell.avatar.contentMode = .scaleAspectFill
+        let urlString = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images_preview+where+id=\(track.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
+        DispatchQueue.main.async(execute: {
+            cell.avatar.sd_setImage(with: urlString, placeholderImage: nil, options: .cacheMemoryOnly, progress: {
                 (receivedSize, expectedSize) -> Void in
                 }) {
                     (image, error, _, _) -> Void in
@@ -131,49 +131,49 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         
         return cell
     }
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.isSelectingPatient {
             var track:patients
-            if self.searchActive || self.searchDisplayController!.active {
+            if self.searchActive || self.searchDisplayController!.isActive {
                 track  = filtredpatients[indexPath.row]
             } else {
                 track = tracks[indexPath.row]
             }
-            self.patientText!.text = ""+track.prenom.lowercaseString.capitalizedString+" "+track.nom.lowercaseString.capitalizedString
+            self.patientText!.text = ""+track.prenom.lowercased().capitalized+" "+track.nom.lowercased().capitalized
             self.eventManager!.internalEvent.idPatient = track.id
             self.eventManager!.internalEvent.patient = track
-            self.eventManager!.editEvent?.title = ""+track.prenom.lowercaseString.capitalizedString+" "+track.nom.lowercaseString.capitalizedString
-            self.navigationController?.popToRootViewControllerAnimated(true)
+            self.eventManager!.editEvent?.title = ""+track.prenom.lowercased().capitalized+" "+track.nom.lowercased().capitalized
+            self.navigationController?.popToRootViewController(animated: true)
         }
-        if self.searchActive || self.searchDisplayController!.active {
+        if self.searchActive || self.searchDisplayController!.isActive {
             _ = filtredpatients[indexPath.row]
         } else {
             _ = tracks[indexPath.row]
         }
     }
-    func searchDisplayControllerWillBeginSearch(controller: UISearchDisplayController) {
+    func searchDisplayControllerWillBeginSearch(_ controller: UISearchDisplayController) {
         controller.searchBar.showsCancelButton = false
     }
-    func searchDisplayControllerDidBeginSearch(controller: UISearchDisplayController) {
+    func searchDisplayControllerDidBeginSearch(_ controller: UISearchDisplayController) {
         controller.searchBar.showsCancelButton = false
         controller.searchBar.showsSearchResultsButton = false
     }
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchActive = true;
         self.tracksTableView.reloadData()
         
     }
-    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         searchActive = false;
         self.tracksTableView.reloadData()
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchActive = true;
     }
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != ""  && searchText.characters.count >= 2{
-            api.sendRequest("select * from patients where nom LIKE '\( searchText.uppercaseString)percent' OR prenom LIKE '\(searchText.uppercaseString)percent' OR nom LIKE '\( searchText.lowercaseString)percent' ORDER BY prenom LIMIT 30")
+            api.sendRequest("select * from patients where nom LIKE 'percent\( searchText.uppercased().replace(" ", withString: "percent' AND prenom LIKE 'percent"))percent' OR prenom LIKE 'percent\(searchText.uppercased().replace(" ", withString: "percent' AND nom LIKE 'percent"))percent' OR nom LIKE 'percent\( searchText.lowercased().replace(" ", withString: "percent' AND prenom LIKE 'percent"))percent' ORDER BY prenom LIMIT 30")
             
         }
         if(filtredpatients.count == 0){
@@ -183,28 +183,28 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         self.tracksTableView.reloadData()
         self.searchDisplayController?.searchResultsTableView.reloadData()
     }
-    func didPresentSearchController(searchController: UISearchController) {
+    func didPresentSearchController(_ searchController: UISearchController) {
         searchController.searchBar.showsCancelButton = false
         searchController.searchBar.showsSearchResultsButton = false
     }
-    func renseigner(text:String) -> String{
+    func renseigner(_ text:String) -> String{
         var vretour = text
         if text == "" {
             vretour = "Non renseigné"
         }
         return vretour
     }
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let bottomEdge = scrollView.contentOffset.y + scrollView.frame.size.height;
-        if (bottomEdge >= scrollView.contentSize.height && !loading && !self.searchDisplayController!.active) {
+        if (bottomEdge >= scrollView.contentSize.height && !loading && !self.searchDisplayController!.isActive) {
             self.loading = true
             api.sendRequest("select * from patients where idpraticien=\(preference.idUser) ORDER BY id DESC limit 20 OFFSET \(tracks.count)")
         }
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
-            if self.searchDisplayController!.active {
+        DispatchQueue.main.async(execute: {
+            if self.searchDisplayController!.isActive {
                 self.filtredpatients = patients.patientWithJSON(resultsArr)
                 self.searchDisplayController?.searchResultsTableView.reloadData()
             }else {
@@ -215,26 +215,26 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
             self.activityIndicator.removeFromSuperview()
             self.tracksTableView.reloadData()
             self.loading = false
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             //            if patients.patientWithJSON(resultsArr).count == 10{
             //            self.api.sendRequest("select * from patients where idpraticien=\(preference.idUser) limit 10 OFFSET \(self.tracks.count)")
             //            }
             
         })
     }
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         var vretour = true
         if self.isSelectingPatient {
             vretour = false
         }
         return vretour
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if(segue.identifier=="toPatientTabBar"){
-            let detailsViewController: TabBarViewController = segue.destinationViewController as! TabBarViewController
+            let detailsViewController: TabBarViewController = segue.destination as! TabBarViewController
             var albumIndex : Int
             var selectedAlbum:patients
-            if (self.searchDisplayController!.active){
+            if (self.searchDisplayController!.isActive){
                 albumIndex = searchDisplayController!.searchResultsTableView.indexPathForSelectedRow!.row
                 selectedAlbum = self.filtredpatients[albumIndex]
             }else{
@@ -244,23 +244,23 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
             detailsViewController.patient = selectedAlbum
         }
         if (segue.identifier=="register"){
-            let navnewpatient: NewPatientNavigationController = segue.destinationViewController as! NewPatientNavigationController
-            navnewpatient.parent = self
+            let navnewpatient: NewPatientNavigationController = segue.destination as! NewPatientNavigationController
+            navnewpatient.parents = self
         }
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
             api.sendRequest("select * from patients where idpraticien=\(preference.idUser) ORDER BY id DESC LIMIT 10 OFFSET 0 ")
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
-    @IBAction func unwindToSelectPatient(segue: UIStoryboardSegue) {
+    @IBAction func unwindToSelectPatient(_ segue: UIStoryboardSegue) {
         
         self.tracksTableView.reloadData()
     }
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
 }

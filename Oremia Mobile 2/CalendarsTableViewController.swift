@@ -24,10 +24,10 @@ class CalendarsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_BACKGROUND.rawValue), 0)) {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
             self.calendars = self.eventManager!.allCalendars
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
@@ -37,12 +37,12 @@ class CalendarsTableViewController: UITableViewController {
     
     
     
-    @IBAction func goToSettingsButtonTapped(sender: UIButton) {
-        let openSettingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
-        UIApplication.sharedApplication().openURL(openSettingsUrl!)
+    @IBAction func goToSettingsButtonTapped(_ sender: UIButton) {
+        let openSettingsUrl = URL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.shared.openURL(openSettingsUrl!)
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let calendars = self.calendars {
             return calendars.count
         }
@@ -51,17 +51,17 @@ class CalendarsTableViewController: UITableViewController {
     }
     
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("CalendrierTableViewCell", forIndexPath: indexPath) as! CalendrierTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CalendrierTableViewCell", for: indexPath) as! CalendrierTableViewCell
 //        if indexPath.row == 0 {
 ////            cell.tickIcon.setFAIcon(FAType.FACheck, iconSize: 12)
 ////            cell.tickIcon.textColor = UIColor(CGColor: calendars![indexPath.row].CGColor)
 //        } else {
         cell.circle.translatesAutoresizingMaskIntoConstraints = false
-        cell.circle.backgroundColor = UIColor.whiteColor()
+        cell.circle.backgroundColor = UIColor.white
         cell.circle.layer.borderWidth = 2
         cell.circle.layer.cornerRadius = cell.circle.layer.frame.height / 2
-        cell.circle.layer.borderColor = calendars![indexPath.row].CGColor
+        cell.circle.layer.borderColor = calendars![indexPath.row].cgColor
              cell.tickIcon.text = ""
 //        }
         if let calendars = self.calendars {
@@ -73,12 +73,12 @@ class CalendarsTableViewController: UITableViewController {
         
         return cell
     }
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! CalendrierTableViewCell
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CalendrierTableViewCell
         
-        cell.tickIcon.setFAIcon(FAType.FACheck, iconSize: 12)
-        cell.circle.layer.backgroundColor = calendars![indexPath.row].CGColor
-        cell.tickIcon.textColor = UIColor(CGColor: calendars![indexPath.row].CGColor)
+        cell.tickIcon.setFAIcon(FAType.faCheck, iconSize: 12)
+        cell.circle.layer.backgroundColor = calendars![indexPath.row].cgColor
+        cell.tickIcon.textColor = UIColor(cgColor: calendars![indexPath.row].cgColor)
         if !isDefault{
             caller?.calendrier.text = calendars![indexPath.row].title
             eventManager!.selectedCalendarIdentifier = calendars![indexPath.row].title
@@ -88,10 +88,10 @@ class CalendarsTableViewController: UITableViewController {
         }
         
     }
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! CalendrierTableViewCell
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! CalendrierTableViewCell
         cell.tickIcon.text = ""
-        cell.circleView.backgroundColor = UIColor.whiteColor()
+        cell.circleView.backgroundColor = UIColor.white
         
     }
     

@@ -8,6 +8,30 @@
 
 import Foundation
 import EventKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 @objc class EventManager:NSObject, APIControllerProtocol {
     var eventStore = EKEventStore()
     var calendars: [EKCalendar]? = []
@@ -28,36 +52,37 @@ import EventKit
         super.init()
         self.api.delegate = self
         api.sendRequest("select * from calendar_events_modeles")
-        let status = EKEventStore.authorizationStatusForEntityType(EKEntityType.Event)
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
         switch (status) {
-        case EKAuthorizationStatus.NotDetermined:
+        case EKAuthorizationStatus.notDetermined:
             // This happens on first-run
             self.requestAccessToCalendar()
-        case EKAuthorizationStatus.Authorized:
+        case EKAuthorizationStatus.authorized:
             // Things are in line with being able to show the calendars in the table view
             self.loadCalendars()
             self.loadDefaultCalendar()
             
-        case EKAuthorizationStatus.Restricted, EKAuthorizationStatus.Denied:
+        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
             // We need to help them give us permission
+            self.requestAccessToCalendar()
             break
             
         }
     }
     func checkCalendarAuthorizationStatus() -> Bool {
-        let status = EKEventStore.authorizationStatusForEntityType(EKEntityType.Event)
+        let status = EKEventStore.authorizationStatus(for: EKEntityType.event)
         var vretour = false
         switch (status) {
-        case EKAuthorizationStatus.NotDetermined:
+        case EKAuthorizationStatus.notDetermined:
             // This happens on first-run
             requestAccessToCalendar()
-        case EKAuthorizationStatus.Authorized:
+        case EKAuthorizationStatus.authorized:
             // Things are in line with being able to show the calendars in the table view
             if agenda != nil {
                 loadCalendars()
             }
             vretour = true
-        case EKAuthorizationStatus.Restricted, EKAuthorizationStatus.Denied:
+        case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
             // We need to help them give us permission
             vretour = false
         }
@@ -65,18 +90,20 @@ import EventKit
     }
     func requestAccessToCalendar() ->Bool {
         var vretour = false
-        eventStore.requestAccessToEntityType(EKEntityType.Event) { (accessGranted, error) -> Void in
+        DispatchQueue.main.async(execute: {
+        self.eventStore.requestAccess(to: EKEntityType.event) { (accessGranted, error) -> Void in
             if accessGranted == true {
-                dispatch_async(dispatch_get_main_queue(), {
+                
                     self.loadCalendars()
                     vretour = true
-                })
+                
             } else {
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     vretour = false
                 })
             }
         }
+        })
         return vretour
     }
     func loadDefaultCalendar() {
@@ -100,8 +127,8 @@ import EventKit
     }
     func loadCalendars() {
     
-        self.calendars = eventStore.calendarsForEntityType(EKEntityType.Event)
-        self.allCalendars = eventStore.calendarsForEntityType(EKEntityType.Event)
+        self.calendars = eventStore.calendars(for: EKEntityType.event)
+        self.allCalendars = eventStore.calendars(for: EKEntityType.event)
         //        eventStore.reset()
         do {
             try eventStore.commit()
@@ -113,7 +140,7 @@ import EventKit
         var bidule = [EKCalendar]()
         let calendarArray = api.getPref("calendrier\(preference.idUser)")
         if agenda != nil{
-            api.getCalDavRessources(NSDate(), calendars: calendarArray)
+            api.getCalDavRessources(Date(), calendars: calendarArray)
         }
         var v = 0;
         for k in calendars! {
@@ -123,7 +150,7 @@ import EventKit
                     k.refresh()
                     bidule.append(k)
                 }
-                v++
+                v += 1
             }
         }
         var titles = [String]()
@@ -141,22 +168,22 @@ import EventKit
     }
     
     
-    func getEventsOfSelectedCalendar(tableView : UITableView) -> [EKEvent] {
+    func getEventsOfSelectedCalendar(_ tableView : UITableView) -> [EKEvent] {
         var uniqueEventsArray: [EKEvent] = []
         if EventManager.eventsFromToday?.count == nil{
-            let auj = NSDate()
-            let dateFormat = NSDateFormatter()
-            dateFormat.dateStyle = .ShortStyle
+            let auj = Date()
+            let dateFormat = DateFormatter()
+            dateFormat.dateStyle = .short
             if calendars?.count > 0 {
                 for k in calendars! {
                     
                     var calendarsArray: [EKCalendar]
                     calendarsArray = [k]
                     let yearSeconds: Double = 7 * (60 * 60 * 24)
-                    let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSinceNow: -yearSeconds), endDate: NSDate(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
-                    var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
+                    let predicate: NSPredicate = self.eventStore.predicateForEvents(withStart: Date(timeIntervalSinceNow: -yearSeconds), end: Date(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
+                    var eventsArray: [AnyObject] = self.eventStore.events(matching: predicate)
                     
-                    for var i = 0; i < eventsArray.count; i++ {
+                    for i in 0 ..< eventsArray.count {
                         let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
                         var eventExists: Bool = false
 //                        if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
@@ -166,13 +193,13 @@ import EventKit
 //                                }
 //                            }
 //                        }
-                        if  auj.compare(currentEvent.startDate) == NSComparisonResult.OrderedAscending {
+                        if  auj.compare(currentEvent.startDate) == ComparisonResult.orderedAscending {
                             uniqueEventsArray.append(currentEvent)
                         }
                     }
                 }
             }
-            uniqueEventsArray = uniqueEventsArray.sort{ $0.compareStartDateWithEvent($1) == .OrderedAscending }
+            uniqueEventsArray = uniqueEventsArray.sorted{ $0.compareStartDate(with: $1) == .orderedAscending }
             EventManager.eventsFromToday = uniqueEventsArray
         } else {
             uniqueEventsArray = EventManager.eventsFromToday!
@@ -184,17 +211,17 @@ import EventKit
     
     func getEventsOfSelectedCalendar() -> [EKEvent] {
         var uniqueEventsArray: [EKEvent] = []
-        let auj = NSDate()
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateStyle = .ShortStyle
+        let auj = Date()
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .short
         if calendars?.count > 0 {
             for k in calendars! {
                 var calendarsArray: [EKCalendar]
                 calendarsArray = [k]
                 let yearSeconds: Double = 8 * (60 * 60 * 24)
-                let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(NSDate(timeIntervalSinceNow: -yearSeconds), endDate: NSDate(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
-                var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
-                for var i = 0; i < eventsArray.count; i++ {
+                let predicate: NSPredicate = self.eventStore.predicateForEvents(withStart: Date(timeIntervalSinceNow: -yearSeconds), end: Date(timeIntervalSinceNow:  yearSeconds), calendars: calendarsArray)
+                var eventsArray: [AnyObject] = self.eventStore.events(matching: predicate)
+                for i in 0 ..< eventsArray.count {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
                     var eventExists: Bool = false
 //                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
@@ -213,34 +240,34 @@ import EventKit
         
         
         
-        let component = NSDateComponents()
+        var component = DateComponents()
         var aujDefault:EKEvent
-        var laDate:NSDate
-        for var i:Int = -7; i<=7; i++ {
+        var laDate:Date
+        for i in (-7...7) {
             aujDefault = EKEvent(eventStore: eventStore)
             aujDefault.title = "Ceci est une erreur"
             component.day = i
-            laDate = NSCalendar.currentCalendar().dateByAddingComponents(component, toDate: auj, options: NSCalendarOptions.MatchStrictly)!
+            laDate = (Calendar.current as NSCalendar).date(byAdding: component, to: auj, options: NSCalendar.Options.matchStrictly)!
             aujDefault.startDate = laDate
             aujDefault.endDate = laDate
             uniqueEventsArray.append(aujDefault)
         }
-        uniqueEventsArray = uniqueEventsArray.sort{ $0.compareStartDateWithEvent($1) == .OrderedAscending }
+        uniqueEventsArray = uniqueEventsArray.sorted{ $0.compareStartDate(with: $1) == .orderedAscending }
         EventManager.allEvents = uniqueEventsArray
         return uniqueEventsArray
     }
-    func getEventsOfSelectedCalendarForCertainDate(date:NSDate) -> [EKEvent] {
+    func getEventsOfSelectedCalendarForCertainDate(_ date:Date) -> [EKEvent] {
         var uniqueEventsArray: [EKEvent] = []
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateStyle = .ShortStyle
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .short
         if calendars?.count > 0 {
             for k in calendars! {
                 var calendarsArray: [EKCalendar]
                 calendarsArray = [k]
                 let yearSeconds: Double = 8 * (60 * 60 * 24)
-                let predicate: NSPredicate = self.eventStore.predicateForEventsWithStartDate(date.dateByAddingTimeInterval( -yearSeconds), endDate: date.dateByAddingTimeInterval(yearSeconds), calendars: calendarsArray)
-                var eventsArray: [AnyObject] = self.eventStore.eventsMatchingPredicate(predicate)
-                for var i = 0; i < eventsArray.count; i++ {
+                let predicate: NSPredicate = self.eventStore.predicateForEvents(withStart: date.addingTimeInterval( -yearSeconds), end: date.addingTimeInterval(yearSeconds), calendars: calendarsArray)
+                var eventsArray: [AnyObject] = self.eventStore.events(matching: predicate)
+                for i in 0 ..< eventsArray.count {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
                     var eventExists: Bool = false
 //                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
@@ -259,31 +286,31 @@ import EventKit
         
         
         
-        let component = NSDateComponents()
+        var component = DateComponents()
         var aujDefault:EKEvent
-        var laDate:NSDate
-        for var i:Int = -7; i<=7; i++ {
+        var laDate:Date
+        for i in (-7...7) {
             aujDefault = EKEvent(eventStore: eventStore)
             aujDefault.title = "Ceci est une erreur"
             component.day = i
-            laDate = NSCalendar.currentCalendar().dateByAddingComponents(component, toDate: date, options: NSCalendarOptions.MatchStrictly)!
+            laDate = (Calendar.current as NSCalendar).date(byAdding: component, to: date, options: NSCalendar.Options.matchStrictly)!
             aujDefault.startDate = laDate
             aujDefault.endDate = laDate
             uniqueEventsArray.append(aujDefault)
         }
-        uniqueEventsArray = uniqueEventsArray.sort{ $0.compareStartDateWithEvent($1) == .OrderedAscending }
+        uniqueEventsArray = uniqueEventsArray.sorted{ $0.compareStartDate(with: $1) == .orderedAscending }
         EventManager.allEvents = uniqueEventsArray
         return uniqueEventsArray
     }
-    func sortEventsByDay(uniqueEventsArray: [EKEvent]) -> NSArray {
+    func sortEventsByDay(_ uniqueEventsArray: [EKEvent]) -> NSArray {
         var section:NSDictionary
         var vretour:[NSDictionary] = []
         var lesDates:[EKEvent] = []
-        var currentDate : NSDate = NSDate()
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateStyle = .ShortStyle
+        var currentDate : Date = Date()
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .short
         for k in uniqueEventsArray{
-            if dateFormat.stringFromDate(currentDate) == dateFormat.stringFromDate(k.startDate){
+            if dateFormat.string(from: currentDate) == dateFormat.string(from: k.startDate){
                 lesDates.append(k)
             }else {
                 section = ["date" : currentDate, "lesDates" : lesDates]
@@ -294,10 +321,10 @@ import EventKit
             }
             
         }
-        return vretour
+        return vretour as NSArray
     }
 
-    func insertEvent(title:String, startDate:NSDate, endDate:NSDate, notes:String, reminder:Bool ) -> Bool {
+    func insertEvent(_ title:String, startDate:Date, endDate:Date, notes:String, reminder:Bool ) -> Bool {
         var vretour = true
 //        self.eventStore = EKEventStore()
         let event = EKEvent(eventStore: eventStore)
@@ -316,7 +343,7 @@ import EventKit
                 }
                 // Save Event in Calendar
                 do{
-                    try eventStore.saveEvent(event, span: EKSpan.ThisEvent, commit: true)
+                    try eventStore.save(event, span: EKSpan.thisEvent, commit: true)
                 } catch {
                     vretour = false
                     print("An error occured \(error)")
@@ -329,7 +356,7 @@ import EventKit
         self.internalEvent.insertEvent()
         return vretour
     }
-    func editEvent(title:String, startDate:NSDate, endDate:NSDate, notes:String, reminder:Bool, initialDate:NSDate?) -> Bool {
+    func editEvent(_ title:String, startDate:Date, endDate:Date, notes:String, reminder:Bool, initialDate:Date?) -> Bool {
         var vretour = false
         if editEvent != nil {
             let mabite = editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
@@ -337,7 +364,7 @@ import EventKit
                 // 2
                 if calendar.title == selectedCalendarIdentifier {
 //                    let store = EKEventStore()
-                    self.editEvent = eventStore.eventWithIdentifier(editEvent!.eventIdentifier)
+                    self.editEvent = eventStore.event(withIdentifier: editEvent!.eventIdentifier)
                     //editEvent!.calendar = calendar
                     editEvent!.title = title
                     editEvent!.startDate = startDate
@@ -354,10 +381,10 @@ import EventKit
                         vretour = true
                         let ressources = CalDavRessource?[mabite[1]] as? String
                         if ressources != nil || self.version == "2"{
-                            try eventStore.saveEvent(editEvent!, span: EKSpan.ThisEvent, commit: true)
+                            try eventStore.save(editEvent!, span: EKSpan.thisEvent, commit: true)
                             internalEvent.updateCalDavEvent(mabite[1], initialDate: initialDate)
                         } else {
-                            try eventStore.saveEvent(editEvent!, span: EKSpan.ThisEvent, commit: true)
+                            try eventStore.save(editEvent!, span: EKSpan.thisEvent, commit: true)
                             internalEvent.updateEvent()
                         }
                         
@@ -377,10 +404,10 @@ import EventKit
     func deleteEvent() -> Bool {
         var vretour = false
         if editEvent != nil {
-            self.editEvent = eventStore.eventWithIdentifier(editEvent!.eventIdentifier)
+            self.editEvent = eventStore.event(withIdentifier: editEvent!.eventIdentifier)
             do{
                 vretour = true
-                if(editEvent != nil) {try eventStore.removeEvent(editEvent!, span: EKSpan.ThisEvent, commit: true)}
+                if(editEvent != nil) {try eventStore.remove(editEvent!, span: EKSpan.thisEvent, commit: true)}
                 
             } catch {
                 vretour = false
@@ -391,11 +418,11 @@ import EventKit
         internalEvent.deleteEvent()
         return vretour
     }
-    func createReminder(reminderTitle: String, dateReminder: NSDate) -> Bool{
+    func createReminder(_ reminderTitle: String, dateReminder: Date) -> Bool{
         var vretour = true
         let calendarDatabase = EKEventStore()
-        let timeInterval = dateReminder.dateByAddingTimeInterval(-60*60)
-        calendarDatabase.requestAccessToEntityType(EKEntityType.Reminder, completion: {_,_ in })
+        let timeInterval = dateReminder.addingTimeInterval(-60*60)
+        calendarDatabase.requestAccess(to: EKEntityType.reminder, completion: {_,_ in })
         
         let reminder = EKReminder(eventStore: calendarDatabase)
         
@@ -408,30 +435,30 @@ import EventKit
         reminder.calendar = calendarDatabase.defaultCalendarForNewReminders()
         
         do{
-            try calendarDatabase.saveReminder(reminder, commit: true)
+            try calendarDatabase.save(reminder, commit: true)
         } catch {
             vretour = false
             print("An error occured ")
         }
         return vretour
     }
-    func addNewEventToArray(date:NSDate) -> NSArray{
-        let component = NSDateComponents()
+    func addNewEventToArray(_ date:Date) -> NSArray{
+        var component = DateComponents()
 //        self.eventStore = EKEventStore()
         let nouvelEvt = EKEvent(eventStore: eventStore)
-        var endDate:NSDate
+        var endDate:Date
         nouvelEvt.title = "Nouveau rendez-vous"
         component.minute = 15
-        endDate = NSCalendar.currentCalendar().dateByAddingComponents(component, toDate: date, options: NSCalendarOptions.MatchStrictly)!
+        endDate = (Calendar.current as NSCalendar).date(byAdding: component, to: date, options: NSCalendar.Options.matchStrictly)!
         nouvelEvt.startDate = date
         nouvelEvt.endDate = endDate
         nouvelEvt.calendar = defaultCalendar!
         do{
-            _ = try eventStore.saveEvent(nouvelEvt, span: EKSpan.ThisEvent, commit: true)
+            _ = try eventStore.save(nouvelEvt, span: EKSpan.thisEvent, commit: true)
             self.internalEvent.event = nouvelEvt
             self.internalEvent.insertEvent()
             EventManager.allEvents?.append(nouvelEvt)
-            EventManager.allEvents! = EventManager.allEvents!.sort{ $0.compareStartDateWithEvent($1) == .OrderedAscending }
+            EventManager.allEvents! = EventManager.allEvents!.sorted{ $0.compareStartDate(with: $1) == .orderedAscending }
         } catch {
             
             print("An error occured \(error)")
@@ -439,12 +466,12 @@ import EventKit
         
         return self.sortEventsByDay(EventManager.allEvents!)
     }
-    func setDefautCalendar(dCal:EKCalendar){
+    func setDefautCalendar(_ dCal:EKCalendar){
         api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [dCal.title])
         self.defaultCalendar = dCal
         api.readPreference()
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         self.CalDavRessource = results["results"] as? NSDictionary
         
         if let dict = results["results"] as? NSDictionary {
@@ -460,7 +487,7 @@ import EventKit
         }
         NSLog("")
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
 //        api.getCalDavRessources()
         
     }

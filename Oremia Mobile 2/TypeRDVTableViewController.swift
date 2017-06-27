@@ -31,24 +31,26 @@ class TypeRDVTableViewController: UITableViewController, APIControllerProtocol{
     }
 
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return lesTypeRDV?.count ?? 0
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("typeRDV", forIndexPath: indexPath) as! TypeRDVTableViewCell
-        cell.typeRDVLabel.text = lesTypeRDV![indexPath.row]["description"] as? String ?? "Bizarre, erreur"
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "typeRDV", for: indexPath) as! TypeRDVTableViewCell
+        let lesTypeRDVDict = lesTypeRDV![indexPath.row] as! NSDictionary
+        cell.typeRDVLabel.text = lesTypeRDVDict["description"] as? String ?? "Bizarre, erreur"
         return cell
     }
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        eventManager!.internalEvent.modele = lesTypeRDV![indexPath.row]["id"] as? Int ?? 0
-        eventManager!.internalEvent.descriptionModele = lesTypeRDV![indexPath.row]["description"] as? String ?? "Bizarre, erreur"
-        label?.text = lesTypeRDV![indexPath.row]["description"] as? String ?? "Bizarre, erreur"
-        caller?.majDuree(lesTypeRDV![indexPath.row]["duree"] as! Double)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        self.navigationController?.popToRootViewControllerAnimated(true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let lesTypeRDVDict = lesTypeRDV![indexPath.row] as? NSDictionary
+        eventManager!.internalEvent.modele = lesTypeRDVDict?["id"] as? Int ?? 0
+        eventManager!.internalEvent.descriptionModele = lesTypeRDVDict?["description"] as? String ?? "Bizarre, erreur"
+        label?.text = lesTypeRDVDict?["description"] as? String ?? "Bizarre, erreur"
+        caller?.majDuree(lesTypeRDVDict?["duree"] as! Double)
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
 
     /*
@@ -95,18 +97,18 @@ class TypeRDVTableViewController: UITableViewController, APIControllerProtocol{
         // Pass the selected object to the new view controller.
     }
     */
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
         self.lesTypeRDV = resultsArr
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.tableView.reloadData()
         })
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
             api.sendRequest("select * from calendar_events_modeles")
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
 }

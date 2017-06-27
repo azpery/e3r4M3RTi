@@ -21,76 +21,76 @@ class ScheduleTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.menuButton.setFAIcon(FAType.FABars, iconSize: 24)
+        self.menuButton.setFAIcon(FAType.faBars, iconSize: 24)
         
-        self.tableView.registerClass(ItemTableViewCell.self, forCellReuseIdentifier: "cell")
-        self.tableView.separatorStyle = .None
+        self.tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "cell")
+        self.tableView.separatorStyle = .none
         if self.revealViewController() != nil {
             self.menuButton.target = self.revealViewController()
-            self.menuButton.action = "revealToggle:"
+            self.menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             LoadingOverlay.shared.showOverlay(self.view)
         })
-        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_BACKGROUND.rawValue), 0)) {
+        DispatchQueue.main.async {
             self.uniqueEventsArray = self.eventManager.getEventsOfSelectedCalendar(self.tableView)
             self.events = self.eventManager.sortEventsByDay(self.uniqueEventsArray) as! [NSDictionary]
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.tableView.reloadData()
                 LoadingOverlay.shared.hideOverlayView()
             }
         }
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
 
 
     }
 	
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
         return self.events.count
 	}
 
-    override func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
 		let day = events[section]
 		let items = day["lesDates"] as! NSArray
 		return items.count
 
     }
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! ItemTableViewCell
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ItemTableViewCell
 		let day = events[indexPath.section]
 		let items = day["lesDates"] as! NSArray
 		let item = items[indexPath.row] as! EKEvent
-		let dateFormat = NSDateFormatter()
-        dateFormat.timeStyle = .ShortStyle
+		let dateFormat = DateFormatter()
+        dateFormat.timeStyle = .short
 		cell.titleLabel.text = item.title
-		cell.timeLabel.text = "de "+dateFormat.stringFromDate(item.startDate)+" à "+dateFormat.stringFromDate(item.endDate)
-		print( dateFormat.stringFromDate(item.startDate))
+		cell.timeLabel.text = "de "+dateFormat.string(from: item.startDate)+" à "+dateFormat.string(from: item.endDate)
+		print( dateFormat.string(from: item.startDate))
 			cell.minor = false
-        cell.circleView.layer.borderColor = item.calendar.CGColor
+        cell.circleView.layer.borderColor = item.calendar.cgColor
 
 		return cell
     }
 	
-	override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		let day = events[section]
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateStyle = .FullStyle
-		return dateFormat.stringFromDate(day["date"] as! NSDate)
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .full
+		return dateFormat.string(from: day["date"] as! Date)
 	}
 	
-	override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		let day = events[section] 
 		let view = SectionHeaderView()
-        let dateFormat = NSDateFormatter()
-        dateFormat.dateStyle = .FullStyle
-		view.titleLabel.text = (dateFormat.stringFromDate(day["date"] as! NSDate) ).uppercaseString
+        let dateFormat = DateFormatter()
+        dateFormat.dateStyle = .full
+		view.titleLabel.text = (dateFormat.string(from: (day["date"] as! NSDate) as Date) ).uppercased()
 		return view
 	}
 	
-	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 45
 	}
 }

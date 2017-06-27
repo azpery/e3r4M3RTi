@@ -33,71 +33,70 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
         api=APIController(delegate: self)
         let tb : TabBarViewController = self.tabBarController as! TabBarViewController
         patient = tb.patient
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         api!.sendRequest("select id from radios where idpatient=\(patient!.id)")
         activityIndicator = DTIActivityIndicatorView(frame: view.frame)
         view.addSubview(activityIndicator)
-        activityIndicator.indicatorColor = UIColor.blackColor()
+        activityIndicator.indicatorColor = UIColor.black
         activityIndicator.indicatorStyle = DTIIndicatorStyle.convInv(.spotify)
         activityIndicator.startActivity()
         if self.revealViewController() != nil {
             menuButton.target = self.revealViewController()
-            menuButton.action = "revealToggle:"
+            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
         nb=0
         idRadio = nil
         self.collectionView?.reloadData()
-        menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
-        quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
+        menuButton.setFAIcon(FAType.faSearch, iconSize: 24)
+        quitButton.setFAIcon(FAType.faTimes, iconSize: 24)
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(RadioCollectionViewController.handleRefresh(_:)), for: UIControlEvents.valueChanged)
         self.collectionView?.addSubview(self.refreshControl!)
         self.collectionView?.alwaysBounceVertical = true
         
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.getFullName())"
 
         
     }
-    func quit(sender: UIBarButtonItem){
-        self.performSegueWithIdentifier("unWind", sender: self)
+    func quit(_ sender: UIBarButtonItem){
+        self.performSegue(withIdentifier: "unWind", sender: self)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         ToolBox.setDefaultBackgroundMessageForCollection(self.collectionView!, elements: nb, message: "Aucune radio n'a été prise")
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return nb
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! RadioCollectionViewCell
-        let idr:Int = idRadio?.objectAtIndex(indexPath.row).valueForKey("id") as! Int
-        cell.backgroundColor = UIColor.whiteColor()
-        var datec = " Date de création :"
-        datec += dateCrea!.objectAtIndex(indexPath.row).valueForKey("date") as! String
-        cell.label.text = datec
-        cell.imageView.contentMode = .ScaleAspectFit
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! RadioCollectionViewCell
+        let idr:Int = (idRadio?.object(at: indexPath.row) as AnyObject).value(forKey: "id") as! Int
+        cell.backgroundColor = UIColor.white
+         let datec = (dateCrea!.object(at: indexPath.row) as AnyObject).value(forKey: "date") as! String
+        cell.label.text = ToolBox.getFormatedDateWithSlash(ToolBox.getDateFromString(datec) ?? Date())
+        cell.imageView.contentMode = .scaleAspectFit
         // Configure the cell
-        let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+radio+as+image+from+radios+where+id=\(idr)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
-        let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
+        let urlString = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+radio+as+image+from+radios+where+id=\(idr)&&db="+connexionString.db+"&&login="+connexionString.login+"&&pw="+connexionString.pw)
+        let progressIndicatorView = CircularLoaderView(frame: CGRect.zero)
             progressIndicatorView.frame = cell.imageView.bounds
-            progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        dispatch_async(dispatch_get_main_queue(), {
+            progressIndicatorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        DispatchQueue.main.async(execute: {
             var alreadyLoad = true
             progressIndicatorView.progress = 0.0
             cell.imageView.addSubview(progressIndicatorView)
             
-        cell.imageView?.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+        cell.imageView?.sd_setImage(with: urlString, placeholderImage: nil, options: .cacheMemoryOnly, progress: {
             (receivedSize, expectedSize) -> Void in
                 alreadyLoad = false
                 progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
@@ -114,28 +113,29 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
         })
         return cell
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
         for value in resultsArr{
-            if value.objectForKey("id") !=  nil{
+            if (value as AnyObject).object(forKey: "id") !=  nil{
                 idRadio=resultsArr
                 nb = idRadio!.count
             }
-            if value.objectForKey("date") !=  nil{
+            if (value as AnyObject).object(forKey: "date") !=  nil{
                 dateCrea=resultsArr
             }
-            if value.objectForKey("error") !=  nil && value["error"] as? Int == 7{
+            let v = value as? NSDictionary
+            if (value as AnyObject).object(forKey: "error") !=  nil && v?["error"] as? Int == 7{
             }
         }
-        dispatch_async(dispatch_get_main_queue(), {
-            UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        DispatchQueue.main.async(execute: {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if(self.dateCrea?.count ?? 0 != self.nb){
                 api!.sendRequest("select date from radios where idpatient=\(self.patient!.id)")
             } else {
                 self.activityIndicator.stopActivity()
                 self.activityIndicator.removeFromSuperview()
                 if let a = self.refreshControl {
-                    if a.refreshing {
+                    if a.isRefreshing {
                         a.endRefreshing()
                     }
                 }
@@ -145,36 +145,36 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
         
         
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
             api!.sendRequest("select id from radios where idpatient=\(patient!.id)")
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
     
-    func handleRefresh(refreshControl:UIRefreshControl){
+    func handleRefresh(_ refreshControl:UIRefreshControl){
         api!.sendRequest("select id from radios where idpatient=\(patient!.id)")
         
     }
     
-    override func collectionView(collectionView: UICollectionView,
-    didSelectItemAtIndexPath indexPath: NSIndexPath){
-        let idr:Int = idRadio?.objectAtIndex(indexPath.row).valueForKey("id") as! Int
+    override func collectionView(_ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath){
+        let idr:Int = (idRadio?.object(at: indexPath.row) as AnyObject).value(forKey: "id") as! Int
         selectedPhoto = self.imageCache[indexPath.row]
-        self.performSegueWithIdentifier("showRadio", sender: self)
+        self.performSegue(withIdentifier: "showRadio", sender: self)
         
     }
-    @IBAction func dismiss(sender: AnyObject) {
-        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismiss(_ sender: AnyObject) {
+        self.tabBarController?.dismiss(animated: true, completion: nil)
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.destinationViewController.isKindOfClass(ImageScrollViewController){
-            let fullScreenView: ImageScrollViewController = segue.destinationViewController as! ImageScrollViewController
-            fullScreenView.imageScrollLargeImageName = self.imageCache[(self.cv.indexPathsForSelectedItems()?.first!.row)!]
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination.isKind(of: ImageScrollViewController.self){
+            let fullScreenView: ImageScrollViewController = segue.destination as! ImageScrollViewController
+            fullScreenView.imageScrollLargeImageName = self.imageCache[(self.cv.indexPathsForSelectedItems?.first!.row)!]
         }
-        if segue.destinationViewController.isKindOfClass(CarousselViewController){
-            let fullScreenView: CarousselViewController = segue.destinationViewController as! CarousselViewController
+        if segue.destination.isKind(of: CarousselViewController.self){
+            let fullScreenView: CarousselViewController = segue.destination as! CarousselViewController
             fullScreenView.imageCache = [self.selectedPhoto!]
         }
     }

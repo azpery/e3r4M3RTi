@@ -11,17 +11,17 @@ import QuartzCore
 
 class DTIAnimWp8: DTIAnimProtocol {
     /** private properties */
-    private let owner: DTIActivityIndicatorView
+    fileprivate let owner: DTIActivityIndicatorView
     
-    private let spinnerView = UIView()
-    private let ballCount = 5
-    private let animationDuration = CFTimeInterval(7.15)
+    fileprivate let spinnerView = UIView()
+    fileprivate let ballCount = 5
+    fileprivate let animationDuration = CFTimeInterval(7.15)
     
     /** ctor */
     init(indicatorView: DTIActivityIndicatorView) {
         self.owner = indicatorView
         
-        for var index = 0; index < ballCount; ++index {
+        for index in (0 ..< ballCount) {
             let layer = CALayer()
             let layerBall = CALayer()
             layer.opacity = 0.0
@@ -39,7 +39,7 @@ class DTIAnimWp8: DTIAnimProtocol {
         
         let ballSize = CGFloat(self.owner.bounds.width / 9)
         
-        for var index = 0; index < ballCount; ++index {
+        for index in (0 ..< ballCount) {
             let layer = self.spinnerView.layer.sublayers![index]
             let layerBall = layer.sublayers![0]
             
@@ -59,7 +59,7 @@ class DTIAnimWp8: DTIAnimProtocol {
             let layerBall = layer.sublayers![0]
             
             //layer.backgroundColor = UIColor.grayColor().CGColor
-            layerBall.backgroundColor = self.owner.indicatorColor.CGColor
+            layerBall.backgroundColor = self.owner.indicatorColor.cgColor
         }
     }
     
@@ -72,7 +72,7 @@ class DTIAnimWp8: DTIAnimProtocol {
         
         let beginTime = CACurrentMediaTime();
         let delays = [CFTimeInterval(1.56), CFTimeInterval(0.31), CFTimeInterval(0.62), CFTimeInterval(0.94), CFTimeInterval(1.25)]
-        for var index = 0; index < ballCount; ++index {
+        for index in (0 ..< ballCount) {
             let layer = self.spinnerView.layer.sublayers![index]
             
             let anim = CAKeyframeAnimation(keyPath: "transform.rotation.z")
@@ -108,21 +108,21 @@ class DTIAnimWp8: DTIAnimProtocol {
             
             let aniGroup = CAAnimationGroup();
             aniGroup.fillMode = kCAFillModeForwards;
-            aniGroup.removedOnCompletion = false
+            aniGroup.isRemovedOnCompletion = false
             aniGroup.repeatCount = HUGE
             aniGroup.duration = self.animationDuration;
             aniGroup.animations = [anim, aniOpacity];
             aniGroup.beginTime = beginTime + delays[index]
 
-            layer.addAnimation(aniGroup, forKey: nil)
+            layer.add(aniGroup, forKey: nil)
         }
     }
     
-    func stopActivity(animated: Bool) {
+    func stopActivity(_ animated: Bool) {
         func removeAnimations() {
             self.spinnerView.layer.removeAllAnimations()
 
-            for var index = 0; index < ballCount; ++index {
+            for index in (0 ..< ballCount) {
                 let layer = self.spinnerView.layer.sublayers![index]
                 layer.removeAllAnimations()
             }

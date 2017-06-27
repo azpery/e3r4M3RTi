@@ -20,7 +20,7 @@ class Chart :  NSObject, APIControllerProtocol{
     override init() {
         super.init()
     }
-    init(idpatient:Int, callback:()->Void) {
+    init(idpatient:Int, callback:@escaping ()->Void) {
         super.init()
         self.api.sendRequest("SELECT * FROM chart WHERE idpatient=\(idpatient) order by layer")
         self.callback = callback
@@ -32,17 +32,18 @@ class Chart :  NSObject, APIControllerProtocol{
         self.localisation=localisation
         self.layer.append(layer)
     }
-    func chartWithJSON(allResults: NSArray) {
+    func chartWithJSON(_ allResults: NSArray) {
         if allResults.count>0 {
             for result in allResults {
-                let localisation = Int(result["localisation"] as? String ?? "0") ?? 0
+                let r = result as! NSDictionary
+                let localisation = Int(r["localisation"] as? String ?? "0") ?? 0
                 if let c = self.chartFromLocalisation(localisation) {
-                    let layer = result["layer"] as? String ?? ""
+                    let layer = r["layer"] as? String ?? ""
                     c.layer.append(layer)
                 }else {
-                    let idpatient : Int = result["idpatient"] as? Int ?? 0
-                    let date = result["date"] as? String ?? ""
-                    let layer = result["layer"] as? String ?? ""
+                    let idpatient : Int = r["idpatient"] as? Int ?? 0
+                    let date = r["date"] as? String ?? ""
+                    let layer = r["layer"] as? String ?? ""
                     let newChart = Chart(idpatient: idpatient, date: date, localisation: localisation, layer: layer)
                     chart.append(newChart)
                 }
@@ -50,7 +51,8 @@ class Chart :  NSObject, APIControllerProtocol{
         }
     }
     
-    func localisationFromIndexPath(var indexPath:Int)->Int{
+    func localisationFromIndexPath(_ indexPath:Int)->Int{
+        var indexPath = indexPath
         if indexPath <= 7 {
             indexPath = 18 - indexPath
         }else if indexPath > 7 && indexPath <= 15 {
@@ -63,7 +65,8 @@ class Chart :  NSObject, APIControllerProtocol{
         return indexPath
     }
     
-    func indexPathFromLocalisation(var localisation:Int)->Int{
+    func indexPathFromLocalisation(_ localisation:Int)->Int{
+        var localisation = localisation
         if localisation <= 18 {
             localisation = 18 - localisation
         }else if localisation > 20 && localisation <= 28 {
@@ -77,7 +80,7 @@ class Chart :  NSObject, APIControllerProtocol{
     }
     
 
-    func imagesFromIndexPath(indexPath:Int, layer:[String], cell:DentCollectionViewCell)->DentCollectionViewCell{
+    func imagesFromIndexPath(_ indexPath:Int, layer:[String], cell:DentCollectionViewCell)->DentCollectionViewCell{
         var cpt = 0
         cell.dent8Layout.image = nil
         cell.dent7Layout.image = nil
@@ -148,7 +151,7 @@ class Chart :  NSObject, APIControllerProtocol{
                         cell.dentLayout.image = nil
                     }
                 }
-                cpt++
+                cpt += 1
             }
         } else {
             self.imageFromIndexPath(indexPath, layer: "", imageView: cell.dent8Layout)
@@ -156,11 +159,12 @@ class Chart :  NSObject, APIControllerProtocol{
         return cell
     }
     
-    func imageFromIndexPath(var indexPath:Int, var layer:String, imageView:UIImageView){
+    func imageFromIndexPath(_ indexPath:Int, layer:String, imageView:UIImageView){
+        var indexPath = indexPath, layer = layer
         if layer != "" {
             layer = "-\(layer)"
         }
-        imageView.transform = CGAffineTransformMakeScale(1, 1)
+        imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
         if indexPath <= 7 {
             indexPath = 18 - indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
@@ -171,7 +175,7 @@ class Chart :  NSObject, APIControllerProtocol{
             if let image = UIImage(named: "\(indexPath)\(layer)"){
                 imageView.image = image
             }
-            imageView.transform = CGAffineTransformMakeScale(-1, 1)
+            imageView.transform = CGAffineTransform(scaleX: -1, y: 1)
         }else if indexPath > 15 && indexPath <= 23 {
             indexPath = 64 - indexPath
             if let image = UIImage(named: "\(indexPath)\(layer)"){
@@ -182,13 +186,13 @@ class Chart :  NSObject, APIControllerProtocol{
             if let image = UIImage(named: "\(indexPath)\(layer)"){
                 imageView.image = image
             }
-            imageView.transform = CGAffineTransformMakeScale(-1, 1)
+            imageView.transform = CGAffineTransform(scaleX: -1, y: 1)
         }
         imageView.layer.minificationFilter = kCAFilterTrilinear
         
     }
     
-    func chartFromLocalisation(localisation:Int) -> Chart?{
+    func chartFromLocalisation(_ localisation:Int) -> Chart?{
         var vretour:Chart?
         for chart in self.chart{
             if chart.localisation == localisation {
@@ -198,7 +202,7 @@ class Chart :  NSObject, APIControllerProtocol{
         return vretour ?? nil
     }
     
-    func layerFromIndexPath(indexPath:Int)->[String]{
+    func layerFromIndexPath(_ indexPath:Int)->[String]{
         var layer = [String]()
         for chart in self.chart{
             if chart.localisation == self.localisationFromIndexPath(indexPath){
@@ -208,7 +212,7 @@ class Chart :  NSObject, APIControllerProtocol{
         return layer
     }
     
-    func setLayerFromIndexPath(indexPath:Int, layers:[String]){
+    func setLayerFromIndexPath(_ indexPath:Int, layers:[String]){
         for chart in self.chart{
             if chart.localisation == self.localisationFromIndexPath(indexPath){
                 chart.layer = layers
@@ -216,7 +220,7 @@ class Chart :  NSObject, APIControllerProtocol{
         }
     }
     
-    func addLayersFromPrestation(prestations : [PrestationActe]){
+    func addLayersFromPrestation(_ prestations : [PrestationActe]){
         for p in prestations {
             let chart = Chart(idpatient: self.idpatient, date: p.dateActe, localisation: p.numDent, layer: p.image)
             self.chart.append(chart)
@@ -226,9 +230,9 @@ class Chart :  NSObject, APIControllerProtocol{
         }
     }
     
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             if resultsArr.count > 0 {
                 self.chartWithJSON(resultsArr)
                 if let cb = self.callback{
@@ -241,13 +245,13 @@ class Chart :  NSObject, APIControllerProtocol{
             }
         })
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results == 1{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 
             })
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
 }

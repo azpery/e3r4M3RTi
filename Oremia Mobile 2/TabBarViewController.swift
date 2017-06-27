@@ -18,14 +18,14 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         // set red as selected background color
         let tabBarItemSize = CGSize(width: tabBar.frame.width , height: tabBar.frame.height)
-        tabBar.selectionIndicatorImage = UIImage.imageWithColor(ToolBox.UIColorFromRGB(0xE86A0E), size: tabBarItemSize).resizableImageWithCapInsets(UIEdgeInsetsZero)
+        tabBar.selectionIndicatorImage = UIImage.imageWithColor(ToolBox.UIColorFromRGB(0xE86A0E), size: tabBarItemSize).resizableImage(withCapInsets: UIEdgeInsets.zero)
         
         // remove default border
         tabBar.frame.size.width = self.view.frame.width + 4
         tabBar.frame.origin.x = -2
         for item in self.tabBar.items! as [UITabBarItem] {
             if let image = item.image {
-                item.image = image.imageWithColor(UIColor.whiteColor()).imageWithRenderingMode(.AlwaysOriginal)
+                item.image = image.imageWithColor(UIColor.white).withRenderingMode(.alwaysOriginal)
             }
         }
         // Do any additional setup after loading the view.
@@ -35,8 +35,8 @@ class TabBarViewController: UITabBarController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let radioCollectionViewController: RadioCollectionViewController = segue.destinationViewController as! RadioCollectionViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let radioCollectionViewController: RadioCollectionViewController = segue.destination as! RadioCollectionViewController
         radioCollectionViewController.patient = patient!
     }
     //Write your code here

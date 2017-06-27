@@ -10,9 +10,9 @@ import UIKit
 
 class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate, APIControllerProtocol, UIImagePickerControllerDelegate, UIAlertViewDelegate, UINavigationControllerDelegate {
 
-    var patient = patients?()
+    var patient:patients?
     var p:patients?
-    var api = APIController?()
+    var api:APIController?
     var hazards = ["", "Monsieur","Madame", "Mademoiselle", "Enfant"]
     var statut = ["Dossier actif", "Dossier archivé"]
     var pickerView1: UIPickerView!
@@ -56,22 +56,22 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
         p = patient
         initValue()
         let title = self.navigationController!.navigationBar.topItem!
-        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalizedString)"
+        title.title = "\(title.title!) -  Dr \(preference.nomUser) - \(patient!.nom) \(patient!.prenom.capitalized)"
         if profilePicture != nil {
             
             profilePicture.layer.cornerRadius = profilePicture.frame.size.width / 2;
             profilePicture.clipsToBounds = true
             profilePicture.layer.borderWidth = 0.5
-            profilePicture.layer.borderColor = UIColor.whiteColor().CGColor
-            profilePicture.contentMode = .ScaleAspectFill
-            let progressIndicatorView = CircularLoaderView(frame: CGRectZero)
+            profilePicture.layer.borderColor = UIColor.white.cgColor
+            profilePicture.contentMode = .scaleAspectFill
+            let progressIndicatorView = CircularLoaderView(frame: CGRect.zero)
             progressIndicatorView.frame = self.profilePicture.bounds
-            progressIndicatorView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            progressIndicatorView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.profilePicture.addSubview(progressIndicatorView)
             var alreadyLoad = true
-            let urlString = NSURL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(patient!.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
-            dispatch_async(dispatch_get_main_queue(), {
-                self.profilePicture.sd_setImageWithURL(urlString, placeholderImage: nil, options: .CacheMemoryOnly, progress: {
+            let urlString = URL(string: "http://\(preference.ipServer)/scripts/OremiaMobileHD/image.php?query=select+image+from+images+where+id=\(patient!.idPhoto)&&db=zuma&&login=zm\(preference.idUser)&&pw=\(preference.password)")
+            DispatchQueue.main.async(execute: {
+                self.profilePicture.sd_setImage(with: urlString, placeholderImage: nil, options: .cacheMemoryOnly, progress: {
                     (receivedSize, expectedSize) -> Void in
                     alreadyLoad = false
                     progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(expectedSize)
@@ -85,52 +85,48 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
                     
                 }
             })
-            photoButton.setFAIcon(FAType.FACamera, forState: .Normal)
-            chooseButton.setFAIcon(FAType.FAPictureO, forState: .Normal)
-            menuButton.setFAIcon(FAType.FASearch, iconSize: 24)
-            quitButton.setFAIcon(FAType.FATimes, iconSize: 24)
-            validButton.setFAIcon(FAType.FACheck, iconSize: 24)
+            photoButton.setFAIcon(FAType.faCamera, forState: UIControlState())
+            chooseButton.setFAIcon(FAType.faPictureO, forState: UIControlState())
+            menuButton.setFAIcon(FAType.faSearch, iconSize: 24)
+            quitButton.setFAIcon(FAType.faTimes, iconSize: 24)
+            validButton.setFAIcon(FAType.faCheck, iconSize: 24)
 
         }
         
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         if ( patient!.info != ""){
             
-            JLToastView.setDefaultValue(
-                UIColor.redColor(),
-                forAttributeName: JLToastViewBackgroundColorAttributeName,
-                userInterfaceIdiom: .Phone
-            )
-            JLToastView.setDefaultValue(
-                UIColor.whiteColor(),
-                forAttributeName: JLToastViewTextColorAttributeName,
-                userInterfaceIdiom: .Phone
-            )
-            var info = patient!.info.componentsSeparatedByString("!")
+            var info = patient!.info.components(separatedBy: "!")
             var infoParsed = ""
-            for(var i = 1; i<info.count; i++){
+            for i in (1 ..< info.count){
                 infoParsed += info[i]
                 if i<info.count - 1 {infoParsed += "\n"}
             }
-            JLToast.makeText(infoParsed).show()
+            if infoParsed != ""{
+                let banner = Banner(title: "Informations patient", subtitle: infoParsed, image: UIImage(named: "glyphicons_078_warning_sign"), backgroundColor: ToolBox.UIColorFromRGB(0xf39c12))
+                banner.dismissesOnTap = true
+                banner.show(duration: 3.0)
+            }
+            
+            
         }
         
     }
-    @IBAction func Valider(sender: AnyObject) {
+    @IBAction func Valider(_ sender: AnyObject) {
         let alert = SCLAlertView()
         alert.addButton("Valider", action:{
             self.editPatient()
         })
         alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir modifier \(patient!.prenom)", closeButtonTitle:"Annuler")
     }
-    @IBAction func prendrePhoto(sender: AnyObject) {
+    @IBAction func prendrePhoto(_ sender: AnyObject) {
         self.presentCamera()
     }
-    @IBAction func choisirPhoto(sender: AnyObject) {
+    @IBAction func choisirPhoto(_ sender: AnyObject) {
         self.presentGallery()
     }
-    override func viewDidDisappear(animated: Bool){
+    override func viewDidDisappear(_ animated: Bool){
         
     }
     func initValue(){
@@ -141,92 +137,92 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
         pickerView1.reloadInputViews()
         dateNpicker = UIDatePicker()
         dateCpicker = UIDatePicker()
-        dateNpicker.datePickerMode = UIDatePickerMode.Date
-        dateCpicker.datePickerMode = UIDatePickerMode.Date
-        dateNpicker.addTarget(self, action: Selector("dateNPickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
-        dateCpicker.addTarget(self, action: Selector("dateCPickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
-        let dateFormatter = NSDateFormatter()
+        dateNpicker.datePickerMode = UIDatePickerMode.date
+        dateCpicker.datePickerMode = UIDatePickerMode.date
+        dateNpicker.addTarget(self, action: #selector(EtatCivilTableViewController.dateNPickerChanged(_:)), for: UIControlEvents.valueChanged)
+        dateCpicker.addTarget(self, action: #selector(EtatCivilTableViewController.dateCPickerChanged(_:)), for: UIControlEvents.valueChanged)
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let daten = dateFormatter.dateFromString(p!.dateNaissance)
-        let datec = dateFormatter.dateFromString(p!.datec)
-        let date = NSDate()
-        let gbDateFormat = NSDateFormatter.dateFormatFromTemplate("yyyy-MM-dd", options: 0, locale: NSLocale(localeIdentifier: "fr-FR"))
+        let daten = dateFormatter.date(from: p!.dateNaissance)
+        let datec = dateFormatter.date(from: p!.datec)
+        let date = Date()
+        let gbDateFormat = DateFormatter.dateFormat(fromTemplate: "yyyy-MM-dd", options: 0, locale: Locale(identifier: "fr-FR"))
         dateFormatter.dateFormat = gbDateFormat
         pickerView1.delegate = self
         pickerView2.delegate = self
-        let toolbar = UIToolbar(frame: CGRectMake(0, 0, self.view.bounds.size.width, 44))
-        let item = UIBarButtonItem(title: "OK", style: UIBarButtonItemStyle.Plain, target: self, action: "doneAction")
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 44))
+        let item = UIBarButtonItem(title: "OK", style: UIBarButtonItemStyle.plain, target: self, action: #selector(EtatCivilTableViewController.doneAction))
         item.title = "OK"
         toolbar.setItems([item], animated: true)
         c.text = hazards[p!.civilite]
         c.inputView = pickerView1
         c.inputAccessoryView = toolbar
-        nom.text = p!.nom.capitalizedString
-        prenom.text = p!.prenom.capitalizedString
-        dn.text = dateFormatter.stringFromDate(daten ?? date)
+        nom.text = p!.nom.capitalized
+        prenom.text = p!.prenom.capitalized
+        dn.text = dateFormatter.string(from: daten ?? date)
         dn.inputView = dateNpicker
         dn.inputAccessoryView = toolbar
-        a1.text = p!.adresse.capitalizedString
+        a1.text = p!.adresse.capitalized
         cp.text = p!.codePostal
-        ville.text = p!.ville.capitalizedString
+        ville.text = p!.ville.capitalized
         telf.text = p!.telephone1
         telm.text = p!.telephone2
-        sms.selected = p!.autoSMS
-        pr.text = p!.profession.capitalizedString
+        sms.isSelected = p!.autoSMS
+        pr.text = p!.profession.capitalized
         em.text = p!.email
         s.text = statut[p!.statut]
         s.inputView = pickerView2
         s.inputAccessoryView = toolbar
         ids.text = p!.ids
-        dc.text = dateFormatter.stringFromDate(datec ?? date)
+        dc.text = dateFormatter.string(from: datec ?? date)
         dc.inputView = dateCpicker
         dc.inputAccessoryView = toolbar
         nss.text = p!.numss
         i.text = p!.info
     }
     func editPatient(){
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/M/yyyy"
-        let daten = dateFormatter.dateFromString(dn.text!)
-        let datec = dateFormatter.dateFromString(dc.text!)
-        var genre = pickerView1.selectedRowInComponent(0)
-        let statut = pickerView2.selectedRowInComponent(0)
+        let daten = dateFormatter.date(from: dn.text!)
+        let datec = dateFormatter.date(from: dc.text!)
+        var genre = pickerView1.selectedRow(inComponent: 0)
+        let statut = pickerView2.selectedRow(inComponent: 0)
         if  genre == 0 { genre = p!.civilite }
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        api!.sendRequest("UPDATE patients SET nir='\(nss.text!)', genre=\(genre), nom='\(nom.text!.uppercaseString)', prenom='\(prenom.text!.uppercaseString)', adresse='\(a1.text!.uppercaseString)', codepostal='\(cp.text!)', ville='\(ville.text!.uppercaseString)', telephone1='\(telf.text!)', telephone2='\(telm.text!)', email='\(em.text!)', naissance='\(dateFormatter.stringFromDate(daten!))', creation='\(dateFormatter.stringFromDate(datec!))', info='\(i.text!)', autorise_sms=\(sms.selected), ipp2='\(ids.text!)',  profession='\(pr.text!)', statut=\(statut) WHERE id =\(p!.id);")
-        p!.civilite = pickerView1.selectedRowInComponent(0)
-        p!.nom = (nom.text?.uppercaseString)!
-        p!.prenom = (prenom.text?.uppercaseString)!
-        p!.dateNaissance = dateFormatter.stringFromDate(daten!)
-        p!.adresse = (a1.text?.uppercaseString)!
+        api!.sendRequest("UPDATE patients SET nir='\(nss.text!)', genre=\(genre), nom='\(nom.text!.uppercased())', prenom='\(prenom.text!.uppercased())', adresse='\(a1.text!.uppercased())', codepostal='\(cp.text!)', ville='\(ville.text!.uppercased())', telephone1='\(telf.text!)', telephone2='\(telm.text!)', email='\(em.text!)', naissance='\(dateFormatter.string(from: daten!))', creation='\(dateFormatter.string(from: datec!))', info='\(i.text!)', autorise_sms=\(sms.isSelected), ipp2='\(ids.text!)',  profession='\(pr.text!)', statut=\(statut) WHERE id =\(p!.id);")
+        p!.civilite = pickerView1.selectedRow(inComponent: 0)
+        p!.nom = (nom.text?.uppercased())!
+        p!.prenom = (prenom.text?.uppercased())!
+        p!.dateNaissance = dateFormatter.string(from: daten!)
+        p!.adresse = (a1.text?.uppercased())!
         p!.codePostal = cp.text!
-        p!.ville = (ville.text?.uppercaseString)!
+        p!.ville = (ville.text?.uppercased())!
         p!.telephone1 = telf.text!
         p!.telephone2 = telm.text!
-        p!.autoSMS = sms.selected
+        p!.autoSMS = sms.isSelected
         p!.profession = pr.text!
         p!.email = em.text!
         p!.statut = statut
         p!.ids = ids.text!
-        p!.datec = dateFormatter.stringFromDate(datec!)
+        p!.datec = dateFormatter.string(from: datec!)
         p!.numss = nss.text!
         p!.info = i.text!
     }
     
-    func dateNPickerChanged(datePicker:UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
+    func dateNPickerChanged(_ datePicker:UIDatePicker) {
+        let dateFormatter = DateFormatter()
         
-        dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+        dateFormatter.dateStyle = DateFormatter.Style.short
         
-        let strDate = dateFormatter.stringFromDate(datePicker.date)
+        let strDate = dateFormatter.string(from: datePicker.date)
         dn.text = strDate
     }
-    func dateCPickerChanged(datePicker:UIDatePicker) {
-        let dateFormatter = NSDateFormatter()
+    func dateCPickerChanged(_ datePicker:UIDatePicker) {
+        let dateFormatter = DateFormatter()
         
-        dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
+        dateFormatter.dateStyle = DateFormatter.Style.short
         
-        let strDate = dateFormatter.stringFromDate(datePicker.date)
+        let strDate = dateFormatter.string(from: datePicker.date)
         dc.text = strDate
     }
     func doneAction() {
@@ -240,14 +236,14 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func showpicker(sender:UITextField!){
-        performSegueWithIdentifier("showpicker", sender: self)
+    func showpicker(_ sender:UITextField!){
+        performSegue(withIdentifier: "showpicker", sender: self)
     }
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int  {
+    func numberOfComponentsInPickerView(_ pickerView: UIPickerView) -> Int  {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
          if pickerView.tag == 0{
         return hazards.count
         } else  if pickerView.tag == 1{
@@ -256,7 +252,7 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
         return 0
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView.tag == 0{
             if row == hazards.count {
                 pickerView1.selectRow(p!.civilite, inComponent: 0, animated: true)
@@ -270,94 +266,94 @@ class EtatCivilTableViewController: UITableViewController, UIPickerViewDelegate,
         }
         return ""
     }
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)  {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)  {
         if pickerView.tag == 0{
             c.text = hazards[row]
         } else if pickerView.tag == 1{
             s.text = statut[row]
         }
     }
-    func didReceiveAPIResults(results: NSDictionary) {
+    func didReceiveAPIResults(_ results: NSDictionary) {
         let resultsArr: NSArray = results["results"] as! NSArray
-        dispatch_async(dispatch_get_main_queue(), {
-            if resultsArr.count != 0 && resultsArr[0].count  == 0  {
+        DispatchQueue.main.async(execute: {
+            if resultsArr.count != 0 && (resultsArr[0] as AnyObject).count  == 0  {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
-                alert.showSuccess("Patient modifé", subTitle: "\(self.p!.prenom.capitalizedString) a été modifié avec succès.")
+                alert.showSuccess("Patient modifé", subTitle: "\(self.p!.prenom.capitalized) a été modifié avec succès.")
             } else {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
-                alert.showError("Erreur", subTitle: "Une erreur a survenu lors de la modification de \(self.p!.prenom.capitalizedString). \n Veuillez vérifier les champs rentrés")
+                alert.showError("Erreur", subTitle: "Une erreur a survenu lors de la modification de \(self.p!.prenom.capitalized). \n Veuillez vérifier les champs rentrés")
             }
         })
         
     }
-    func handleError(results: Int) {
+    func handleError(_ results: Int) {
         if results != 0{
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
-                alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalizedString) a été modifié avec succès.")
+                alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalized) a été modifié avec succès.")
                 self.patient!.idPhoto = results
             })
         } else {
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
                 alert.addButton("Ok", action:{})
                 alert.showError("Erreur", subTitle: "Une erreur inconnue est survenue lors du téléversement de la photo")
             })
         }
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
     }
-    @IBAction func dismiss(sender: AnyObject) {
-        self.tabBarController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismiss(_ sender: AnyObject) {
+        self.tabBarController?.dismiss(animated: true, completion: nil)
         
     }
     func presentCamera()
     {
         cameraUI = UIImagePickerController()
         cameraUI.delegate = self
-        cameraUI.sourceType = UIImagePickerControllerSourceType.Camera
+        cameraUI.sourceType = UIImagePickerControllerSourceType.camera
         //cameraUI.mediaTypes = [kUTTypeImage] as! String
         cameraUI.allowsEditing = true
         cameraUI.navigationItem.title = "kikou"
-        self.presentViewController(cameraUI, animated: true, completion: nil)
+        self.present(cameraUI, animated: true, completion: nil)
     }
     func presentGallery()
     {
         cameraUI = UIImagePickerController()
         cameraUI.delegate = self
-        cameraUI.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        cameraUI.sourceType = UIImagePickerControllerSourceType.photoLibrary
         //cameraUI.mediaTypes = [kUTTypeImage] as! String
         cameraUI.allowsEditing = true
         cameraUI.navigationItem.title = "kikou"
-        self.presentViewController(cameraUI, animated: true, completion: nil)
+        self.present(cameraUI, animated: true, completion: nil)
     }
     
     
     //pragma mark- Image
     
-    func imagePickerControllerDidCancel(picker:UIImagePickerController)
+    func imagePickerControllerDidCancel(_ picker:UIImagePickerController)
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
         var imageToSave:UIImage
         imageToSave = image
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         self.profilePicture.image = imageToSave
         self.patient!.photo = image
         api?.insertImage(image, idPatient: self.patient!.id)
     }
     
     
-    func alertView(alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int)
+    func alertView(_ alertView: UIAlertView, didDismissWithButtonIndex buttonIndex: Int)
     {
         NSLog("Did dismiss button: %d", buttonIndex)
         //self.presentCamera()

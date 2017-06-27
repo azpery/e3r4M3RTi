@@ -33,6 +33,7 @@
         self.layer.shadowOffset = CGSizeMake(0.0, 4.0);
         self.layer.shadowRadius = 5.0;
         self.layer.shadowOpacity = 0.0;
+        self.layer.borderWidth = 1;
         
         self.borderView = [UIView new];
         [self.contentView addSubview:self.borderView];
@@ -55,15 +56,15 @@
         
         [self updateColors];
         
-        CGFloat borderWidth = 2.0;
+        CGFloat borderHeight = 2.0;
         CGFloat contentMargin = 2.0;
-        UIEdgeInsets contentPadding = UIEdgeInsetsMake(1.0, (borderWidth + 4.0), 1.0, 4.0);
+        UIEdgeInsets contentPadding = UIEdgeInsetsMake(1.0, (borderHeight + 4.0), 1.0, 4.0);
         
         [self.borderView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(self.mas_height);
-            make.width.equalTo(@(borderWidth));
+            make.height.equalTo(@(borderHeight));
+            make.width.equalTo(self.mas_width);
+            make.bottom.equalTo(self.mas_bottom);
             make.left.equalTo(self.mas_left);
-            make.top.equalTo(self.mas_top);
         }];
         
         [self.title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,6 +151,7 @@
 {
     self.contentView.backgroundColor = [self backgroundColorHighlighted:self.selected];
     self.borderView.backgroundColor = [self borderColor];
+    self.layer.borderColor = (__bridge CGColorRef _Nullable)(self.calendarColor);
     self.title.textColor = [self textColorHighlighted:self.selected];
     self.location.textColor = [self textColorHighlighted:self.selected];
     

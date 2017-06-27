@@ -24,25 +24,26 @@ class TypeRDV{
     }
     init(){
     }
-    class func getTypeRDVById(types:[TypeRDV],id:Int) -> TypeRDV{
+    class func getTypeRDVById(_ types:[TypeRDV],id:Int) -> TypeRDV{
         var vretour:TypeRDV?
-        for var i in types {
+        for i in types {
             if i.id == id {
                 vretour = i
             }
         }
         return vretour ?? TypeRDV()
     }
-    class func typesWithJSON(allResults: NSArray) -> [TypeRDV] {
+    class func typesWithJSON(_ allResults: NSArray) -> [TypeRDV] {
         var types = [TypeRDV]()
         if allResults.count>0 {
             for result in allResults {
-                let id = result["id"] as? Int ?? 0
-                let description = result["description"] as? String ?? ""
-                let couleur = result["couleur"] as? String ?? ""
-                let duree = result["duree"] as? Int ?? 0
-                let ressources = result["ressources"] as? String ?? ""
-                let idPraticien = result["idpraticien"] as? Int ?? 0
+                let r = result as! NSDictionary
+                let id = r["id"] as? Int ?? 0
+                let description = r["description"] as? String ?? ""
+                let couleur = r["couleur"] as? String ?? ""
+                let duree = r["duree"] as? Int ?? 0
+                let ressources = r["ressources"] as? String ?? ""
+                let idPraticien = r["idpraticien"] as? Int ?? 0
                 let newAlbum = TypeRDV(id: id, description: description, couleur: couleur, duree: duree, ressources: ressources, idPraticien: idPraticien)
                 types.append(newAlbum)
             }

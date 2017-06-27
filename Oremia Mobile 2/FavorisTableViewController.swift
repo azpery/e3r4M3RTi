@@ -20,7 +20,7 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
     @IBOutlet var closeButton: UIBarButtonItem!
     
     override func viewDidLoad() {
-        closeButton.setFAIcon(FAType.FATimes, iconSize: 24)
+        closeButton.setFAIcon(FAType.faTimes, iconSize: 24)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
@@ -30,13 +30,13 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
         
     }
     
-    func filterContentForSearchText(searchText: String, scope: String = "All") {
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         filteredFavoris = []
         for (_,favoris) in favorisPlus! {
-            filteredFavoris?.appendContentsOf(favoris.filter { pres in
+            filteredFavoris?.append(contentsOf: favoris.filter { pres in
                 let p = pres
                 let dexcr = p.description
-                return dexcr.lowercaseString.containsString(searchText.lowercaseString)
+                return dexcr.lowercased().contains(searchText.lowercased())
                 })
         }
         
@@ -50,16 +50,16 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
     }
     
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if searchController.isActive && searchController.searchBar.text != "" {
             return 1
         }
         let key = Array(favorisPlus!.keys)
         return key.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.isActive && searchController.searchBar.text != "" {
             return self.filteredFavoris?.count ?? 0
         }
         let key = Array(favorisPlus!.keys)[section]
@@ -68,10 +68,10 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
     }
     
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("favorisCell", forIndexPath: indexPath) as! ListeActesTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "favorisCell", for: indexPath) as! ListeActesTableViewCell
         var pres:Prestation
-        if searchController.active && searchController.searchBar.text != "" {
+        if searchController.isActive && searchController.searchBar.text != "" {
             pres = self.filteredFavoris![indexPath.row]
         }else {
             let key = Array(favorisPlus!.keys)[indexPath.section]
@@ -80,9 +80,9 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
         }
         var description = pres.description ?? "Aucune description disponible"
         var index = 1
-        if description.rangeOfString("+") != nil {
+        if description.range(of: "+") != nil {
             
-            index = description.startIndex.distanceTo((description.rangeOfString("+")?.startIndex)!)
+            index = description.characters.distance(from: description.startIndex, to: (description.range(of: "+")?.lowerBound)!)
         }
         
         if index == 0{
@@ -96,7 +96,7 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
         
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let schema = self.listeController?.actesController?.schemaDentController{
             
             self.listeController?.addActeForCell(indexPath.row, selectedCell: schema.selectedCell, schema: schema, section: indexPath.section)
@@ -107,10 +107,10 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
     }
     
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if let index = self.sectionShow.indexOf(indexPath.section) {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let index = self.sectionShow.index(of: indexPath.section) {
             return 45
-        }else if searchController.active  && searchController.searchBar.text != "" {
+        }else if searchController.isActive  && searchController.searchBar.text != "" {
             return 45
         }
         return 0
@@ -118,32 +118,32 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
         
     }
     
-    func didSelectHeader(sender : UITapGestureRecognizer){
-        let tapLocation = sender.locationInView(self.tableView)
+    func didSelectHeader(_ sender : UITapGestureRecognizer){
+        let tapLocation = sender.location(in: self.tableView)
         let formerIndex = sectionShow.count > 0 ? sectionShow[0] : 1
-        let formerIndexSet = NSIndexSet(index: formerIndex)
-        if let indexPath : NSIndexPath = self.tableView.indexPathForRowAtPoint(tapLocation){
+        let formerIndexSet = IndexSet(integer: formerIndex)
+        if let indexPath : IndexPath = self.tableView.indexPathForRow(at: tapLocation){
             let section = indexPath.section
             if formerIndex != section{
                 self.sectionShow = [section]
-                let indexSet = NSIndexSet(index: section)
-                self.tableView.reloadSections(formerIndexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
-                self.tableView.reloadSections(indexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
+                let indexSet = IndexSet(integer: section)
+                self.tableView.reloadSections(formerIndexSet, with: UITableViewRowAnimation.automatic)
+                self.tableView.reloadSections(indexSet, with: UITableViewRowAnimation.automatic)
             }else{
                 self.sectionShow = []
-                self.tableView.reloadSections(formerIndexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
+                self.tableView.reloadSections(formerIndexSet, with: UITableViewRowAnimation.automatic)
             }
         }else{
             self.sectionShow = []
-            self.tableView.reloadSections(formerIndexSet, withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.reloadSections(formerIndexSet, with: UITableViewRowAnimation.automatic)
         }
     }
     
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = SectionHeaderView()
         let key = Array(favorisPlus!.keys)
         var title = key[section]
-        title.removeAtIndex(title.startIndex.advancedBy(0))
+        title.remove(at: title.characters.index(title.startIndex, offsetBy: 0))
         view.titleLabel.text = title
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.didSelectHeader(_:)))
         tapRecognizer.delegate = self
@@ -152,21 +152,21 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
         view.addGestureRecognizer(tapRecognizer)
         return view
     }
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if searchController.active && searchController.searchBar.text != "" {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if searchController.isActive && searchController.searchBar.text != "" {
             return 0
         }
         return 45
     }
     
-    @IBAction func dismiss(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: {})
+    @IBAction func dismiss(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {})
     }
     
 }
 
 extension FavorisTableViewController: UISearchResultsUpdating, UISearchBarDelegate,  UISearchDisplayDelegate, UISearchControllerDelegate {
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
 }

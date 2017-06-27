@@ -9,87 +9,77 @@
 import UIKit
 
 class NotesTableViewController: UITableViewController {
+    @IBOutlet var dateText: UILabel!
+    @IBOutlet var datePicker: UIDatePicker!
+    @IBOutlet var localisationText: UITextField!
+    @IBOutlet var noteText: UITextView!
+    
+    var showDatePicker = false;
+    var acte = Actes()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        redraw()
+        let date = ToolBox.getDateFromString(acte.date) ?? Date()
+        dateText.text = ToolBox.getFormatedDateWithSlash(date)
+        datePicker.date = date
+        localisationText.text = "\(acte.localisation)"
+        noteText.text = acte.descriptif
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row{
+        case 0:
+            showDatePicker = !showDatePicker
+            tableView.beginUpdates()
+            tableView.endUpdates()
+            break
+        default:
+            break
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 1 && !showDatePicker{
+            return 0.0
+        } else if indexPath.row == 1 && showDatePicker{
+            return 100.0
+        }else if indexPath.row == 3 {
+            return 150.0
+        }
+        return 43.0
+        
+    }
+    
+    func redraw(){
+        
+        var rect = self.navigationController!.view.superview!.bounds;
+        rect.size.width = 605;
+        rect.size.height = 305;
+        self.navigationController!.view.superview!.bounds = rect;
+        self.navigationController!.preferredContentSize = CGSize(width: 605, height: 305);
+        self.view.setNeedsLayout()
+        self.view.setNeedsDisplay()
+    }
+    
+    @IBAction func validerAction(_ sender: AnyObject) {
+        let api = APIController()
+        var query = "UPDATE Actes SET date='\(ToolBox.getFormatedDate(datePicker.date))' ,localisation='\(localisationText.text ?? "")' , description='\(noteText.text.replace("'", withString: "''"))' WHERE id=\(acte.id)"
+        if acte.id == 0 {
+            query = "INSERT INTO actes(\"idpatient\", \"idpraticien\", \"iddocument\", \"date\", \"lettre\", \"description\") VALUES('\(acte.idPatient)', '\(preference.idUser)', '0', '\(ToolBox.getFormatedDate(datePicker.date))', '\(acte.lettre)', '\(noteText.text.replace("'", withString: "''"))')"
+        }
+        api.sendRequest(query, success: {defaut->Bool in
+            
+            return true})
+        self.dismiss(animated: true, completion: nil)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func annulerAction(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    @IBAction func dateChanged(_ sender: UIDatePicker) {
+        dateText.text = ToolBox.getFormatedDateWithSlash(sender.date)
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
