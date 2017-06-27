@@ -180,10 +180,10 @@ class NewEventTableViewController: UITableViewController  {
     }
     func deleteEvent() {
         if eventManager.deleteEvent(){
-            SCLAlertView().showSuccess("Rendez-vous supprimé", subTitle: "Le rendez vous a été supprimé", closeButtonTitle: "OK")
+            _ = SCLAlertView().showSuccess("Rendez-vous supprimé", subTitle: "Le rendez vous a été supprimé", closeButtonTitle: "OK")
         }else {
             let alert = SCLAlertView()
-            alert.showError("Erreur", subTitle: "Suppression impossible, cette évennement est en lecture seule", closeButtonTitle: "OK")
+            _ = alert.showError("Erreur", subTitle: "Suppression impossible, cette évennement est en lecture seule", closeButtonTitle: "OK")
         }
         self.dismiss(animated: true, completion: ({
             self.caller?.reloadItMotherFucker()
@@ -198,21 +198,21 @@ class NewEventTableViewController: UITableViewController  {
                 let dateFormat = DateFormatter()
                 dateFormat.dateStyle = .full
                 dateFormat.timeStyle = .medium
-                SCLAlertView().showSuccess("Rendez-vous modifié", subTitle: "Le rendez vous a été modifié pour le \(dateFormat.string(from: startDate).capitalized)", closeButtonTitle: "OK")
+                _ = SCLAlertView().showSuccess("Rendez-vous modifié", subTitle: "Le rendez vous a été modifié pour le \(dateFormat.string(from: startDate).capitalized)", closeButtonTitle: "OK")
             }else{
                 let alert = SCLAlertView()
-                alert.addButton("Besoin d'aide?") {
+                _ = alert.addButton("Besoin d'aide?") {
                     let popoverContent = (self.storyboard?.instantiateViewController(withIdentifier: "Help"))! as UIViewController
                     let nav = UINavigationController(rootViewController: popoverContent)
                     nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
                     self.present(nav, animated: true, completion: nil)
                 }
                 
-                alert.showError("Erreur", subTitle: "Il y a eu un probleme lors de l'enregistrement du rendez-vous, si le probleme persiste, contactez le support technique.", closeButtonTitle: "OK")
+                _ = alert.showError("Erreur", subTitle: "Il y a eu un probleme lors de l'enregistrement du rendez-vous, si le probleme persiste, contactez le support technique.", closeButtonTitle: "OK")
             }
             self.dismiss(animated: true, completion: ({
                 self.eventManager.agenda = self.caller
-                let mabite = self.eventManager.editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
+                _ = self.eventManager.editEvent!.eventIdentifier.characters.split{$0 == ":"}.map(String.init)
 //                self.eventManager.CalDavRessource[mabite[1]] = "X-ORE-IPP=%\(eventManager.internalEvent.patient?.id)"
                 self.tryed = false
                 self.caller?.reloadItMotherFucker()
@@ -232,17 +232,17 @@ class NewEventTableViewController: UITableViewController  {
                 let dateFormat = DateFormatter()
                 dateFormat.dateStyle = .full
                 dateFormat.timeStyle = .medium
-                SCLAlertView().showSuccess("Rendez-vous enregistré", subTitle: "Le rendez vous a été enregistré pour le \(dateFormat.string(from: startDate).capitalized)", closeButtonTitle: "OK")
+                _ = SCLAlertView().showSuccess("Rendez-vous enregistré", subTitle: "Le rendez vous a été enregistré pour le \(dateFormat.string(from: startDate).capitalized)", closeButtonTitle: "OK")
             }else{
                 let alert = SCLAlertView()
-                alert.addButton("Besoin d'aide?") {
+                _ = alert.addButton("Besoin d'aide?") {
                     let popoverContent = (self.storyboard?.instantiateViewController(withIdentifier: "Help"))! as UIViewController
                     let nav = UINavigationController(rootViewController: popoverContent)
                     nav.modalPresentationStyle = UIModalPresentationStyle.pageSheet
                     self.present(nav, animated: true, completion: nil)
                 }
                 
-                alert.showError("Erreur", subTitle: "Il y a eu un probleme lors de l'enregistrement du rendez-vous, si le probleme persiste, contactez le support technique.", closeButtonTitle: "OK")
+                _ = alert.showError("Erreur", subTitle: "Il y a eu un probleme lors de l'enregistrement du rendez-vous, si le probleme persiste, contactez le support technique.", closeButtonTitle: "OK")
             }
             self.dismiss(animated: true, completion: ({
                 self.caller?.reloadItMotherFucker()

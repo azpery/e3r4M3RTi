@@ -32,7 +32,7 @@ class SelectionDocumentTableViewController: UITableViewController, APIController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectionModeleCell", for: indexPath) as! ModeleDocumentEditorTableViewCell
-        cell.nomModeleLabel.text = self.typeDocuments[indexPath.row].nomType ?? "Nom du type de modèle non renseigné"
+        cell.nomModeleLabel.text = self.typeDocuments[indexPath.row].nomType
         return cell
     }
     

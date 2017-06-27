@@ -48,9 +48,7 @@ import Foundation
             }
             
         }
-        catch{
-            return false
-        }
+        
     }
     func getCalDavRessources(_ date:Date? = nil, calendars:[String]? = [""]){
         var date = date
@@ -69,7 +67,7 @@ import Foundation
         get(urlPath.addingPercentEscapes(using: String.Encoding.utf8)!, searchString: "query=\("")")
     }
     func setCalDavRessources(_ uid:String,ipp:Int,statut:Int,dtstart:String,dtend:String,summary:String,title:String, type:Int, date:Date? = Date()){
-        var date = date
+        let date = date
         if let newsummary = summary.addingPercentEscapes(using: String.Encoding.utf8) {
             let newTitle = title.addingPercentEscapes(using: String.Encoding.utf8)
             let urlPath = "http://\(preference.ipServer)/scripts/OremiaMobileHD/setEvent.php?UID=\(uid)&IPP=\(ipp)&STATUT=\(statut)&DTSTART=\(dtstart)&DTEND=\(dtend)&SUMMARY=\(newsummary)&TITLE=\(newTitle!)&idP=\(preference.idUser)&TYPE=\(type)&date=\(ToolBox.getFormatedDate(date!))"
@@ -125,7 +123,7 @@ import Foundation
     }
     func pingServer(){
         let url = "\(preference.ipServer)"
-        SimplePingHelper.ping(url, target: self.delegate, sel: "pingResult:")
+        SimplePingHelper.ping(url, target: self.delegate, sel: Selector("pingResult:"))
     }
     
     func get(_ path: String, searchString:String, success: @escaping (NSDictionary)->Bool = {defaut->Bool in return false}, failure: @escaping (AnyObject)->Bool = {defaut->Bool in return false}) {
@@ -138,13 +136,11 @@ import Foundation
             let postLength:NSString = String( postString.characters.count ) as NSString
             request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
             request.httpBody = postString.data(using: String.Encoding.utf8)!
-            let body = request.httpBody!.description
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             let session = URLSession.shared
             
             let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
-                let err = error
                 if let httpResponse = response as? HTTPURLResponse {
                     if httpResponse.statusCode == 200 {
                         if(error != nil) {
@@ -217,11 +213,11 @@ import Foundation
             let session = URLSession.shared
             let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
                 print("Task completed")
-                print(response)
+                print(response ?? "pouet")
                 let responseString = NSString(data: data ?? Data(), encoding: String.Encoding.utf8.rawValue)!
                 print("responseString = \(responseString)")
                 let idInserted = Int(responseString as String)
-                success(idInserted ?? 0)
+                _ = success(idInserted ?? 0)
                 if(error != nil) {
                     print(error!.localizedDescription)
                 }
@@ -255,15 +251,14 @@ import Foundation
         body.append(NSString(format: "\r\n--%@\r\n", boundary).data(using: String.Encoding.utf8.rawValue)!)
         request.httpBody = body as Data
         let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
-            print(response)
+            print(response ?? "Pas de réponse")
             let returnString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("returnString \(returnString)")
-            let err: NSError
+            print("returnString \(returnString ?? "Pas de réponse")")
             var jsonResult:NSDictionary
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
-                    do {
-                        jsonResult = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                     do{
+                        jsonResult = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                         
                             
                             //                            let results: NSArray = jsonResult["results"] as! NSArray
@@ -413,7 +408,7 @@ import Foundation
             u += 1
         }
         self.updatepreference(nomPref+":"+lesCal+cachePref)
-        self.readPreference()
+        _ = self.readPreference()
     }
     
     class func loadFileSync(_ url: URL,fileType:String,nom:String, id:Int, completion:(_ path:String, _ error:NSError?) -> Void)->URL {

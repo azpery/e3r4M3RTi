@@ -32,7 +32,7 @@ class ModeleDocumentEditorTableViewController: UITableViewController, APIControl
         let alert = SCLAlertView()
         let txt = alert.addTextField("Questionnaire médical")
         alert.showCloseButton = false
-        alert.addButton("Ajouter"){
+        _ = alert.addButton("Ajouter"){
             self.api.sendRequest("INSERT INTO typedocument(nomtype, nomfichier) VALUES('\(txt.text!)', '') RETURNING idtype",success: {
                 (results)->Bool in
                 let resultsArr: NSArray = (results["results"] as? NSArray) ?? []
@@ -42,10 +42,10 @@ class ModeleDocumentEditorTableViewController: UITableViewController, APIControl
                 return true
             })
         }
-        alert.addButton("Annuler"){
+        _ = alert.addButton("Annuler"){
             
         }
-        alert.showInfo("Créer un nouveau questionnaire", subTitle: "Veuillez nommer votre questionaire")
+        _ = alert.showInfo("Créer un nouveau questionnaire", subTitle: "Veuillez nommer votre questionaire")
         
     }
 
@@ -65,7 +65,7 @@ class ModeleDocumentEditorTableViewController: UITableViewController, APIControl
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ModeleCell", for: indexPath) as! ModeleDocumentEditorTableViewCell
-        cell.nomModeleLabel.text = self.typeDocuments[indexPath.row].nomType ?? "Nom du type de modèle non renseigné"
+        cell.nomModeleLabel.text = self.typeDocuments[indexPath.row].nomType
         return cell
     }
     

@@ -79,7 +79,7 @@ class Actes{
                 }
                 //c = allResults.count - 1
             }
-            if let s = section {
+            if section != nil {
                 lesSectionActes[section!] = lesActes
                 section = nil
                 lesActes.removeAll()

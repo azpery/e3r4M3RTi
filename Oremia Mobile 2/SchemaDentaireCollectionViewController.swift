@@ -129,7 +129,7 @@ class SchemaDentaireCollectionViewController:  UICollectionViewController{
         cell.dentLayout.clipsToBounds = true
         let layer = self.chart?.layerFromIndexPath(i) ?? [""]
 
-        cell.dent8Layout.image = UIImage(named: "\(self.chart?.localisationFromIndexPath(i))")
+        cell.dent8Layout.image = UIImage(named: "\(String(describing: self.chart?.localisationFromIndexPath(i)))")
         
         cell = (self.chart?.imagesFromIndexPath(i, layer: layer, cell: cell))!
         

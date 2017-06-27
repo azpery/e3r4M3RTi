@@ -87,7 +87,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
         
         sender.view!.isUserInteractionEnabled = false
         let alert = SCLAlertView()
-        alert.addButton("Oui", action: {
+        _ = alert.addButton("Oui", action: {
             let cell = sender.view as! UICollectionViewCell
             let indexPath = self.collectionView?.indexPath(for: cell)
             
@@ -102,7 +102,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
             
             
         })
-        alert.showWarning("Modification image patient", subTitle: "Etes vous sur de vouloir choisir cette image?", closeButtonTitle: "Non")
+        _ = alert.showWarning("Modification image patient", subTitle: "Etes vous sur de vouloir choisir cette image?", closeButtonTitle: "Non")
         
         }
         
@@ -204,7 +204,7 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
                     
                 }
                 if(type == 3){
-                    SCLAlertView().showSuccess("Photo mis à jour", subTitle: "La modification de la photo du patient a été effectué avec succes", closeButtonTitle: "Fermer")
+                    _ = SCLAlertView().showSuccess("Photo mis à jour", subTitle: "La modification de la photo du patient a été effectué avec succes", closeButtonTitle: "Fermer")
                 }
             })
             
@@ -268,8 +268,6 @@ class ImageCollectionViewController: UICollectionViewController, APIControllerPr
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
-        var imageToSave:UIImage
-        imageToSave = image
         self.dismiss(animated: true, completion: nil)
         api?.insertImage(image, idPatient: self.patient!.id, isNewPp: false)
     }

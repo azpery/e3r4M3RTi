@@ -201,8 +201,8 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
     
     func showActivityLoader(){
         self.timer.invalidate()
-        SwiftSpinner.show("Mise à jour des fichiers...")
-        SwiftSpinner.showWithDelay(15.0, title: "Nous mettons à jour les fichiers sur le poste serveur.")
+        _ = SwiftSpinner.show("Mise à jour des fichiers...")
+        _ = SwiftSpinner.showWithDelay(15.0, title: "Nous mettons à jour les fichiers sur le poste serveur.")
     }
     func pingResult(_ success:NSNumber){
         if(success.boolValue){
@@ -240,7 +240,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                                 
                             }else{
                                 let alert = SCLAlertView()
-                                alert.showError("Licence invalide", subTitle: "Vous n'avez pas la licence requise pour utiliser cette application.\n Veuillez contacter le service commercial de Zumatec.", closeButtonTitle:"Fermer")
+                                _ = alert.showError("Licence invalide", subTitle: "Vous n'avez pas la licence requise pour utiliser cette application.\n Veuillez contacter le service commercial de Zumatec.", closeButtonTitle:"Fermer")
                                 self.api!.selectpraticien()
                             }
                         })
@@ -269,7 +269,7 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     let alert = SCLAlertView()
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     
-                    alert.showError("Mot de passe incorrect", subTitle: "Mot de passe incorrect ou inexistant, veuillez resaisir vos identifiants", closeButtonTitle:"Fermer")
+                    _ = alert.showError("Mot de passe incorrect", subTitle: "Mot de passe incorrect ou inexistant, veuillez resaisir vos identifiants", closeButtonTitle:"Fermer")
                 })
                 
             } else {
@@ -292,16 +292,16 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     SwiftSpinner.hide()
                     let alert = SCLAlertView()
                     alert.showCloseButton = false
-                    alert.addButton("Lancer la démonstration"){
+                    _ = alert.addButton("Lancer la démonstration"){
                         preference.ipServer = "109.10.173.81"
                         self.api!.selectpraticien()
                     }
-                    alert.addButton("Besoin d'aide?") {
+                    _ = alert.addButton("Besoin d'aide?") {
                         let help = HelpButton()
                         help.caller = self
                         help.triggerPopOver()
                     }
-                    alert.showError("Erreur serveur", subTitle: "Veuillez contacter le service technique. \nLe serveur n'a pas les droits suffisant pour mettre à jour les fichiers.\nVeuillez nous excuser mais il est nécessaire d'effectuer une opération sur votre poste serveur.")
+                    _ = alert.showError("Erreur serveur", subTitle: "Veuillez contacter le service technique. \nLe serveur n'a pas les droits suffisant pour mettre à jour les fichiers.\nVeuillez nous excuser mais il est nécessaire d'effectuer une opération sur votre poste serveur.")
                     
                 }else{
                     self.timer.invalidate()
@@ -324,20 +324,19 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                 let alert = SCLAlertView()
                 let txt = alert.addTextField(preference.ipServer)
                 alert.showCloseButton = false
-                alert.addButton("Valider") {
+                _ = alert.addButton("Valider") {
                     self.displayLoad()
-                    print("Text value: \(txt.text)")
                     preference.ipServer=txt.text!
                     self.api!.updateServerAdress(txt.text!)
                     self.api!.pingServer()
                     //                    self.api!.selectpraticien()
                 }
-                alert.addButton("Trouver mon serveur"){
+                _ = alert.addButton("Trouver mon serveur"){
                     self.praticiens.removeAll(keepingCapacity: false)
                     self.praticiens.append(Praticien(id: 0, nom:"Recherche du serveur", prenom: "", licence: 0))
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     DispatchQueue.main.async(execute: {
-                        SwiftSpinner.show("Recherche du serveur sur votre réseau...")
+                        _ = SwiftSpinner.show("Recherche du serveur sur votre réseau...")
                     })
                     self.autoDetect.getServerIpAdress({ip->Void in
                         self.praticiens.removeAll(keepingCapacity: false)
@@ -356,15 +355,15 @@ class selectPratViewController: UIViewController, UIScrollViewDelegate, APIContr
                     self.initScroll()
                     self.loadVisiblePages()
                 }
-                alert.addButton("Lancer la démonstration"){
+                _ = alert.addButton("Lancer la démonstration"){
                     preference.ipServer = "109.10.173.81"
                     self.api!.selectpraticien()
                 }
-                alert.addButton("Réessayer"){
+                _ = alert.addButton("Réessayer"){
                     self.api!.pingServer()
                 }
                 
-                alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
+                _ = alert.showInfo("Serveur Introuvable", subTitle: "Veuillez saisir une adresse correct")
                 
             case 2 :
                 self.praticiens.removeAll(keepingCapacity: false)

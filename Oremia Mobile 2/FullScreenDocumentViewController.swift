@@ -50,7 +50,7 @@ class FullScreenDocumentViewController: UIViewController {
 
         webView!.load(day_url_request)
         self.navigationItem.hidesBackButton = true
-        let newBackButton = UIBarButtonItem(title: "Retour au menu", style: UIBarButtonItemStyle.bordered, target: self, action: #selector(FullScreenDocumentViewController.back(_:)))
+        let newBackButton = UIBarButtonItem(title: "Retour au menu", style: UIBarButtonItemStyle.plain, target: self, action: #selector(FullScreenDocumentViewController.back(_:)))
         self.navigationItem.leftBarButtonItem = newBackButton;
     }
     
@@ -60,7 +60,7 @@ class FullScreenDocumentViewController: UIViewController {
         txt.isSecureTextEntry = true
         alert.appearance.showCloseButton = false
         alert.appearance.shouldAutoDismiss = false
-        alert.addButton("Valider"){
+        _ = alert.addButton("Valider"){
             if txt.text == ""{
                 ToolBox.shakeIt(alert.baseView)
             }else{
@@ -68,11 +68,11 @@ class FullScreenDocumentViewController: UIViewController {
                 alert.hideView()
             }
         }
-        alert.addButton("Annuler"){
+        _ = alert.addButton("Annuler"){
             self.navigationController?.popViewController(animated: true)
             alert.hideView()
         }
-        alert.showInfo("Saisir un mot de passe", subTitle: "Veuillez saisir un mot de passe.")
+        _ = alert.showInfo("Saisir un mot de passe", subTitle: "Veuillez saisir un mot de passe.")
     }
     
     func back(_ sender: UIBarButtonItem) {
@@ -81,7 +81,7 @@ class FullScreenDocumentViewController: UIViewController {
         txt.keyboardType = UIKeyboardType.numberPad
         txt.isSecureTextEntry = true
         alert.appearance.shouldAutoDismiss = false
-        alert.addButton("Valider"){
+        _ = alert.addButton("Valider"){
             if(self.mdp == txt.text){
                 alert.hideView()
                 self.navigationController?.popViewController(animated: true)
@@ -89,7 +89,7 @@ class FullScreenDocumentViewController: UIViewController {
                 ToolBox.shakeIt(alert.baseView)
             }
         }
-        alert.showInfo("Saisir le mot de passe", subTitle: "Veuillez saisir le mot de passe.")
+        _ = alert.showInfo("Saisir le mot de passe", subTitle: "Veuillez saisir le mot de passe.")
         
         
     }

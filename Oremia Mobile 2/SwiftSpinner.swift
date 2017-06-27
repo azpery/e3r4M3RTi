@@ -139,7 +139,7 @@ open class SwiftSpinner: UIView {
         let spinner = SwiftSpinner.sharedInstance
         
         spinner.showWithDelayBlock = {
-            SwiftSpinner.show(title, animated: animated)
+            _ = SwiftSpinner.show(title, animated: animated)
         }
         
         spinner.delay(seconds: delay) { [weak spinner] in
@@ -342,7 +342,7 @@ open class SwiftSpinner: UIView {
         }
         
         let duration = Double(Float(arc4random()) /  Float(UInt32.max)) * 2.0 + 1.5
-        let randomRotation = Double(Float(arc4random()) /  Float(UInt32.max)) * M_PI_4 + M_PI_4
+        let randomRotation = Double(Float(arc4random()) /  Float(UInt32.max)) * Double.pi / 4 + Double.pi / 4
         
         //outer circle
         UIView.animate(withDuration: duration, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.0, options: [], animations: {
@@ -365,7 +365,7 @@ open class SwiftSpinner: UIView {
         
         //inner circle
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.currentInnerRotation += CGFloat(M_PI_4)
+            self.currentInnerRotation += CGFloat(Double.pi / 4)
             self.innerCircleView.transform = CGAffineTransform(rotationAngle: self.currentInnerRotation)
             }, completion: {_ in
                 self.delay(seconds: 0.5, completion: {

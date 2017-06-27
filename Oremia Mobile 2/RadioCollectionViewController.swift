@@ -160,7 +160,6 @@ class RadioCollectionViewController: UICollectionViewController,  APIControllerP
     
     override func collectionView(_ collectionView: UICollectionView,
     didSelectItemAt indexPath: IndexPath){
-        let idr:Int = (idRadio?.object(at: indexPath.row) as AnyObject).value(forKey: "id") as! Int
         selectedPhoto = self.imageCache[indexPath.row]
         self.performSegue(withIdentifier: "showRadio", sender: self)
         

@@ -41,7 +41,7 @@ class ActesViewController: UIViewController {
         if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.pad){
             Overlay.shared.showOverlay(self.view, text: "Cet onglet n'est disponible que sur iPad.")
         }
-        if (self.interfaceOrientation.isPortrait)
+        if view.bounds.size.width > view.bounds.size.height
         {
             Overlay.shared.showOverlay(self.view, text: "Veuillez tourner votre iPad en mode paysage.")
         }
@@ -114,16 +114,16 @@ class ActesViewController: UIViewController {
         DispatchQueue.main.async(execute: {
             let alert = SCLAlertView()
             alert.showCloseButton = false
-            alert.addButton("Confirmer"){
+            _ = alert.addButton("Confirmer"){
                 let api = APIController()
                 self.saisieActesController!.prestation = []
                 self.schemaDentController?.chart?.sql = ""
-                api.insertActes(self.saisieActesController!.patient!, actes: [] )
+                _ = api.insertActes(self.saisieActesController!.patient!, actes: [] )
                 self.saisieActesController!.tableView.reloadData()
             }
-            alert.addButton("Annuler"){
+            _ = alert.addButton("Annuler"){
             }
-            alert.showInfo("Voulez-vous vider la FSE?", subTitle: "Confirmer la suppression de la feuille de soin.")
+            _ = alert.showInfo("Voulez-vous vider la FSE?", subTitle: "Confirmer la suppression de la feuille de soin.")
         })
     }
     @IBAction func showFavoris(_ sender: AnyObject) {
@@ -144,15 +144,15 @@ class ActesViewController: UIViewController {
     @IBAction func saveBridge(_ sender: AnyObject) {
         let alert = SCLAlertView()
         alert.showCloseButton = false
-        alert.addButton("Confirmer"){
+        _ = alert.addButton("Confirmer"){
             var  sql = self.schemaDentController?.chart?.sql ?? ","
             sql = sql.substring(to: sql.characters.index(before: sql.endIndex))
             self.listeActesController?.api.sendInsert("INSERT INTO chart(idpatient, date, localisation, layer) VALUES\(sql);")
             self.schemaDentController?.chart?.sql = ""
         }
-        alert.addButton("Annuler"){
+        _ = alert.addButton("Annuler"){
         }
-        alert.showInfo("Voulez-vous enregister le schéma?", subTitle: "Vous allez enregistrer le schéma dentaire.\n Note: la FSE s'enregistre automatiquement.")
+        _ = alert.showInfo("Voulez-vous enregister le schéma?", subTitle: "Vous allez enregistrer le schéma dentaire.\n Note: la FSE s'enregistre automatiquement.")
         
     }
 

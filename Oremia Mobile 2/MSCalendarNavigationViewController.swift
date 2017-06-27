@@ -13,7 +13,7 @@ class MSCalendarNavigationViewController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let  calendarViewController  = MSCalendarViewController.init()
-        self.title = "\(self.title) -  Dr \(preference.nomUser)"
+        self.title = "\(String(describing: self.title)) -  Dr \(preference.nomUser)"
         self.show(calendarViewController, sender: self)
         
         // Do any additional setup after loading the view.

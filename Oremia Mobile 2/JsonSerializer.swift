@@ -129,7 +129,7 @@ open class JSONSerializer {
             
             var handledValue = String()
             if value is Int || value is Double || value is Float || value is Bool {
-                handledValue = String(describing: value ?? "null")
+                handledValue = String(describing: value )
             }
             else if let array = value as? [Int?] {
                 handledValue += "["

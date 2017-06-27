@@ -92,7 +92,7 @@ class AutoDetect: NSObject {
         let request1: URLRequest = URLRequest(url: url)
         let response: AutoreleasingUnsafeMutablePointer<URLResponse?>?=nil
         do{
-            let dataVal = try NSURLConnection.sendSynchronousRequest(request1, returning: response)
+            _ = try NSURLConnection.sendSynchronousRequest(request1, returning: response)
             
             return true
             
@@ -102,6 +102,5 @@ class AutoDetect: NSObject {
             print(error.localizedDescription)
             return false
         }
-        return false
     }
 }

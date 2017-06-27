@@ -66,7 +66,7 @@ class DTIAnimChasingDots: DTIAnimProtocol {
         let aniRot = CABasicAnimation()
         aniRot.keyPath = "transform.rotation"
         aniRot.fromValue = 0;
-        aniRot.toValue = CGFloat(2*M_PI);
+        aniRot.toValue = CGFloat(2*Double.pi);
         aniRot.isRemovedOnCompletion = false
         aniRot.repeatCount = HUGE
         aniRot.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)

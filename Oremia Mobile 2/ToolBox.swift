@@ -37,10 +37,7 @@ import Foundation
         let month = components.month
         let day = components.day
         
-        print(year)
-        print(month)
-        print(day)
-        return "\(year)-\(month)-\(day)"
+        return "\(year ?? 1999)-\( month ?? 01)-\(day ?? 01)"
     }
     static func getFormatedDateWithSlash(_ date:Date)->String{
         
@@ -51,10 +48,7 @@ import Foundation
         let month = components.month
         let day = components.day
         
-        print(year)
-        print(month)
-        print(day)
-        return "\(day)/\(month)/\(year)"
+        return "\(year ?? 1999)/\( month ?? 01)/\(day ?? 01)"
     }
     
     static func isDateGreaterThanToday(_ date: Date)->Bool{
@@ -132,7 +126,6 @@ import Foundation
         dateFormater.dateFormat = "yyyy-MM-dd"
         let birthdayDate = dateFormater.date(from: birthday)
         let calendar = Calendar.current
-        let now: Date! = Date()
         let age = calendar.component(.year, from: birthdayDate!)
         return age
     }

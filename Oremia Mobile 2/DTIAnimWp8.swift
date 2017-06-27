@@ -21,7 +21,7 @@ class DTIAnimWp8: DTIAnimProtocol {
     init(indicatorView: DTIActivityIndicatorView) {
         self.owner = indicatorView
         
-        for index in (0 ..< ballCount) {
+        for _ in (0 ..< ballCount) {
             let layer = CALayer()
             let layerBall = CALayer()
             layer.opacity = 0.0
@@ -91,12 +91,12 @@ class DTIAnimWp8: DTIAnimProtocol {
                 CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault),
                 CAMediaTimingFunction(name: kCAMediaTimingFunctionDefault),
             ]
-            var rotationsValues = [CGFloat(M_PI)]
-            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(M_PI*(300.0-180.0)/180.0))
-            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(M_PI*(410.0-300.0)/180.0))
-            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(M_PI*(645.0-410.0)/180.0))
-            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(M_PI*(770.0-645.0)/180.0))
-            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(M_PI*(900.0-770.0)/180.0))
+            var rotationsValues = [CGFloat(Double.pi)]
+            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(Double.pi*(300.0-180.0)/180.0))
+            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(Double.pi*(410.0-300.0)/180.0))
+            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(Double.pi*(645.0-410.0)/180.0))
+            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(Double.pi*(770.0-645.0)/180.0))
+            rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(Double.pi*(900.0-770.0)/180.0))
             rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(0))
             rotationsValues.append(CGFloat(rotationsValues[rotationsValues.count-1]) + CGFloat(0))
             anim.values = rotationsValues

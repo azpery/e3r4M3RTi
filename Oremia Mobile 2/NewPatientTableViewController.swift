@@ -114,8 +114,8 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
             if resultsArr.count != 0  && self.parent != nil {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
-                alert.addButton("Ok", action:{})
-                alert.showSuccess("Patient ajouté", subTitle: "Le nouveau patient a été ajouté avec succès.")
+                _ = alert.addButton("Ok", action:{})
+                _ = alert.showSuccess("Patient ajouté", subTitle: "Le nouveau patient a été ajouté avec succès.")
                 self.parents!.tracks = []
                 self.parents!.api.sendRequest("select * from patients where idpraticien=\(preference.idUser) ORDER BY id DESC LIMIT 10 OFFSET 0 ")
                 self.dismiss(animated: true, completion: {})
@@ -124,8 +124,8 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
                 if !self.fromCal{
                     let alert = SCLAlertView()
                     alert.showCloseButton = false
-                    alert.addButton("Ok", action:{})
-                    alert.showError("Erreur", subTitle: "Une erreur a survenu lors de l'ajout de . \n Veuillez vérifié les champs rentrés")
+                    _ = alert.addButton("Ok", action:{})
+                    _ = alert.showError("Erreur", subTitle: "Une erreur a survenu lors de l'ajout de . \n Veuillez vérifié les champs rentrés")
                 }else {
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "dd/M/yyyy"
@@ -146,7 +146,7 @@ class NewPatientTableViewController: UITableViewController, UIPickerViewDelegate
     func handleError(_ results: Int) {
         if results == 1{
             DispatchQueue.main.async(execute: {
-                SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer")
+                _ = SCLAlertView().showError("Serveur introuvable", subTitle: "Veuillez rentrer une adresse ip de serveur correct", closeButtonTitle:"Fermer")
             })
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false

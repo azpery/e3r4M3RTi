@@ -49,7 +49,7 @@ class TypeModeleDocument {
             for result in allResults {
                 let r = result as! NSDictionary
                 let idType = r["idtype"] as? Int ?? 0
-                let nomType = self.convertSpecialChar(r["nomtype"] as? String) ?? ""
+                let nomType = self.convertSpecialChar(r["nomtype"] as? String) 
                 let nomFichier = r["nomfichier"] as? String ?? ""
                 
                 let newAlbum = TypeModeleDocument(idType: idType, nomType: nomType , nomFichier: nomFichier)

@@ -74,7 +74,7 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
         if editingStyle == UITableViewCellEditingStyle.delete {
             self.prestation.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-            api.insertActes(self.patient!, actes: prestation, success: {defaut->Bool in return true} )
+            _ = api.insertActes(self.patient!, actes: prestation, success: {defaut->Bool in return true} )
         }
     }
     
@@ -85,7 +85,7 @@ class SaisieActesTableViewController: UITableViewController, APIControllerProtoc
     
     func callback(_ text:String)->Bool{
         selectedActe?.note = text
-        api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation, success: {defaut->Bool in return true} )
+        _ = api.insertActes(self.patient!, actes: self.actesController!.saisieActesController!.prestation, success: {defaut->Bool in return true} )
         return false
     }
     

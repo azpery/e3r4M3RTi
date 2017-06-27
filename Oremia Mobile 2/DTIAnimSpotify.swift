@@ -22,7 +22,7 @@ class DTIAnimSpotify: DTIAnimProtocol {
     init(indicatorView: DTIActivityIndicatorView) {
         self.owner = indicatorView
         
-        for index in (0 ..< circleCount) {
+        for _ in (0 ..< circleCount) {
             let layer = CALayer()
             
             self.circleView.layer.addSublayer(layer)

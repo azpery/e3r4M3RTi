@@ -55,7 +55,7 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
             return 1
         }
         let key = Array(favorisPlus!.keys)
-        return key.count ?? 0
+        return key.count 
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,7 +78,7 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
             let array = favorisPlus![key]
             pres = array![indexPath.row]
         }
-        var description = pres.description ?? "Aucune description disponible"
+        var description = pres.description 
         var index = 1
         if description.range(of: "+") != nil {
             
@@ -108,7 +108,7 @@ class FavorisTableViewController: UITableViewController, UIGestureRecognizerDele
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if let index = self.sectionShow.index(of: indexPath.section) {
+        if self.sectionShow.index(of: indexPath.section) != nil {
             return 45
         }else if searchController.isActive  && searchController.searchBar.text != "" {
             return 45

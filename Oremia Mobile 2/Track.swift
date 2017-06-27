@@ -20,13 +20,9 @@ class Track {
     }
     class func tracksWithJSON(_ allResults: NSArray) -> [Track] {
         
-        var tracks = [Track]()
+        let tracks = [Track]()
         
-        if allResults.count>0 {
-            for trackInfo in allResults {
-                // Create the track
-            }
-        }
+        
         return tracks
     }
 }

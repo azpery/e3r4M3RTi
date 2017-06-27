@@ -81,7 +81,7 @@ class Prestation{
         var parent = ""
         favorisPlus["-favoris"] = []
         for presation in allPrestations {
-            let description = presation.description ?? "Aucune description disponible"
+            let description = presation.description
             
             if description.range(of: "Plus...") != nil{
                 isPlusPassed = true

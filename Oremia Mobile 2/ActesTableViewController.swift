@@ -57,14 +57,12 @@ class ActesTableViewController: UITableViewController, APIControllerProtocol, QL
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-                let index = sortedActes.index(sortedActes.startIndex, offsetBy: section)
         return lesActes.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "actesCell", for: indexPath) as! ActesTableViewCell
-        let index = sortedActes.index(sortedActes.startIndex, offsetBy: indexPath.section)
         let lActe = lesActes[indexPath.row]
         let dateFormat = DateFormatter()
         dateFormat.dateFormat = "yyyy-MM-dd"

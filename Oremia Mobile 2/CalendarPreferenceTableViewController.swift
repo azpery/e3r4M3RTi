@@ -29,7 +29,7 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
         super.viewDidLoad()
         let alert = SCLAlertView()
         alert.showCloseButton = false
-        alert.addButton("J'ai compris"){
+        _ = alert.addButton("J'ai compris"){
             
         }
         
@@ -50,7 +50,7 @@ class CalendarPreferenceTableViewController: UITableViewController, APIControlle
                             
                         }else{
                             DispatchQueue.main.async(execute: {
-                                alert.showInfo("Calendrier introuvable", subTitle: "Le calendrier de l'agenda 2 n'a pas été configuré pour ce praticien. \n Veuillez sélectionner un calendrier dans les préférences du calendrier dans Oremia pour le Dr \(preference.nomUser).")
+                                _ = alert.showInfo("Calendrier introuvable", subTitle: "Le calendrier de l'agenda 2 n'a pas été configuré pour ce praticien. \n Veuillez sélectionner un calendrier dans les préférences du calendrier dans Oremia pour le Dr \(preference.nomUser).")
                             })
                         }
                         DispatchQueue.main.async(execute: {

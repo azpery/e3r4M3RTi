@@ -56,7 +56,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         switch (status) {
         case EKAuthorizationStatus.notDetermined:
             // This happens on first-run
-            self.requestAccessToCalendar()
+            _ = self.requestAccessToCalendar()
         case EKAuthorizationStatus.authorized:
             // Things are in line with being able to show the calendars in the table view
             self.loadCalendars()
@@ -64,7 +64,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             
         case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
             // We need to help them give us permission
-            self.requestAccessToCalendar()
+            _ = self.requestAccessToCalendar()
             break
             
         }
@@ -75,7 +75,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         switch (status) {
         case EKAuthorizationStatus.notDetermined:
             // This happens on first-run
-            requestAccessToCalendar()
+            _ = requestAccessToCalendar()
         case EKAuthorizationStatus.authorized:
             // Things are in line with being able to show the calendars in the table view
             if agenda != nil {
@@ -112,7 +112,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             let kalendar = allCalendars![(allCalendars?.count)!-1]
             api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [kalendar.title])
             self.defaultCalendar = kalendar
-            api.readPreference()
+            _ = api.readPreference()
         } else {
             for k in allCalendars! {
                 for x in calendarArray{
@@ -159,7 +159,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 titles.append(k.title)
             }
             api.addPref("calendrier\(preference.idUser)", prefs: titles)
-            api.readPreference()
+            _ = api.readPreference()
         } else {
             self.calendars = bidule
             
@@ -185,7 +185,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                     
                     for i in 0 ..< eventsArray.count {
                         let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
-                        var eventExists: Bool = false
 //                        if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
 //                            for var j = 0; j < uniqueEventsArray.count; j++ {
 //                                if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
@@ -223,7 +222,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 var eventsArray: [AnyObject] = self.eventStore.events(matching: predicate)
                 for i in 0 ..< eventsArray.count {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
-                    var eventExists: Bool = false
 //                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
 //                        for var j = 0; j < uniqueEventsArray.count; j++ {
 //                            if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
@@ -269,7 +267,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 var eventsArray: [AnyObject] = self.eventStore.events(matching: predicate)
                 for i in 0 ..< eventsArray.count {
                     let currentEvent: EKEvent =  eventsArray[i] as! EKEvent
-                    var eventExists: Bool = false
 //                    if currentEvent.recurrenceRules != nil && currentEvent.recurrenceRules!.count > 0 {
 //                        for var j = 0; j < uniqueEventsArray.count; j++ {
 //                            if uniqueEventsArray[j].eventIdentifier == currentEvent.eventIdentifier {
@@ -469,7 +466,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     func setDefautCalendar(_ dCal:EKCalendar){
         api.addPref("calendrierpardefaut\(preference.idUser)", prefs: [dCal.title])
         self.defaultCalendar = dCal
-        api.readPreference()
+        _ = api.readPreference()
     }
     func didReceiveAPIResults(_ results: NSDictionary) {
         self.CalDavRessource = results["results"] as? NSDictionary

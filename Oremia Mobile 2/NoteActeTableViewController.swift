@@ -48,7 +48,7 @@ class NoteActeTableViewController: UITableViewController {
     }
 
     @IBAction func validerAction(_ sender: AnyObject) {
-        self.callback(self.noteText.text)
+        _ = self.callback(self.noteText.text)
         self.dismiss(animated: true, completion: nil)
     }
     

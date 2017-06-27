@@ -208,9 +208,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
         if segue.destination.isKind(of: SelectionDocumentTableViewController.self){
             let fullScreenView: SelectionDocumentTableViewController = segue.destination as! SelectionDocumentTableViewController
             fullScreenView.callback = self.callback
-            if let controller = segue.destination as? UIViewController {
-                controller.popoverPresentationController!.delegate = self
-            }
+            segue.destination.popoverPresentationController!.delegate = self
         }else
             if segue.destination.isKind(of: FullScreenDocumentViewController.self){
                 let fullScreenView: FullScreenDocumentViewController = segue.destination as! FullScreenDocumentViewController
@@ -290,11 +288,7 @@ class DocumentPatientTableViewController: UITableViewController, APIControllerPr
                 self.performSegue(withIdentifier: "showSignature", sender: self)
             }
             
-        }
-        let textField = UILabel()
-        
-
-        
+        }        
     }
     
 

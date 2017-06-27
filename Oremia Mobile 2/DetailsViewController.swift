@@ -99,9 +99,9 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
         let flags: NSCalendar.Unit = [.NSDayCalendarUnit, .NSMonthCalendarUnit, .NSYearCalendarUnit]
         let date = Date()
         let components = (Calendar.current as NSCalendar).components(flags, from: date)
-        let year = components.year as! Int
+        let year = components.year!
         if (ddate != nil ){
-            let dyear =  (Calendar.current as NSCalendar).components(flags, from: ddate!).year as! Int
+            let dyear =  (Calendar.current as NSCalendar).components(flags, from: ddate!).year!
             let dage = year - dyear
             cell.age.text = "\(dage) ans"
         }else {
@@ -151,10 +151,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource, UITableVie
             _ = tracks[indexPath.row]
         }
     }
-    func searchDisplayControllerWillBeginSearch(_ controller: UISearchDisplayController) {
+    @nonobjc func searchDisplayControllerWillBeginSearch(_ controller: UISearchController) {
         controller.searchBar.showsCancelButton = false
     }
-    func searchDisplayControllerDidBeginSearch(_ controller: UISearchDisplayController) {
+    @nonobjc func searchDisplayControllerDidBeginSearch(_ controller: UISearchController) {
         controller.searchBar.showsCancelButton = false
         controller.searchBar.showsSearchResultsButton = false
     }

@@ -96,17 +96,17 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
     }
     @IBAction func Valider(_ sender: AnyObject) {
         let alert = SCLAlertView()
-        alert.addButton("Valider", action:{
+        _ = alert.addButton("Valider", action:{
             self.detailsViewController!.editPatient()
         })
-        alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir modifier \(patient!.prenom)", closeButtonTitle:"Annuler")
+        _ = alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir modifier \(patient!.prenom)", closeButtonTitle:"Annuler")
     }
     @IBAction func Retablir(_ sender: AnyObject) {
         let alert = SCLAlertView()
-        alert.addButton("Oui", action:{
+        _ = alert.addButton("Oui", action:{
             self.detailsViewController!.initValue()
         })
-        alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir annuler les modifications?", closeButtonTitle:"Annuler")
+        _ = alert.showWarning("Confirmation", subTitle: "Êtes-vous sur de vouloir annuler les modifications?", closeButtonTitle:"Annuler")
         
     }
     @IBAction func prendrePhoto(_ sender: AnyObject) {
@@ -122,13 +122,13 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
             if resultsArr[0] as! String == "" {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
-                alert.addButton("Ok", action:{})
-                alert.showSuccess("Patient modifé", subTitle: "\(self.patient!.prenom.capitalized) a bien été modifié avec succès.")
+                _ = alert.addButton("Ok", action:{})
+                _ = alert.showSuccess("Patient modifé", subTitle: "\(self.patient!.prenom.capitalized) a bien été modifié avec succès.")
             } else {
                 let alert = SCLAlertView()
-                alert.showCloseButton = false
-                alert.addButton("Ok", action:{})
-                alert.showSuccess("Erreur", subTitle: "Une erreur a survenu lors de la modification de \(self.patient!.prenom.capitalized). \n Veuillez vérifié les champs rentrés")
+                _ = alert.showCloseButton = false
+                _ = alert.addButton("Ok", action:{})
+                _ = alert.showSuccess("Erreur", subTitle: "Une erreur a survenu lors de la modification de \(self.patient!.prenom.capitalized). \n Veuillez vérifié les champs rentrés")
             }
         })
     }
@@ -137,16 +137,16 @@ class EtatCivilViewController: UIViewController, APIControllerProtocol, UIImageP
             DispatchQueue.main.async(execute: {
                 let alert = SCLAlertView()
                 alert.showCloseButton = false
-                alert.addButton("Ok", action:{})
-                alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalized) a été modifié avec succès.")
+                _ = alert.addButton("Ok", action:{})
+                _ = alert.showSuccess("Mise à jour", subTitle: "La photo de \(self.patient!.prenom.capitalized) a été modifié avec succès.")
                 self.patient!.idPhoto = results
             })
         } else {
             DispatchQueue.main.async(execute: {
             let alert = SCLAlertView()
             alert.showCloseButton = false
-            alert.addButton("Ok", action:{})
-            alert.showError("Erreur", subTitle: "Une erreur inconnue est survenue lors du téléversement de la photo")
+            _ = alert.addButton("Ok", action:{})
+            _ = alert.showError("Erreur", subTitle: "Une erreur inconnue est survenue lors du téléversement de la photo")
             })
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = false

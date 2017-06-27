@@ -60,8 +60,8 @@ class DTIAnimRotatingPlane: DTIAnimProtocol {
         ]
         anim.values = [
             NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: 0.0, x: 0.0, y: 0.0, z: 0.0)),
-            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(M_PI), x: 0.0, y: 1.0, z: 0.0)),
-            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(M_PI), x: 0.0, y: 0.0, z: 1.0))
+            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(Double.pi), x: 0.0, y: 1.0, z: 0.0)),
+            NSValue(caTransform3D: self.transformPlane(1.0/120.0, angle: CGFloat(Double.pi), x: 0.0, y: 0.0, z: 1.0))
         ]
         
         self.spinnerView.layer.add(anim, forKey: "DTIAnimRotatingPlane~animateCanvas")

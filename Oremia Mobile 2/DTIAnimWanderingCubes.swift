@@ -20,7 +20,7 @@ class DTIAnimWanderingCubes: DTIAnimProtocol {
     /** ctor */
     init(indicatorView: DTIActivityIndicatorView) {
         self.owner = indicatorView
-        for index in (0 ..< cubeCount) {
+        for _ in (0 ..< cubeCount) {
             let cubeLayer = CALayer()
             
             
@@ -84,22 +84,22 @@ class DTIAnimWanderingCubes: DTIAnimProtocol {
             
             // -90°
             var transform1 = CATransform3DMakeTranslation(translation, 0.0, 0.0);
-            transform1 = CATransform3DRotate(transform1, -CGFloat(M_PI/2), 0.0, 0.0, 1.0);
+            transform1 = CATransform3DRotate(transform1, -CGFloat(Double.pi/2), 0.0, 0.0, 1.0);
             transform1 = CATransform3DScale(transform1, 0.5, 0.5, 1.0);
             
             // -180°
             var transform2 = CATransform3DMakeTranslation(translation, translation, 0.0);
-            transform2 = CATransform3DRotate(transform2, -CGFloat(M_PI), 0.0, 0.0, 1.0);
+            transform2 = CATransform3DRotate(transform2, -CGFloat(Double.pi), 0.0, 0.0, 1.0);
             transform2 = CATransform3DScale(transform2, 1.0, 1.0, 1.0);
             
             // -270°
             var transform3 = CATransform3DMakeTranslation(0.0, translation, 0.0);
-            transform3 = CATransform3DRotate(transform3, -CGFloat(M_PI*9/6), 0.0, 0.0, 1.0);
+            transform3 = CATransform3DRotate(transform3, -CGFloat(Double.pi*9/6), 0.0, 0.0, 1.0);
             transform3 = CATransform3DScale(transform3, 0.5, 0.5, 1.0);
             
             // -360°
             var transform4 = CATransform3DMakeTranslation(0.0, 0.0, 0.0);
-            transform4 = CATransform3DRotate(transform4, -CGFloat(2*M_PI), 0.0, 0.0, 1.0);
+            transform4 = CATransform3DRotate(transform4, -CGFloat(2*Double.pi), 0.0, 0.0, 1.0);
             transform4 = CATransform3DScale(transform4, 1.0, 1.0, 1.0);
             
             aniTransform.values = [
